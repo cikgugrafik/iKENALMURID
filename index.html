@@ -1,0 +1,1830 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iKENALMURID - Sistem Profil Murid</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <style>
+		.google-btn img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+        :root {
+            /* Light Mode Variables */
+            --primary: #0f172a;
+            --primary-hover: #1e293b;
+            --secondary: #3b82f6;
+            --bg-color: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --box-bg: #ffffff;
+            --border-light: rgba(0, 0, 0, 0.08);
+            --danger: #ef4444;
+            --success: #10b981;
+            --border-radius-lg: 20px;
+            --border-radius-md: 14px;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+--bg-gradient-1: hsla(210, 100%, 93%, 1);
+            --bg-gradient-2: hsla(280, 100%, 93%, 1);
+            --bg-gradient-3: hsla(180, 100%, 93%, 1);
+        }
+
+[data-theme="dark"] {
+            /* Dark Mode Variables */
+            --primary: #f8fafc;
+            --primary-hover: #e2e8f0;
+            --secondary: #60a5fa;
+            --bg-color: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --card-bg: rgba(30, 41, 59, 0.75);
+            --box-bg: #1e293b;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.5);
+
+--bg-gradient-1: hsla(210, 50%, 15%, 1);
+            --bg-gradient-2: hsla(280, 50%, 15%, 1);
+            --bg-gradient-3: hsla(180, 50%, 15%, 1);
+        }
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+body {
+            background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; overflow-x: hidden; font-size: 14px;
+            background-image: radial-gradient(at 0% 0%, var(--bg-gradient-1) 0px, transparent 50%), radial-gradient(at 100% 0%, var(--bg-gradient-2) 0px, transparent 50%), radial-gradient(at 50% 100%, var(--bg-gradient-3) 0px, transparent 50%);
+            background-attachment: fixed; display: flex; transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+.glass { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-light); box-shadow: var(--shadow-soft); transition: var(--transition); }
+
+/* --- LANDING PAGE CSS --- */
+        .landing-container {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(at 0% 0%, var(--bg-gradient-1) 0px, transparent 50%), radial-gradient(at 100% 0%, var(--bg-gradient-2) 0px, transparent 50%), radial-gradient(at 50% 100%, var(--bg-gradient-3) 0px, transparent 50%);
+            display: flex; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .landing-box {
+            padding: 3rem; border-radius: var(--border-radius-lg); max-width: 450px; width: 90%; text-align: center;
+            display: flex; flex-direction: column; align-items: center; gap: 1rem;
+        }
+        .google-btn {
+            background: white; color: #333; border: 1px solid #ddd; padding: 0.8rem 1.5rem; 
+            border-radius: 50px; font-weight: 600; cursor: pointer; display: flex; align-items: center; 
+            justify-content: center; gap: 10px; width: 100%; transition: var(--transition);
+            font-size: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .google-btn:hover { background: #f8fafc; transform: translateY(-2px); box-shadow: 0 6px 12px rgba(0,0,0,0.1); }
+        [data-theme="dark"] .google-btn { background: #1e293b; color: white; border-color: #334155; }
+        [data-theme="dark"] .google-btn:hover { background: #334155; }
+
+/* Sidebar Layout */
+        .sidebar { width: 260px; height: 100vh; position: fixed; left: 0; top: 0; padding: 2rem 1.5rem; display: none; flex-direction: column; gap: 1.5rem; z-index: 50; border-right: 1px solid var(--border-light); background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); transition: var(--transition); overflow-y: auto;}
+        .logo { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: var(--primary); }
+        .logo i { color: var(--secondary); width: 20px; height: 20px; }
+        .nav-menu { display: flex; flex-direction: column; gap: 0.4rem; flex-grow: 1; }
+        .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1.2rem; border-radius: 50px; color: var(--text-muted); text-decoration: none; font-weight: 500; cursor: pointer; transition: var(--transition); font-size: 0.95rem; }
+        .nav-item:hover { background: var(--border-light); color: var(--primary); }
+        .nav-item.active { background: var(--primary); color: var(--bg-color); box-shadow: 0 4px 15px rgba(15, 23, 42, 0.2); }
+        [data-theme="dark"] .nav-item.active { color: #0f172a; }
+
+.main-content { margin-left: 260px; padding: 2rem 2.5rem; width: calc(100% - 260px); min-height: 100vh; display: none; flex-direction: column;}
+        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .page-title { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.5px; color: var(--primary); }
+
+/* Dashboard */
+        .welcome-banner { background: linear-gradient(135deg, #0f172a, #1e293b); color: white; padding: 2rem; border-radius: var(--border-radius-lg); margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 15px 30px rgba(0,0,0,0.2); position: relative; overflow: hidden; }
+        .welcome-banner::after { content: ''; position: absolute; right: 0; top: 0; width: 300px; height: 100%; background: radial-gradient(circle at right, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none; }
+        .welcome-text h2 { font-size: 1.8rem; font-weight: 600; margin-bottom: 0.2rem; color: white;}
+        .welcome-text p { color: #cbd5e1; font-size: 0.9rem; }
+
+.quick-search-dashboard { background: var(--box-bg); padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-radius: 50px; display: flex; align-items: center; gap: 0.8rem; box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); margin-bottom: 2rem; max-width: 600px; transition: var(--transition); }
+        .quick-search-dashboard:focus-within { border-color: var(--secondary); }
+        .quick-search-dashboard input { flex: 1; border: none; outline: none; background: transparent; font-size: 0.95rem; font-family: 'Poppins', sans-serif; color: var(--text-main); }
+        .quick-search-dashboard button { background: var(--secondary); color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; transition: var(--transition); padding: 0; }
+        .quick-search-dashboard button:hover { opacity: 0.9; transform: scale(1.05); }
+
+.section { display: none; animation: fadeIn 0.4s ease; flex-grow: 1; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; margin-bottom: 2.5rem; }
+        .stat-card { padding: 1.2rem; border-radius: var(--border-radius-lg); display: flex; flex-direction: column; gap: 0.5rem; }
+        .stat-icon { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: rgba(59, 130, 246, 0.1); color: var(--secondary); margin-bottom: 0.2rem; }
+        .stat-icon i { width: 20px; height: 20px; }
+        .stat-card.green .stat-icon { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .stat-card.purple .stat-icon { background: rgba(168, 85, 247, 0.1); color: #a855f7; }
+        .stat-card.orange .stat-icon { background: rgba(249, 115, 22, 0.1); color: #f97316; }
+        .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--text-main);}
+        .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
+
+/* Toolbar, Filters & Toggles */
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap; }
+        .search-box { display: flex; align-items: center; background: var(--box-bg); padding: 0.6rem 1.2rem; border-radius: 50px; flex: 1; min-width: 250px; box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); }
+        .search-box input { border: none; outline: none; background: transparent; width: 100%; padding-left: 0.75rem; font-size: 0.9rem; color: var(--text-main);}
+
+.filter-group { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
+        .filter-select { padding: 0.6rem 1rem; border-radius: 50px; border: 1px solid var(--border-light); outline: none; font-family: 'Poppins', sans-serif; font-size: 0.85rem; background: var(--box-bg); cursor: pointer; color: var(--text-main); box-shadow: var(--shadow-soft); transition: var(--transition);}
+        .filter-select:hover { border-color: var(--secondary); }
+
+.view-toggles { display: flex; background: var(--box-bg); border-radius: 50px; padding: 0.3rem; border: 1px solid var(--border-light); box-shadow: var(--shadow-soft); }
+        .view-btn { background: transparent; border: none; padding: 0.4rem 0.8rem; border-radius: 50px; cursor: pointer; color: var(--text-muted); transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+        .view-btn.active { background: #e0f2fe; color: #0284c7; }
+        [data-theme="dark"] .view-btn.active { background: #1e3a8a; color: #93c5fd; }
+
+button { padding: 0.6rem 1.2rem; border-radius: 50px; border: none; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: var(--transition); font-size: 0.85rem; }
+        .btn-primary { background: var(--secondary); color: white; }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(59,130,246,0.3); }
+        .btn-secondary { background: var(--box-bg); color: var(--text-main); border: 1px solid var(--border-light); }
+        .btn-secondary:hover { background: var(--border-light); }
+        .btn-danger { background: #fee2e2; color: #ef4444; }
+        .btn-danger:hover { background: #fecaca; }
+        .btn-success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0;}
+        .btn-success:hover { background: #bbf7d0; }
+        [data-theme="dark"] .btn-danger { background: #7f1d1d; color: #fca5a5; }
+        [data-theme="dark"] .btn-success { background: #14532d; color: #86efac; border-color:#166534;}
+
+.btn-icon-top { background: var(--box-bg); color: var(--text-main); border: 1px solid var(--border-light); padding: 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;}
+        .btn-icon-top:hover { background: var(--border-light); }
+
+/* Student Grid/List View CSS */
+        .student-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+
+.student-card { padding: 1.2rem; border-radius: var(--border-radius-lg); display: flex; flex-direction: column; gap: 1rem; transition: var(--transition); position: relative; overflow: hidden; background: var(--box-bg); border: 1px solid var(--border-light); box-shadow: var(--shadow-soft); }
+        .student-card:hover { transform: translateY(-3px); box-shadow: 0 15px 30px -10px rgba(0,0,0,0.2); border-color: var(--secondary); }
+
+.student-card-header { display: flex; align-items: center; gap: 1rem; cursor: pointer; }
+        .student-photo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; background: #e2e8f0; border: 3px solid var(--box-bg); box-shadow: 0 4px 15px rgba(0,0,0,0.15); flex-shrink: 0; }
+        .student-info-basic { min-width: 0; }
+        .student-info-basic h3 { font-size: 1rem; font-weight: 600; line-height: 1.2; margin-bottom: 0.2rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .student-info-basic p { font-size: 0.8rem; color: var(--text-muted); }
+        .student-tags { display: flex; gap: 0.4rem; margin-top: 0.4rem; flex-wrap: wrap;}
+        .tag { padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.7rem; font-weight: 500; background: var(--bg-color); color: var(--text-main); border: 1px solid var(--border-light); }
+
+.student-info-extra { display: none; cursor: pointer; } /* Hidden in Grid View */
+
+.card-actions-modern { display: flex; gap: 0.6rem; justify-content: center; margin-top: auto; padding-top: 1rem; border-top: 1px dashed var(--border-light); }
+        .btn-action { flex: none; width: 38px; height: 38px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition); padding: 0; }
+        .btn-action.view { background: #e0f2fe; color: #0284c7; }
+        .btn-action.view:hover { background: #bae6fd; transform: scale(1.1); }
+        .btn-action.print { background: #dcfce7; color: #166534; }
+        .btn-action.print:hover { background: #bbf7d0; transform: scale(1.1); }
+        .btn-action.edit { background: #fef08a; color: #a16207; }
+        .btn-action.edit:hover { background: #fde047; transform: scale(1.1); }
+        .btn-action.delete { background: #fee2e2; color: #ef4444; }
+        .btn-action.delete:hover { background: #fecaca; transform: scale(1.1); }
+
+[data-theme="dark"] .btn-action.view { background: #1e3a8a; color: #93c5fd; }
+        [data-theme="dark"] .btn-action.print { background: #14532d; color: #86efac; }
+        [data-theme="dark"] .btn-action.edit { background: #713f12; color: #fde047; }
+        [data-theme="dark"] .btn-action.delete { background: #7f1d1d; color: #fca5a5; }
+
+/* LIST VIEW SPECIFIC CSS */
+        .student-grid.list-view { display: flex; flex-direction: column; gap: 0.8rem; }
+        .student-grid.list-view .student-card { flex-direction: row; align-items: center; padding: 1rem 1.5rem; justify-content: space-between; gap: 1.5rem; }
+        .student-grid.list-view .student-card-header { flex: 1; width: auto; margin-bottom: 0; }
+        .student-grid.list-view .student-photo { width: 55px; height: 55px; }
+        .student-grid.list-view .student-info-extra { display: none; }
+        .student-grid.list-view .card-actions-modern { border-top: none; padding-top: 0; margin-top: 0; border-left: 1px dashed var(--border-light); padding-left: 1.5rem; flex-shrink: 0; justify-content: flex-end; }
+
+/* Bulk Print Feature Styling */
+        .bulk-checkbox { position: absolute; top: 12px; right: 12px; width: 20px; height: 20px; cursor: pointer; z-index: 10; accent-color: var(--secondary); display: none; }
+        .student-grid.bulk-mode .bulk-checkbox { display: block; animation: fadeIn 0.3s ease; }
+        .student-grid.bulk-mode .student-card { border-color: var(--secondary); } 
+
+/* Attendance Table */
+        .attendance-log { background: var(--box-bg); border-radius: var(--border-radius-md); border: 1px solid var(--border-light); overflow: hidden; margin-top: 1.5rem; box-shadow: var(--shadow-soft); }
+        .attendance-log table { width: 100%; border-collapse: collapse; text-align: left; }
+        .attendance-log th, .attendance-log td { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-light); }
+        .attendance-log th { background: var(--bg-color); font-weight: 600; color: var(--text-main); font-size: 0.85rem;}
+        .attendance-log tr:last-child td { border-bottom: none; }
+
+/* Pagination CSS */
+        .pagination-container { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-light);}
+        .page-btn { background: var(--box-bg); border: 1px solid var(--border-light); color: var(--text-main); width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: var(--transition); font-weight: 500; font-size: 0.9rem; padding: 0;}
+        .page-btn:hover:not(:disabled) { background: var(--border-light); color: var(--primary); }
+        .page-btn.active { background: var(--secondary); color: white; border-color: var(--secondary); }
+        .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Form Styling */
+        .form-container { max-width: 850px; padding: 2rem; border-radius: var(--border-radius-lg); }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+        .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        .form-group label { font-size: 0.85rem; font-weight: 500; color: var(--text-main); }
+        .form-group input, .form-group select, .form-group textarea { padding: 0.7rem 1rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); font-family: 'Poppins', sans-serif; font-size: 0.85rem; outline: none; transition: var(--transition); color: var(--text-main);}
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+        .form-actions { grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-light);}
+
+.section-header-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin: 1.5rem 0 0.5rem 0; padding-bottom: 0.5rem; border-bottom: 2px dashed var(--border-light); grid-column: 1 / -1; display: flex; align-items: center; gap: 0.5rem; }
+
+.photo-upload-wrapper { display: flex; align-items: center; gap: 1rem; background: var(--bg-color); padding: 1rem; border-radius: var(--border-radius-md); border: 1px dashed var(--border-light); }
+        .photo-upload-wrapper img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--box-bg); box-shadow: var(--shadow-soft); }
+        .file-input-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; background: var(--box-bg); border-radius: 50px; cursor: pointer; border: 1px solid var(--border-light); display: inline-block; margin-top: 0.2rem; color: var(--text-main);}
+        .file-input-btn input[type="file"] { display: none; }
+
+/* QR Scanner */
+        #reader, #reader-kehadiran { width: 100%; border-radius: var(--border-radius-lg); overflow: hidden; border: none; box-shadow: var(--shadow-soft); background: var(--box-bg); text-align: center; padding: 1rem 0;}
+        #reader__dashboard_section_csr, #reader-kehadiran__dashboard_section_csr { padding: 1rem; width: 100%; }
+        #reader__dashboard_section_csr span, #reader-kehadiran__dashboard_section_csr span { font-family: 'Poppins', sans-serif; font-size: 0.9rem; margin-bottom: 10px; display: block; color: var(--text-main);}
+        #reader button, #reader-kehadiran button { background: var(--secondary) !important; color: white !important; padding: 0.6rem 1.5rem !important; border-radius: 50px !important; border: none !important; font-family: 'Poppins', sans-serif !important; cursor: pointer !important; font-weight: 500 !important; margin: 5px auto !important; display: inline-block !important; transition: var(--transition) !important;}
+        #reader button:hover, #reader-kehadiran button:hover { opacity: 0.9 !important; transform: scale(1.05) !important;}
+        #reader select, #reader-kehadiran select { padding: 0.6rem 1rem !important; border-radius: 10px !important; font-family: 'Poppins', sans-serif !important; border: 1px solid var(--border-light) !important; outline: none !important; margin: 10px auto !important; display: inline-block !important; max-width: 90% !important; background: var(--bg-color) !important; color: var(--text-main) !important;}
+        #reader a, #reader-kehadiran a { color: var(--secondary) !important; text-decoration: none !important; font-weight: 500 !important; display: inline-block !important; margin-top: 10px !important;}
+        #reader video, #reader-kehadiran video { border-radius: 12px; margin-top: 1rem; width: 100%; max-width: 100%; }
+
+/* Modals */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; padding: 1rem; }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content { background: var(--box-bg); padding: 2rem; border-radius: var(--border-radius-lg); width: 100%; max-width: 600px; position: relative; transform: scale(0.95); transition: transform 0.3s ease; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); max-height: 90vh; overflow-y: auto; color: var(--text-main);}
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+.close-modal { position: absolute; top: 15px; right: 15px; background: var(--bg-color); border: 1px solid var(--border-light); cursor: pointer; color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 100; transition: var(--transition); font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; }
+        .close-modal:hover { background: var(--danger); color: white; border-color: var(--danger); transform: scale(1.1); }
+        .close-modal i { display: none; }
+
+/* Profile Modal */
+        .profile-header { display: flex; align-items: center; gap: 1.2rem; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-light); position: relative;}
+        .profile-header img.dp { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; }
+        .qr-badge { margin-left: auto; padding-right: 2.5rem; display: flex; flex-direction: column; align-items: center; }
+        .qr-badge img { width: 60px; height: 60px; border-radius: 8px; border: 1px solid var(--border-light); padding: 2px; background: white;}
+        .qr-badge span { font-size: 0.6rem; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+
+.profile-section-title { font-size: 0.9rem; font-weight: 600; color: var(--text-main); background: var(--bg-color); padding: 0.5rem 1rem; border-radius: 8px; margin: 1rem 0 0.8rem 0; display: flex; align-items: center; gap: 0.4rem; border: 1px solid var(--border-light);}
+        .profile-details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0 0.5rem;}
+        .detail-item p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.1rem; text-transform: uppercase; letter-spacing: 0.5px;}
+        .detail-item h4 { font-size: 0.9rem; font-weight: 500; color: var(--text-main); word-break: break-all; }
+
+/* Keypad UI */
+        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+        .key-btn { background: var(--bg-color); border: 1px solid var(--border-light); border-radius: 50%; width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; color: var(--text-main); cursor: pointer; margin: 0 auto; display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
+        .key-btn:active { background: var(--border-light); transform: scale(0.95); }
+        .key-btn.action { font-size: 1rem; background: var(--danger); color: white; border-color: var(--danger); }
+        .pin-display { display: flex; gap: 1rem; justify-content: center; margin: 1.5rem 0; }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border-light); transition: 0.2s; }
+        .pin-dot.filled { background: var(--secondary); border-color: var(--secondary); }
+
+/* Settings CSS */
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; width: 100%; }
+        .settings-card { background: var(--box-bg); padding: 1.5rem; border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); min-width: 0; }
+
+.toggle-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-weight: 500; font-size: 0.85rem; cursor: pointer; background: var(--bg-color); padding: 0.8rem 1rem; border-radius: var(--border-radius-md); transition: var(--transition); border: 1px solid var(--border-light); width: 100%; color: var(--text-main);}
+        .toggle-wrapper:hover { border-color: var(--secondary); }
+        .toggle-wrapper input { display: none; }
+        .toggle-text { flex: 1; white-space: normal; line-height: 1.3; }
+        .toggle-slider { position: relative; width: 40px; height: 22px; background: #cbd5e1; border-radius: 50px; transition: var(--transition); flex-shrink: 0; }
+        [data-theme="dark"] .toggle-slider { background: #475569; }
+        .toggle-slider::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: var(--transition); }
+        .toggle-wrapper input:checked + .toggle-slider { background: var(--success); }
+        .toggle-wrapper input:checked + .toggle-slider::after { transform: translateX(18px); }
+        .settings-category-title { font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin: 1.5rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border-light); }
+
+/* Notification */
+        .notification { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--box-bg); padding: 0.8rem 1.5rem; border-radius: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 0.75rem; opacity: 0; transition: var(--transition); z-index: 3000; font-size: 0.9rem; border: 1px solid var(--border-light); color: var(--text-main); font-weight: 500;}
+        .notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .notification i { color: var(--success); width: 18px; height: 18px; }
+        .notification.error i { color: var(--danger); }
+
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; gap: 0.8rem; grid-column: 1 / -1; }
+        .empty-state i { width: 48px; height: 48px; color: var(--border-light); }
+
+/* Scroll to Top Button */
+        #scrollTopBtn { position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: var(--bg-color); width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: var(--shadow-soft); transition: var(--transition); z-index: 1000; opacity: 0; pointer-events: none; transform: translateY(20px); padding: 0;}
+        #scrollTopBtn.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        #scrollTopBtn:hover { transform: scale(1.1) translateY(0); background: var(--secondary); color: white;}
+        [data-theme="dark"] #scrollTopBtn { color: #0f172a; }
+
+/* Mobile Bottom Nav */
+        .bottom-nav { display: none; }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%;}
+        .file-input-wrapper input[type=file] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+
+@media (max-width: 768px) {
+            .sidebar { display: none !important; }
+            .main-content { margin-left: 0; width: 100%; padding: 1.5rem 1rem; padding-bottom: 6rem; }
+            header { flex-direction: row; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+            .page-title { font-size: 1.4rem; }
+            .welcome-banner { flex-direction: column; text-align: left; align-items: flex-start; padding: 1.5rem; }
+            .welcome-text h2 { font-size: 1.4rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .profile-details-grid { grid-template-columns: 1fr; }
+
+.toolbar { flex-direction: column; align-items: stretch;}
+            .search-box { width: 100%; max-width: 100%;}
+            .filter-group { justify-content: space-between; }
+            .filter-select { flex: 1; }
+            .view-toggles { display: none; } /* Hide view toggles on mobile, force grid */
+
+.student-grid.list-view .student-card { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .student-grid.list-view .student-card-header { width: 100%; }
+            .student-grid.list-view .card-actions-modern { border-left: none; padding-left: 0; border-top: 1px dashed var(--border-light); padding-top: 1rem; width: 100%; justify-content: center; }
+
+.bottom-nav {
+                display: flex; position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); background: var(--primary); padding: 0.5rem 0.4rem; border-radius: 50px; gap: 0.1rem; z-index: 1000; width: 95%; max-width: 400px; justify-content: space-between; box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            }
+            .bottom-nav .nav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0.6rem 0.5rem; border-radius: 50px; color: #94a3b8; text-decoration: none; transition: var(--transition); gap: 0.2rem; flex: 1; }
+            .bottom-nav .nav-item i { width: 20px; height: 20px; }
+            .bottom-nav .nav-item.active { background: var(--secondary); color: white; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+            [data-theme="dark"] .bottom-nav { background: #1e293b; border: 1px solid var(--border-light);}
+
+#scrollTopBtn { bottom: 80px; right: 20px; } /* Adjust for bottom nav */
+        }
+
+/* Print Styles */
+        @media print {
+            body { background: white; color: black; display: block; }
+            .landing-container, .sidebar, .bottom-nav, header, .toolbar, .welcome-banner, .stats-grid, .quick-search-dashboard, #scrollTopBtn, .pagination-container, #bulkActionContainer { display: none !important; }
+            .main-content { margin: 0; padding: 0; width: 100%; display: block !important;}
+            .section { display: block !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="landingPage" class="landing-container">
+        <div class="glass landing-box">
+            <div class="logo" style="justify-content: center; font-size: 2.2rem; margin-bottom: 0.5rem; color: var(--primary);">
+                <i data-lucide="graduation-cap" style="width: 45px; height: 45px;"></i> 
+                <span>iKENALMURID</span>
+            </div>
+            <p style="color: var(--text-muted); margin-bottom: 2.5rem; font-size: 0.95rem;">Sistem Pengurusan Profil Murid Bersepadu.<br>Sila log masuk untuk meneruskan.</p>
+
+<button class="google-btn" onclick="loginGoogle()">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Logo">
+                Log Masuk dengan Google
+            </button>
+        </div>
+    </div>
+
+<aside class="sidebar glass" id="sidebar">
+        <div class="logo"><i data-lucide="graduation-cap"></i> <span class="app-name-display">iKENALMURID</span></div>
+        <nav class="nav-menu">
+            <a class="nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a>
+            <a class="nav-item" data-target="list"><i data-lucide="users"></i> Senarai Murid</a>
+            <a class="nav-item" data-target="harijadi"><i data-lucide="gift"></i> Hari Jadi</a>
+            <a class="nav-item" data-target="kehadiran"><i data-lucide="clock"></i> Kehadiran</a>
+            <a class="nav-item" data-target="form" id="navAddBtn"><i data-lucide="user-plus"></i> Tambah Murid</a>
+            <a class="nav-item" data-target="scan"><i data-lucide="scan-line"></i> Scan QR</a>
+            <a class="nav-item" onclick="openPinModal()"><i data-lucide="settings"></i> Tetapan</a>
+
+<a class="nav-item" onclick="logoutGoogle()" style="margin-top: auto; color: var(--danger);"><i data-lucide="log-out"></i> Log Keluar</a>
+        </nav>
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-align: center; line-height: 1.5; margin-top: 1rem;">
+            © 2026 <span class="app-name-display">iKENALMURID</span><br>BY CIKGUGRAFIK
+        </div>
+    </aside>
+
+<nav class="bottom-nav">
+        <a class="nav-item active" data-target="dashboard"><i data-lucide="home"></i></a>
+        <a class="nav-item" data-target="list"><i data-lucide="users"></i></a>
+        <a class="nav-item" data-target="harijadi"><i data-lucide="gift"></i></a>
+        <a class="nav-item" data-target="kehadiran"><i data-lucide="clock"></i></a>
+        <a class="nav-item" data-target="scan"><i data-lucide="scan-line"></i></a>
+        <a class="nav-item" data-target="form"><i data-lucide="plus"></i></a>
+        <a class="nav-item" onclick="openPinModal()"><i data-lucide="settings"></i></a>
+    </nav>
+
+<main class="main-content">
+        <header>
+            <div class="header-left"><h1 class="page-title" id="pageTitle">Dashboard</h1></div>
+            <div class="header-right">
+                <button class="btn-icon-top" onclick="toggleDarkMode()" id="darkModeBtn" title="Tukar Tema">
+                    <i data-lucide="moon" id="darkModeIcon"></i>
+                </button>
+            </div>
+        </header>
+
+<section id="section-dashboard" class="section active">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h2>Selamat Datang, Cikgu <span id="dashTeacherName">Admin</span></h2>
+                    <p>Sistem Pengurusan Profil Murid <span class="app-name-display">iKENALMURID</span></p>
+                </div>
+                <i data-lucide="book-open" style="width: 64px; height: 64px; opacity: 0.2;"></i>
+            </div>
+
+<div class="quick-search-dashboard">
+                <i data-lucide="search" style="color: var(--text-muted);"></i>
+                <input type="text" id="dashSearchInput" placeholder="Taip nama atau No. IC di sini...">
+                <button onclick="executeDashSearch()"><i data-lucide="arrow-right" style="width:18px; height:18px;"></i></button>
+            </div>
+
+<div class="stats-grid">
+                <div class="stat-card glass"><div class="stat-icon"><i data-lucide="users"></i></div><div class="stat-value" id="statTotal">0</div><div class="stat-label">Jumlah Murid</div></div>
+                <div class="stat-card glass green"><div class="stat-icon"><i data-lucide="user"></i></div><div class="stat-value" id="statLelaki">0</div><div class="stat-label">Murid Lelaki</div></div>
+                <div class="stat-card glass purple"><div class="stat-icon"><i data-lucide="user"></i></div><div class="stat-value" id="statPerempuan">0</div><div class="stat-label">Murid Perempuan</div></div>
+                <div class="stat-card glass orange"><div class="stat-icon"><i data-lucide="book-open"></i></div><div class="stat-value" id="statKelas">0</div><div class="stat-label">Jumlah Kelas</div></div>
+            </div>
+        </section>
+
+<section id="section-harijadi" class="section">
+            <div class="welcome-banner" style="background: linear-gradient(135deg, #f43f5e, #9f1239);">
+                <div class="welcome-text">
+                    <h2><i data-lucide="gift" style="width: 28px; height: 28px; vertical-align: bottom;"></i> Sambutan Hari Jadi</h2>
+                    <p>Senarai murid yang menyambut hari kelahiran pada hari ini dan akan datang.</p>
+                </div>
+            </div>
+
+<div style="margin-bottom: 2rem;">
+                <div class="section-header-title" style="color: var(--text-main); border-bottom-color: var(--secondary);"><i data-lucide="calendar-heart" style="color: var(--secondary);"></i> Hari Ini (<span id="hjTodayDate"></span>)</div>
+                <div class="student-grid" id="hjTodayList">
+                    </div>
+            </div>
+
+<div>
+                <div class="section-header-title" style="color: var(--text-main); border-bottom-color: #f59e0b;"><i data-lucide="calendar-clock" style="color: #f59e0b;"></i> Akan Datang (2 Hari Seterusnya)</div>
+                <div class="student-grid" id="hjUpcomingList">
+                    </div>
+            </div>
+        </section>
+
+<section id="section-list" class="section">
+            <div class="toolbar">
+                <div class="search-box">
+                    <i data-lucide="search" style="color: var(--text-muted);"></i>
+                    <input type="text" id="searchInput" placeholder="Cari nama atau No. IC..." oninput="applyListFilters()">
+                </div>
+
+<div class="filter-group">
+                    <select id="filterClass" class="filter-select" onchange="applyListFilters()">
+                        <option value="">Semua Kelas</option>
+                    </select>
+                    <select id="filterGender" class="filter-select" onchange="applyListFilters()">
+                        <option value="">Semua Jantina</option>
+                        <option value="Lelaki">Lelaki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+
+<div class="view-toggles">
+                        <button class="view-btn" id="btnBulkMode" onclick="toggleBulkMode()" title="Mod Cetak Pukal (Pilih Banyak)"><i data-lucide="printer"></i></button>
+                        <div style="width: 1px; background: var(--border-light); margin: 0 0.3rem;"></div>
+                        <button class="view-btn active" id="btnViewGrid" onclick="setListView('grid')" title="Paparan Kad"><i data-lucide="layout-grid"></i></button>
+                        <button class="view-btn" id="btnViewList" onclick="setListView('list')" title="Paparan Senarai"><i data-lucide="list"></i></button>
+                    </div>
+                </div>
+            </div>
+
+<div id="bulkActionContainer" style="display: none; background: var(--box-bg); padding: 0.8rem 1.5rem; border-radius: var(--border-radius-md); margin-bottom: 1.5rem; align-items: center; justify-content: space-between; box-shadow: var(--shadow-soft); border: 1px solid var(--secondary);">
+                <span id="bulkCountText" style="font-weight: 600; color: var(--secondary);">0 murid dipilih</span>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn-secondary" onclick="selectAllBulk()"><i data-lucide="check-square"></i> Pilih Semua</button>
+                    <button class="btn-success" style="border: none;" onclick="printBulk()"><i data-lucide="printer"></i> Cetak Terpilih</button>
+                    <button class="btn-danger" style="border: none; padding: 0.5rem;" onclick="toggleBulkMode()" title="Batal Mod Cetak"><i data-lucide="x"></i></button>
+                </div>
+            </div>
+
+<div class="student-grid" id="studentList">
+                </div>
+
+<div class="pagination-container" id="paginationControls">
+                </div>
+        </section>
+
+<section id="section-form" class="section">
+            <div class="form-container glass">
+                <h2 id="formTitle" style="margin-bottom: 0.5rem; font-size: 1.25rem; color: var(--text-main);">Tambah Murid Baru</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.85rem;">Sila lengkapkan maklumat profil murid di bawah.</p>
+
+<form id="studentForm">
+                    <input type="hidden" id="studentId">
+                    <div class="form-grid">
+
+<div class="section-header-title" style="margin-top: 0;"><i data-lucide="user" style="width:20px;"></i> Maklumat Peribadi</div>
+
+<div class="form-group full-width photo-upload-wrapper">
+                            <img id="f_photo_preview" src="https://ui-avatars.com/api/?name=Baru&background=e2e8f0" alt="Preview Profil">
+                            <div>
+                                <label style="display:block; margin-bottom: 0.2rem; font-weight: 600;">Gambar Profil (Pilihan)</label>
+                                <label class="file-input-btn">
+                                    <i data-lucide="camera" style="width:14px; height:14px; vertical-align:middle;"></i> Pilih Gambar
+                                    <input type="file" id="f_photo_input" accept="image/png, image/jpeg, image/jpg">
+                                </label>
+                                <input type="hidden" id="f_photo_base64">
+                            </div>
+                        </div>
+
+<div class="form-group full-width">
+                            <label>Nama Penuh *</label>
+                            <input type="text" id="f_nama" required placeholder="Contoh: Ahmad bin Ali">
+                        </div>
+                        <div class="form-group">
+                            <label>No. IC / MyKid *</label>
+                            <input type="text" id="f_ic" required placeholder="Contoh: 120101-01-1234">
+                        </div>
+                        <div class="form-group">
+                            <label>Kelas *</label>
+                            <select id="f_kelas" required>
+                                <option value="">Pilih Kelas</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Jantina</label>
+                            <select id="f_jantina">
+                                <option value="Lelaki">Lelaki</option>
+                                <option value="Perempuan">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tarikh Lahir</label>
+                            <input type="date" id="f_tarikh">
+                        </div>
+                        <div class="form-group" data-field="view_tempat">
+                            <label>Tempat Lahir</label>
+                            <input type="text" id="f_tempat" placeholder="Contoh: Kuala Lumpur">
+                        </div>
+                        <div class="form-group" data-field="view_tel">
+                            <label>No. Telefon Ibu/Bapa</label>
+                            <input type="tel" id="f_tel" placeholder="Contoh: 012-3456789">
+                        </div>
+                        <div class="form-group" data-field="view_hobi">
+                            <label>Hobi</label>
+                            <input type="text" id="f_hobi" placeholder="Contoh: Membaca">
+                        </div>
+                        <div class="form-group full-width" data-field="view_alamat">
+                            <label>Alamat Rumah</label>
+                            <textarea id="f_alamat" rows="2" placeholder="Alamat penuh..."></textarea>
+                        </div>
+
+<div class="section-header-title" data-field="view_delima"><i data-lucide="monitor" style="width:20px;"></i> Maklumat DELIMA</div>
+                        <div class="form-group" data-field="view_delima">
+                            <label>ID DELIMA</label>
+                            <input type="text" id="f_delima" placeholder="Contoh: m-1234567@moe-dl.edu.my">
+                        </div>
+                        <div class="form-group" data-field="view_password">
+                            <label>Kata Laluan Sistem</label>
+                            <input type="text" id="f_password" placeholder="Kata laluan">
+                        </div>
+
+<div class="section-header-title" data-field="view_koku"><i data-lucide="award" style="width:20px;"></i> Maklumat Kokurikulum</div>
+                        <div class="form-group" data-field="view_koku">
+                            <label>Kelab / Persatuan</label>
+                            <input type="text" id="f_kelab" placeholder="Contoh: Kelab STEM">
+                        </div>
+                        <div class="form-group" data-field="view_koku">
+                            <label>Badan Beruniform</label>
+                            <input type="text" id="f_uniform" placeholder="Contoh: Pengakap">
+                        </div>
+                        <div class="form-group" data-field="view_koku">
+                            <label>Sukan & Permainan</label>
+                            <input type="text" id="f_sukan" placeholder="Contoh: Bola Sepak">
+                        </div>
+                        <div class="form-group" data-field="view_koku">
+                            <label>Rumah Sukan</label>
+                            <input type="text" id="f_rumah_sukan" placeholder="Contoh: Merah">
+                        </div>
+
+<div class="form-actions">
+                            <button type="button" class="btn-secondary" onclick="switchTab('list')">Batal</button>
+                            <button type="submit" class="btn-primary"><i data-lucide="save"></i> Simpan Rekod</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+<section id="section-kehadiran" class="section">
+            <div class="form-container glass" style="max-width: 850px; margin: 0 auto;">
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.25rem; color: var(--text-main);"><i data-lucide="clock" style="color: var(--secondary); vertical-align: middle;"></i> Rekod Kehadiran Pintar</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Imbas QR Code murid untuk merekod kehadiran hari ini secara automatik.</p>
+
+<div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+                    <div style="text-align: center; background: var(--bg-color); padding: 1rem; border-radius: var(--border-radius-md); border: 1px dashed var(--border-light);">
+                        <div id="reader-kehadiran" style="width: 100%; max-width: 400px; margin: 0 auto; border-radius: 12px; overflow: hidden; background: white;"></div>
+                    </div>
+
+<div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="font-size: 1rem; color: var(--primary);">Log Kehadiran (Hari Ini)</h3>
+                            <button class="btn-secondary" onclick="clearAttendance()"><i data-lucide="trash-2"></i> Kosongkan Log</button>
+                        </div>
+                        <div class="attendance-log">
+                            <table id="attendanceTable">
+                                <thead>
+                                    <tr>
+                                        <th>Masa</th>
+                                        <th>Nama Murid</th>
+                                        <th>Kelas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+<section id="section-scan" class="section">
+            <div class="form-container glass" style="max-width: 500px; margin: 0 auto; text-align: center;">
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.25rem; color: var(--text-main);"><i data-lucide="scan-line" style="color: var(--secondary); vertical-align: middle;"></i> Pengimbas QR Code</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Hala kamera anda ke arah QR Code Murid untuk melihat profil.</p>
+                <div id="reader"></div>
+                <button class="btn-secondary" onclick="switchTab('dashboard')" style="margin: 1.5rem auto 0 auto; display: flex; justify-content: center; width: 100%;">Batal Scan</button>
+            </div>
+        </section>
+
+<section id="section-settings" class="section">
+            <div class="form-container glass" style="max-width: 1000px;">
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.25rem; color: var(--text-main);"><i data-lucide="shield-check" style="color: var(--success); vertical-align: middle;"></i> Admin Panel (Tetapan)</h2>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">Konfigurasi sistem, paparan profil, format cetakan dan pengurusan data.</p>
+
+<div class="settings-grid">
+
+<div style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0;">
+                        <div class="settings-card">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem;"><i data-lucide="settings" style="width:18px;"></i> Sistem Utama</div>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label>Nama Sistem Aplikasi</label>
+                                <input type="text" id="set_appName" placeholder="Contoh: iKENALMURID">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label>Nama Cikgu (Paparan Dashboard)</label>
+                                <input type="text" id="set_teacherName" placeholder="Masukkan nama anda" disabled title="Akan ikut nama akaun Google anda">
+                            </div>
+
+<h4 class="settings-category-title" style="margin-top: 1.5rem;">Modul Tambahan</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">Aktifkan Tab Kehadiran Pintar</span><input type="checkbox" id="set_feature_kehadiran" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-light);">
+                                <div><label style="font-weight: 500; display: block; color: var(--text-main);">Kunci PIN Tetapan</label><span style="font-size: 0.75rem; color: var(--text-muted);">Akses Admin Panel</span></div>
+                                <label class="toggle-wrapper" style="padding: 0; background:transparent; width: auto; border: none;">
+                                    <input type="checkbox" id="set_pinEnabled" onchange="togglePinSetting()"><span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group" id="pinInputContainer" style="margin-bottom: 1rem;">
+                                <label>PIN Akses (4 Digit)</label>
+                                <input type="password" id="set_adminPin" maxlength="4" placeholder="1234">
+                            </div>
+                        </div>
+
+<div class="settings-card">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem;"><i data-lucide="book-open" style="width:18px;"></i> Daftar Kelas</div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Urus senarai kelas. Kelas yang didaftarkan akan muncul di menu pilihan semasa menambah murid.</p>
+
+<div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                                <input type="text" id="set_newClass" placeholder="Contoh: 1 Mawar" style="flex: 1; padding: 0.6rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); color: var(--text-main); font-family: 'Poppins', sans-serif; outline: none;">
+                                <button class="btn-primary" onclick="addClassSetting()" style="padding: 0.6rem 1rem;"><i data-lucide="plus"></i> Tambah</button>
+                            </div>
+                            <div id="settingsClassList" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                </div>
+                        </div>
+
+<div class="settings-card">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem;"><i data-lucide="eye" style="width:18px;"></i> Paparan Maklumat (UI)</div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Buka/Tutup ruangan paparan dalam borang dan senarai profil.</p>
+
+<h4 class="settings-category-title" style="margin-top: 0;">Maklumat Peribadi Tambahan</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">No. Telefon Penjaga</span><input type="checkbox" id="set_view_tel" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Tempat Lahir</span><input type="checkbox" id="set_view_tempat" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Hobi Murid</span><input type="checkbox" id="set_view_hobi" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Alamat Rumah</span><input type="checkbox" id="set_view_alamat" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
+
+<h4 class="settings-category-title">Akaun / DELIMA</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">ID DELIMA</span><input type="checkbox" id="set_view_delima" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Kata Laluan Sistem</span><input type="checkbox" id="set_view_password" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
+
+<h4 class="settings-category-title">Kokurikulum</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar Bahagian Kokurikulum</span><input type="checkbox" id="set_view_koku" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+<div style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0;">
+
+<div class="settings-card">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem;"><i data-lucide="printer" style="width:18px;"></i> Format Cetakan ID Kad</div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Sembunyikan atau tunjukkan maklumat ini pada fail cetakan.</p>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar No. IC / MyKid</span><input type="checkbox" id="set_print_ic" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar Jantina</span><input type="checkbox" id="set_print_gender" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar ID DELIMA</span><input type="checkbox" id="set_print_delima" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar No. Telefon Penjaga</span><input type="checkbox" id="set_print_tel" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar Kokurikulum</span><input type="checkbox" id="set_print_koku" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Sertakan QR Code Peribadi</span><input type="checkbox" id="set_print_qr" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
+                        </div>
+
+<div class="settings-card" style="background: var(--bg-color);">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem;"><i data-lucide="database" style="width:18px;"></i> Pengurusan Data (CSV)</div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Muat naik profil berkelompok atau eksport pangkalan data ke peranti anda.</p>
+                            <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                                <div class="file-input-wrapper">
+                                    <button class="btn-success" style="width: 100%; justify-content: center;"><i data-lucide="upload"></i> Upload Fail CSV</button>
+                                    <input type="file" id="csvFileInput" accept=".csv">
+                                </div>
+                                <button class="btn-secondary" onclick="exportCSV()" style="width: 100%; justify-content: center;"><i data-lucide="download"></i> Download / Export CSV</button>
+                                <button class="btn-secondary" onclick="downloadCSVSample()" style="width: 100%; justify-content: center; border-style: dashed;"><i data-lucide="file-spreadsheet"></i> Download Template Sample</button>
+                            </div>
+                        </div>
+
+<div class="settings-card" style="background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.2);">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem; color: var(--secondary); border-bottom: 1px dashed rgba(59, 130, 246, 0.3);"><i data-lucide="trending-up" style="width:18px;"></i> Kenaikan Darjah (Auto-Promote)</div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Naikkan nama kelas sekumpulan murid sekaligus pada hujung tahun (Cth: "1 Mawar" jadi "2 Mawar").</p>
+
+<div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
+                                <input type="text" id="apFrom" placeholder="Kelas Asal (Cth: 1 Mawar)" style="width: 100%; padding: 0.7rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); color: var(--text-main); font-family: 'Poppins', sans-serif; outline: none;">
+                                <input type="text" id="apTo" placeholder="Tukar Kepada (Cth: 2 Mawar)" style="width: 100%; padding: 0.7rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); color: var(--text-main); font-family: 'Poppins', sans-serif; outline: none;">
+                            </div>
+                            <button class="btn-primary" onclick="autoPromoteClass()" style="width: 100%; justify-content: center; background: var(--secondary);"><i data-lucide="arrow-up-circle"></i> Laksana Kenaikan</button>
+                        </div>
+
+<div class="settings-card" style="background: rgba(239, 68, 68, 0.05); border-color: rgba(239, 68, 68, 0.2);">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem; color: var(--danger); border-bottom: 1px dashed rgba(239, 68, 68, 0.3);"><i data-lucide="alert-octagon" style="width:18px;"></i> Zon Bahaya (Reset)</div>
+                            <p style="font-size: 0.75rem; color: var(--danger); margin-bottom: 1rem;">Tindakan ini akan memadam <b>KESELURUHAN</b> rekod murid. Data tidak boleh dikembalikan.</p>
+                            <button class="btn-danger" onclick="promptResetAll()" style="width: 100%; justify-content: center;"><i data-lucide="trash-2"></i> Reset Keseluruhan Data</button>
+                        </div>
+
+<button class="btn-primary" onclick="saveSettings(true)" style="margin-top: auto; justify-content: center; padding: 1rem;"><i data-lucide="save"></i> Simpan Semua Tetapan</button>
+                    </div>
+
+</div>
+            </div>
+        </section>
+    </main>
+
+<div class="modal-overlay" id="pinModal">
+        <div class="modal-content" style="max-width: 350px; text-align: center;">
+            <button class="close-modal" onclick="closeModal('pinModal'); resetPin();">X</button>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-main);"><i data-lucide="lock" style="color: var(--primary);"></i> Masukkan PIN</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Sila masukkan 4 digit PIN Admin</p>
+            <div class="pin-display" id="pinDisplay"><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div></div>
+            <div class="keypad-grid">
+                <button class="key-btn" onclick="addPin(1)">1</button><button class="key-btn" onclick="addPin(2)">2</button><button class="key-btn" onclick="addPin(3)">3</button>
+                <button class="key-btn" onclick="addPin(4)">4</button><button class="key-btn" onclick="addPin(5)">5</button><button class="key-btn" onclick="addPin(6)">6</button>
+                <button class="key-btn" onclick="addPin(7)">7</button><button class="key-btn" onclick="addPin(8)">8</button><button class="key-btn" onclick="addPin(9)">9</button>
+                <button class="key-btn action" onclick="resetPin()"><i data-lucide="refresh-cw" style="width: 20px;"></i></button><button class="key-btn" onclick="addPin(0)">0</button><button class="key-btn action" onclick="removePin()"><i data-lucide="delete" style="width: 24px;"></i></button>
+            </div>
+        </div>
+    </div>
+
+<div class="modal-overlay" id="profileModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal('profileModal')">X</button>
+            <div class="profile-header">
+                <img id="m_photo" src="" alt="Profil" class="dp">
+                <div>
+                    <h2 id="m_nama" style="font-size: 1.2rem; font-weight: 600; color: var(--text-main);"></h2>
+                    <span id="m_kelas" class="tag" style="background: var(--primary); color: var(--bg-color); display: inline-block; margin-top: 0.5rem; border: none;"></span>
+                </div>
+                <div class="qr-badge">
+                    <img id="m_qr" src="" alt="QR">
+                    <span>ID QR</span>
+                </div>
+            </div>
+
+<div class="profile-section-title"><i data-lucide="user" style="width:16px;"></i> Maklumat Peribadi</div>
+            <div class="profile-details-grid">
+                <div class="detail-item"><p>No. IC / MyKid</p><h4 id="m_ic"></h4></div>
+                <div class="detail-item"><p>Jantina</p><h4 id="m_jantina"></h4></div>
+                <div class="detail-item"><p>Tarikh Lahir</p><h4 id="m_tarikh"></h4></div>
+                <div class="detail-item" data-field="view_tempat"><p>Tempat Lahir</p><h4 id="m_tempat"></h4></div>
+                <div class="detail-item" data-field="view_tel"><p>No. Tel Penjaga</p><h4 id="m_tel"></h4></div>
+                <div class="detail-item" data-field="view_hobi"><p>Hobi</p><h4 id="m_hobi"></h4></div>
+                <div class="detail-item" data-field="view_alamat" style="grid-column: 1 / -1;"><p>Alamat</p><h4 id="m_alamat"></h4></div>
+            </div>
+
+<div class="profile-section-title" data-field="view_delima"><i data-lucide="monitor" style="width:16px;"></i> Maklumat DELIMA</div>
+            <div class="profile-details-grid" data-field="view_delima">
+                <div class="detail-item"><p>ID DELIMA</p><h4 id="m_delima" style="color:var(--secondary)"></h4></div>
+                <div class="detail-item" data-field="view_password"><p>Kata Laluan</p><h4 id="m_password"></h4></div>
+            </div>
+
+<div class="profile-section-title" data-field="view_koku"><i data-lucide="award" style="width:16px;"></i> Maklumat Kokurikulum</div>
+            <div class="profile-details-grid" data-field="view_koku">
+                <div class="detail-item"><p>Kelab / Persatuan</p><h4 id="m_kelab"></h4></div>
+                <div class="detail-item"><p>Badan Beruniform</p><h4 id="m_uniform"></h4></div>
+                <div class="detail-item"><p>Sukan & Permainan</p><h4 id="m_sukan"></h4></div>
+                <div class="detail-item"><p>Rumah Sukan</p><h4 id="m_rumah_sukan"></h4></div>
+            </div>
+        </div>
+    </div>
+
+<div class="modal-overlay" id="deleteModal">
+        <div class="modal-content" style="text-align: center; max-width: 350px;">
+            <div style="width: 50px; height: 50px; background: #fee2e2; color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;"><i data-lucide="alert-triangle" style="width: 24px; height: 24px;"></i></div>
+            <h3 id="deleteModalTitle" style="margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--text-main);">Padam Rekod?</h3>
+            <p id="deleteModalText" style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.85rem;">Adakah anda pasti untuk memadam rekod ini?</p>
+            <div style="display: flex; gap: 0.8rem; justify-content: center;">
+                <button class="btn-secondary" onclick="closeModal('deleteModal')" style="width: 100%; justify-content: center;">Batal</button>
+                <button class="btn-danger" id="confirmDeleteBtn" style="width: 100%; justify-content: center; background: #ef4444; color: white;">Ya, Padam</button>
+            </div>
+        </div>
+    </div>
+
+<div class="modal-overlay" id="resetModal">
+        <div class="modal-content" style="text-align: center; max-width: 400px;">
+            <button class="close-modal" onclick="closeModal('resetModal')">X</button>
+            <div style="width: 50px; height: 50px; background: #fee2e2; color: #ef4444; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto;"><i data-lucide="alert-octagon" style="width: 24px; height: 24px;"></i></div>
+            <h3 style="margin-bottom: 0.5rem; font-size: 1.1rem; color: var(--danger);">Amaran Reset Data!</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.85rem;">Semua data profil murid akan dipadam sepenuhnya dan tidak boleh dikembalikan.</p>
+
+<div style="text-align: left; margin-bottom: 1.5rem;">
+                <label style="font-size: 0.8rem; font-weight: 500; color: var(--text-main); margin-bottom: 0.3rem; display: block;">Taip perkataan <b>SETUJU</b> untuk sahkan:</label>
+                <input type="text" id="resetConfirmText" placeholder="SETUJU" style="width: 100%; padding: 0.7rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); color: var(--text-main); font-family: 'Poppins', sans-serif; margin-bottom: 1rem; outline: none; text-transform: uppercase;">
+
+<label style="font-size: 0.8rem; font-weight: 500; color: var(--text-main); margin-bottom: 0.3rem; display: block;">Masukkan PIN Keselamatan:</label>
+                <input type="password" id="resetConfirmPin" placeholder="PIN Akses" style="width: 100%; padding: 0.7rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); color: var(--text-main); font-family: 'Poppins', sans-serif; outline: none;">
+            </div>
+
+<div style="display: flex; gap: 0.8rem; justify-content: center;">
+                <button class="btn-secondary" onclick="closeModal('resetModal')" style="width: 100%; justify-content: center;">Batal</button>
+                <button class="btn-danger" onclick="executeReset()" style="width: 100%; justify-content: center; background: #ef4444; color: white;">Padam Semua</button>
+            </div>
+        </div>
+    </div>
+
+<div class="notification" id="notification"><i data-lucide="check-circle" id="notifIcon"></i><span id="notifMsg">Berjaya!</span></div>
+
+<button id="scrollTopBtn" onclick="scrollToTop()" title="Kembali ke atas">
+        <i data-lucide="chevron-up"></i>
+    </button>
+
+<script>
+        lucide.createIcons();
+
+        // --- Data Management & Pagination ---
+        const STORAGE_KEY = 'ikenalmurid_data_v5';
+        const ATTENDANCE_KEY = 'ikenalmurid_attendance_v1';
+        let students = [];
+        let filteredStudents = [];
+        let attendanceLogs = [];
+        let itemToDelete = null;
+        let deleteActionType = 'student'; // 'student' or 'class'
+        let html5QrcodeScanner = null;
+        let currentListView = 'grid'; 
+        let isBulkMode = false; 
+        
+        const ITEMS_PER_PAGE = 20;
+        let currentPage = 1;
+
+        // Dark Mode Logic
+        let isDarkMode = localStorage.getItem('ikenalmurid_darkmode') === 'true';
+        if (isDarkMode) applyDarkMode(true);
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('ikenalmurid_darkmode', isDarkMode);
+            applyDarkMode(isDarkMode);
+        }
+
+        function applyDarkMode(dark) {
+            if (dark) {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('darkModeIcon').setAttribute('data-lucide', 'sun');
+            } else {
+                document.body.removeAttribute('data-theme');
+                document.getElementById('darkModeIcon').setAttribute('data-lucide', 'moon');
+            }
+            lucide.createIcons();
+        }
+
+        function loadData() {
+            const data = localStorage.getItem(STORAGE_KEY);
+            if (data) { students = JSON.parse(data); } else {
+                students = [];
+            }
+            
+            const attData = localStorage.getItem(ATTENDANCE_KEY);
+            if (attData) { attendanceLogs = JSON.parse(attData); }
+            
+            updateClassFilterOptions();
+        }
+
+        function saveData() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+            updateDashboard();
+            updateClassFilterOptions();
+        }
+
+        function generateId() { return 'stu_' + Math.random().toString(36).substr(2, 9); }
+        function getPhotoUrl(name, gender) { const color = gender === 'Lelaki' ? '3b82f6' : 'a855f7'; return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=${color}&color=fff&size=150`; }
+        function getQrUrl(id) { return `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${id}`; }
+
+        // --- UI Navigation ---
+        function switchTab(target) {
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll(`.nav-item[data-target="${target}"]`).forEach(el => el.classList.add('active'));
+
+            document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+            document.getElementById(`section-${target}`).classList.add('active');
+
+            const titles = { 'dashboard': 'Dashboard', 'list': 'Senarai Murid', 'form': 'Pengurusan Murid', 'settings': 'Admin Panel', 'scan': 'Scan QR Code', 'kehadiran': 'Rekod Kehadiran', 'harijadi': 'Hari Jadi' };
+            document.getElementById('pageTitle').innerText = titles[target] || 'Sistem Profil';
+
+            if (target === 'list') { 
+                applyListFilters(); 
+                if(isBulkMode) toggleBulkMode(); 
+            }
+            if (target === 'dashboard') updateDashboard();
+            if (target === 'harijadi') updateHariJadi();
+            
+            // Scanner Management
+            stopScanner(); 
+            if (target === 'scan') { startScanner('reader', handleScanProfile); } 
+            else if (target === 'kehadiran') { renderAttendanceLog(); startScanner('reader-kehadiran', handleScanAttendance); }
+            
+            window.scrollTo(0,0);
+        }
+
+        function executeDashSearch() {
+            const term = document.getElementById('dashSearchInput').value;
+            if(term.trim() === '') return;
+            switchTab('list');
+            const listSearch = document.getElementById('searchInput');
+            listSearch.value = term;
+            applyListFilters();
+            listSearch.focus();
+            document.getElementById('dashSearchInput').value = ''; 
+        }
+
+        document.getElementById('dashSearchInput')?.addEventListener('keypress', (e) => { if(e.key === 'Enter') executeDashSearch(); });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            if(!item.hasAttribute('onclick')) {
+                item.addEventListener('click', (e) => switchTab(e.currentTarget.getAttribute('data-target')));
+            }
+        });
+
+        // --- Dashboard & Filtering ---
+        function updateDashboard() {
+            document.getElementById('statTotal').innerText = students.length;
+            document.getElementById('statLelaki').innerText = students.filter(s => s.gender === 'Lelaki').length;
+            document.getElementById('statPerempuan').innerText = students.filter(s => s.gender === 'Perempuan').length;
+            const classes = new Set(students.map(s => s.class));
+            document.getElementById('statKelas').innerText = classes.size;
+
+            const appName = appSettings.appName || 'iKENALMURID';
+            document.querySelectorAll('.app-name-display').forEach(el => el.innerText = appName);
+            document.title = `${appName} - Sistem Profil Murid`;
+        }
+
+        function updateClassFilterOptions() {
+            const studentClasses = students.map(s => s.class);
+            const registeredClasses = appSettings.classes || [];
+            const classes = [...new Set([...studentClasses, ...registeredClasses])].filter(Boolean).sort();
+            
+            const select = document.getElementById('filterClass');
+            const currentVal = select.value;
+            select.innerHTML = '<option value="">Semua Kelas</option>' + classes.map(c => `<option value="${c}">${c}</option>`).join('');
+            if(classes.includes(currentVal)) select.value = currentVal;
+        }
+
+        function setListView(type) {
+            currentListView = type;
+            document.getElementById('btnViewGrid').classList.remove('active');
+            document.getElementById('btnViewList').classList.remove('active');
+            if(type === 'grid') document.getElementById('btnViewGrid').classList.add('active');
+            if(type === 'list') document.getElementById('btnViewList').classList.add('active');
+            
+            const container = document.getElementById('studentList');
+            if(type === 'list') container.classList.add('list-view');
+            else container.classList.remove('list-view');
+        }
+
+        function applyListFilters() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const fClass = document.getElementById('filterClass').value;
+            const fGender = document.getElementById('filterGender').value;
+
+            filteredStudents = students.filter(s => {
+                const matchSearch = s.name.toLowerCase().includes(term) || s.ic.toLowerCase().includes(term);
+                const matchClass = fClass === "" || s.class === fClass;
+                const matchGender = fGender === "" || s.gender === fGender;
+                return matchSearch && matchClass && matchGender;
+            });
+            
+            currentPage = 1;
+            renderPage(currentPage);
+        }
+
+        // --- Pagination Logic ---
+        function renderPage(page) {
+            const totalPages = Math.ceil(filteredStudents.length / ITEMS_PER_PAGE);
+            if (page < 1) page = 1;
+            if (page > totalPages && totalPages > 0) page = totalPages;
+            currentPage = page;
+
+            const start = (page - 1) * ITEMS_PER_PAGE;
+            const end = start + ITEMS_PER_PAGE;
+            const pageData = filteredStudents.slice(start, end);
+
+            renderCards(pageData, 'studentList');
+            renderPaginationControls(totalPages);
+        }
+
+        function renderPaginationControls(totalPages) {
+            const container = document.getElementById('paginationControls');
+            container.innerHTML = '';
+            
+            if(totalPages <= 1) return;
+
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerHTML = '<i data-lucide="chevron-left"></i>';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => { renderPage(currentPage - 1); window.scrollTo(0,0); };
+            container.appendChild(prevBtn);
+
+            for(let i=1; i<=totalPages; i++) {
+                if(i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    const btn = document.createElement('button');
+                    btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                    btn.innerText = i;
+                    btn.onclick = () => { renderPage(i); window.scrollTo(0,0); };
+                    container.appendChild(btn);
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    const dots = document.createElement('span');
+                    dots.style.color = 'var(--text-muted)';
+                    dots.innerText = '...';
+                    container.appendChild(dots);
+                }
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerHTML = '<i data-lucide="chevron-right"></i>';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => { renderPage(currentPage + 1); window.scrollTo(0,0); };
+            container.appendChild(nextBtn);
+
+            lucide.createIcons();
+        }
+
+        function renderCards(data, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                container.innerHTML = `<div class="empty-state"><i data-lucide="inbox"></i><h3>Tiada rekod dijumpai.</h3><p>Ubah tapisan carian atau tambah murid baru.</p></div>`;
+                lucide.createIcons(); return;
+            }
+
+            data.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'student-card glass';
+                
+                let extraInfoHTML = '';
+                if(appSettings.view_delima && student.delima) extraInfoHTML += `<span class="info-badge"><i data-lucide="monitor"></i> ${student.delima}</span>`;
+                if(appSettings.view_tel && student.parentPhone) extraInfoHTML += `<span class="info-badge"><i data-lucide="phone"></i> ${student.parentPhone}</span>`;
+                let kokuText = [student.kelab, student.uniform, student.sukan].filter(Boolean).join(', ');
+                if(appSettings.view_koku && kokuText) extraInfoHTML += `<span class="info-badge" style="max-width:200px; overflow:hidden; text-overflow:ellipsis;"><i data-lucide="award"></i> ${kokuText}</span>`;
+
+                card.innerHTML = `
+                    <input type="checkbox" class="bulk-checkbox" value="${student.id}" onchange="toggleBulkPrintBtn()" onclick="event.stopPropagation()">
+                    <div class="student-card-header" onclick="viewProfile('${student.id}')">
+                        <img src="${student.photo}" alt="${student.name}" class="student-photo">
+                        <div class="student-info-basic">
+                            <h3>${student.name}</h3>
+                            <p>${student.ic}</p>
+                            <div class="student-tags">
+                                <span class="tag">${student.class}</span>
+                                <span class="tag">${student.gender}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-actions-modern">
+                        <button class="btn-action view" onclick="viewProfile('${student.id}')" title="Lihat Profil"><i data-lucide="eye"></i></button>
+                        <button class="btn-action print" onclick="printIDCard('${student.id}')" title="Muat Turun/Cetak"><i data-lucide="printer"></i></button>
+                        <button class="btn-action edit" onclick="editStudent('${student.id}')" title="Edit Data"><i data-lucide="edit-2"></i></button>
+                        <button class="btn-action delete" onclick="promptDelete('${student.id}')" title="Padam"><i data-lucide="trash-2"></i></button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+            if(isBulkMode) toggleBulkPrintBtn(); 
+        }
+
+        // --- Hari Jadi Logic ---
+        function updateHariJadi() {
+            const today = new Date();
+            const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+            const dayAfter = new Date(today); dayAfter.setDate(today.getDate() + 2);
+
+            const getMD = (d) => `${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            const todayMD = getMD(today);
+            const tmrwMD = getMD(tomorrow);
+            const dayAftMD = getMD(dayAfter);
+
+            document.getElementById('hjTodayDate').innerText = today.toLocaleDateString('ms-MY', {day: 'numeric', month: 'long', year: 'numeric'});
+
+            const todayList = [];
+            const upcomingList = [];
+
+            students.forEach(s => {
+                if (!s.dob) return;
+                try {
+                    const parts = s.dob.split('-');
+                    if (parts.length === 3) {
+                        const md = `${parts[1]}-${parts[2]}`;
+                        const birthYear = parseInt(parts[0], 10);
+                        const age = today.getFullYear() - birthYear;
+                        const sData = { ...s, age };
+
+                        if (md === todayMD) {
+                            todayList.push(sData);
+                        } else if (md === tmrwMD || md === dayAftMD) {
+                            upcomingList.push({...sData, matchDate: md === tmrwMD ? tomorrow : dayAfter });
+                        }
+                    }
+                } catch(e) {}
+            });
+
+            renderHjCards(todayList, 'hjTodayList', true);
+            upcomingList.sort((a,b) => a.matchDate - b.matchDate);
+            renderHjCards(upcomingList, 'hjUpcomingList', false);
+        }
+
+        function renderHjCards(data, containerId, isToday) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            if (data.length === 0) {
+                container.innerHTML = `<div class="empty-state" style="padding: 2rem;"><i data-lucide="${isToday ? 'gift' : 'calendar'}" style="color: var(--border-light);"></i><p>Tiada rekod sambutan ${isToday?'hari ini':'akan datang'}.</p></div>`;
+                lucide.createIcons();
+                return;
+            }
+
+            data.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'student-card glass';
+                card.style.borderLeft = `4px solid ${isToday ? '#f43f5e' : '#f59e0b'}`;
+                
+                let dateBadge = '';
+                if (!isToday) {
+                    const dateStr = student.matchDate.toLocaleDateString('ms-MY', {day: 'numeric', month: 'short'});
+                    dateBadge = `<span class="tag" style="background: rgba(245, 158, 11, 0.1); color: #d97706; border: none;">${dateStr}</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="student-card-header" onclick="viewProfile('${student.id}')" style="margin-bottom: 0;">
+                        <img src="${student.photo}" alt="${student.name}" class="student-photo" style="border-color: ${isToday ? '#ffe4e6' : '#fef3c7'};">
+                        <div class="student-info-basic">
+                            <h3>${student.name}</h3>
+                            <div class="student-tags">
+                                <span class="tag" style="background: ${isToday ? '#f43f5e' : '#f59e0b'}; color: white; border: none;"><i data-lucide="gift" style="width:12px; height:12px; margin-right:4px; vertical-align:middle;"></i>Ke-${student.age}</span>
+                                <span class="tag">${student.class}</span>
+                                ${dateBadge}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        // --- Photo & Form Logic ---
+        document.getElementById('f_photo_input').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('f_photo_preview').src = event.target.result;
+                    document.getElementById('f_photo_base64').value = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function resetForm() {
+            document.getElementById('studentForm').reset();
+            document.getElementById('studentId').value = '';
+            document.getElementById('formTitle').innerText = 'Tambah Murid Baru';
+            document.getElementById('f_photo_preview').src = 'https://ui-avatars.com/api/?name=Baru&background=e2e8f0';
+            document.getElementById('f_photo_base64').value = '';
+        }
+
+        document.getElementById('studentForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('studentId').value;
+            const ic = document.getElementById('f_ic').value.trim();
+            const name = document.getElementById('f_nama').value.trim();
+            const gender = document.getElementById('f_jantina').value;
+            const photoBase64 = document.getElementById('f_photo_base64').value;
+
+            if (!id && students.some(s => s.ic === ic)) { showNotification('No. IC ini telah wujud.', true); return; }
+
+            const studentData = {
+                id: id || generateId(), name, ic, class: document.getElementById('f_kelas').value.trim(),
+                gender, delima: document.getElementById('f_delima').value.trim(), password: document.getElementById('f_password').value.trim(), 
+                dob: document.getElementById('f_tarikh').value, pob: document.getElementById('f_tempat').value.trim(), 
+                hobby: document.getElementById('f_hobi').value.trim(), parentPhone: document.getElementById('f_tel').value.trim(), 
+                alamat: document.getElementById('f_alamat').value.trim(),
+                kelab: document.getElementById('f_kelab').value.trim(), uniform: document.getElementById('f_uniform').value.trim(),
+                sukan: document.getElementById('f_sukan').value.trim(), rumahSukan: document.getElementById('f_rumah_sukan').value.trim(),
+                photo: photoBase64 ? photoBase64 : (id ? students.find(s=>s.id===id).photo : getPhotoUrl(name, gender))
+            };
+
+            if (id) {
+                const index = students.findIndex(s => s.id === id);
+                if (index !== -1) students[index] = studentData;
+                showNotification('Data murid berjaya dikemas kini.');
+            } else {
+                students.push(studentData); showNotification('Murid baru berjaya ditambah.');
+            }
+            saveData(); resetForm(); switchTab('list');
+        });
+
+        function editStudent(id) {
+            const student = students.find(s => s.id === id);
+            if (!student) return;
+            document.getElementById('studentId').value = student.id; document.getElementById('f_nama').value = student.name;
+            document.getElementById('f_ic').value = student.ic; 
+            
+            let fKelas = document.getElementById('f_kelas');
+            if(student.class && !(appSettings.classes || []).includes(student.class)) {
+                const opt = document.createElement('option');
+                opt.value = student.class;
+                opt.innerText = student.class + ' (Tidak Berdaftar)';
+                fKelas.appendChild(opt);
+            }
+            fKelas.value = student.class;
+            
+            document.getElementById('f_jantina').value = student.gender; document.getElementById('f_delima').value = student.delima || '';
+            document.getElementById('f_password').value = student.password || ''; document.getElementById('f_tarikh').value = student.dob; 
+            document.getElementById('f_tempat').value = student.pob; document.getElementById('f_hobi').value = student.hobby; 
+            document.getElementById('f_tel').value = student.parentPhone; document.getElementById('f_alamat').value = student.alamat || '';
+            document.getElementById('f_kelab').value = student.kelab || ''; document.getElementById('f_uniform').value = student.uniform || '';
+            document.getElementById('f_sukan').value = student.sukan || ''; document.getElementById('f_rumah_sukan').value = student.rumahSukan || '';
+
+            document.getElementById('f_photo_preview').src = student.photo || getPhotoUrl(student.name, student.gender);
+            document.getElementById('f_photo_base64').value = student.photo.startsWith('data:image') ? student.photo : '';
+            document.getElementById('formTitle').innerText = 'Kemaskini Data Murid'; switchTab('form');
+        }
+
+        // --- Custom Modal (Delete & Prompt) ---
+        function promptDelete(id) { 
+            itemToDelete = id; 
+            deleteActionType = 'student';
+            document.getElementById('deleteModalTitle').innerText = 'Padam Rekod?';
+            document.getElementById('deleteModalText').innerText = 'Adakah anda pasti untuk memadam rekod murid ini?';
+            document.getElementById('deleteModal').classList.add('active'); 
+        }
+
+        function promptDeleteClass(className) {
+            itemToDelete = className;
+            deleteActionType = 'class';
+            document.getElementById('deleteModalTitle').innerText = 'Padam Kelas?';
+            document.getElementById('deleteModalText').innerText = `Adakah anda pasti untuk memadam kelas "${className}" dari senarai pendaftaran?`;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+
+        document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+            if (deleteActionType === 'student' && itemToDelete) {
+                students = students.filter(s => s.id !== itemToDelete); 
+                saveData(); 
+                applyListFilters();
+                closeModal('deleteModal'); 
+                showNotification('Rekod berjaya dipadam.'); 
+                itemToDelete = null;
+            } else if (deleteActionType === 'class' && itemToDelete) {
+                appSettings.classes = appSettings.classes.filter(c => c !== itemToDelete);
+                localStorage.setItem('ikenalmurid_settings_v4', JSON.stringify(appSettings));
+                renderClassSettings();
+                populateClassDropdowns();
+                closeModal('deleteModal');
+                showNotification(`Kelas ${itemToDelete} dipadam.`);
+                itemToDelete = null;
+            }
+        });
+
+        function viewProfile(id) {
+            const s = students.find(x => x.id === id); if(!s) return;
+            document.getElementById('m_photo').src = s.photo; document.getElementById('m_nama').innerText = s.name;
+            document.getElementById('m_kelas').innerText = s.class; document.getElementById('m_ic').innerText = s.ic;
+            document.getElementById('m_jantina').innerText = s.gender; document.getElementById('m_delima').innerText = s.delima || '-';
+            document.getElementById('m_password').innerText = s.password || '-'; document.getElementById('m_tarikh').innerText = s.dob || '-'; 
+            document.getElementById('m_tempat').innerText = s.pob || '-'; document.getElementById('m_hobi').innerText = s.hobby || '-'; 
+            document.getElementById('m_tel').innerText = s.parentPhone || '-'; document.getElementById('m_alamat').innerText = s.alamat || '-';
+            document.getElementById('m_kelab').innerText = s.kelab || '-'; document.getElementById('m_uniform').innerText = s.uniform || '-';
+            document.getElementById('m_sukan').innerText = s.sukan || '-'; document.getElementById('m_rumah_sukan').innerText = s.rumahSukan || '-';
+            document.getElementById('m_qr').src = getQrUrl(s.id);
+            document.getElementById('profileModal').classList.add('active');
+        }
+        function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
+
+        // --- Bulk Print Logic ---
+        function toggleBulkMode() {
+            isBulkMode = !isBulkMode;
+            const container = document.getElementById('studentList');
+            const btnBulk = document.getElementById('btnBulkMode');
+            const actionContainer = document.getElementById('bulkActionContainer');
+            
+            if (isBulkMode) {
+                container.classList.add('bulk-mode');
+                btnBulk.classList.add('active');
+                actionContainer.style.display = 'flex';
+                toggleBulkPrintBtn();
+            } else {
+                container.classList.remove('bulk-mode');
+                btnBulk.classList.remove('active');
+                actionContainer.style.display = 'none';
+                document.querySelectorAll('.bulk-checkbox').forEach(cb => cb.checked = false);
+            }
+        }
+
+        function toggleBulkPrintBtn() {
+            if (!isBulkMode) return;
+            const checkboxes = document.querySelectorAll('.bulk-checkbox:checked');
+            document.getElementById('bulkCountText').innerText = `${checkboxes.length} murid dipilih`;
+        }
+
+        function selectAllBulk() {
+            const checkboxes = document.querySelectorAll('.bulk-checkbox');
+            const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+            checkboxes.forEach(cb => cb.checked = !allChecked);
+            toggleBulkPrintBtn();
+        }
+
+        function printBulk() {
+            const checkboxes = document.querySelectorAll('.bulk-checkbox:checked');
+            if(checkboxes.length === 0) {
+                showNotification('Sila pilih sekurang-kurangnya seorang murid.', true);
+                return;
+            }
+            const idsToPrint = Array.from(checkboxes).map(cb => cb.value);
+            const studentsToPrint = students.filter(s => idsToPrint.includes(s.id));
+            openPrintWindow(studentsToPrint);
+        }
+
+        function printIDCard(id) {
+            const s = students.find(x => x.id === id); if(!s) return;
+            openPrintWindow([s]);
+        }
+        
+        function openPrintWindow(studentsArray) {
+            if(studentsArray.length === 0) return;
+            const printWin = window.open('', '_blank');
+            const appNameText = appSettings.appName || 'iKENALMURID';
+            
+            let cardsHTML = '';
+            studentsArray.forEach(s => {
+                const qrSrc = getQrUrl(s.id);
+                
+                let infoHTML = '';
+                if(appSettings.print_ic) infoHTML += `<div class="info-item"><p>No. IC / MyKid</p><h4>${s.ic}</h4></div>`;
+                if(appSettings.print_gender) infoHTML += `<div class="info-item"><p>Jantina</p><h4>${s.gender}</h4></div>`;
+                if(appSettings.print_delima && s.delima) infoHTML += `<div class="info-item"><p>ID DELIMA</p><h4>${s.delima}</h4></div>`;
+                if(appSettings.print_tel && s.parentPhone) infoHTML += `<div class="info-item"><p>No. Telefon</p><h4>${s.parentPhone}</h4></div>`;
+                
+                let kokuHTML = '';
+                if(appSettings.print_koku && (s.kelab || s.uniform || s.sukan)) {
+                    const list = [s.kelab, s.uniform, s.sukan].filter(Boolean).join(', ');
+                    kokuHTML = `<div class="info-item koku-item"><p>Kokurikulum</p><h4>${list}</h4></div>`;
+                }
+
+                const qrHTML = appSettings.print_qr ? `<div class="qr-section"><img src="${qrSrc}"><span>SCAN UNTUK PROFIL</span></div>` : '';
+
+                cardsHTML += `
+                    <div class="id-card-wrapper">
+                        <div class="card-header"><h2>KAD PROFIL MURID</h2><p>${appNameText}</p></div>
+                        <div class="card-photo-area"><img src="${s.photo}" class="dp"></div>
+                        <div class="card-body">
+                            <h3 class="student-name">${s.name}</h3><div class="student-class">${s.class}</div>
+                            <div class="info-grid">${infoHTML}${kokuHTML}</div>
+                            ${qrHTML}
+                        </div>
+                        <div class="card-footer">Sistem ${appNameText} &copy; 2026 | BY CIKGUGRAFIK</div>
+                    </div>
+                `;
+            });
+
+            const html = `
+                <!DOCTYPE html><html><head><title>Cetak Kad Profil</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"><style>
+                body { font-family: 'Poppins', sans-serif; background: #ffffff; margin: 0; padding: 20px; color: #0f172a;}
+                .print-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 340px)); gap: 20px; justify-content: center; }
+                .id-card-wrapper { width: 340px; background: white; border-radius: 20px; overflow: hidden; position: relative; border: 2px solid #e2e8f0; page-break-inside: avoid; margin-bottom: 20px; }
+                .card-header { background: linear-gradient(135deg, #0f172a, #3b82f6); color: white; text-align: center; padding: 25px 15px 50px 15px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                .card-header h2 { margin: 0; font-size: 18px; letter-spacing: 1px; } .card-header p { margin: 5px 0 0 0; font-size: 12px; opacity: 0.8; }
+                .card-photo-area { text-align: center; margin-top: -45px; position:relative; }
+                .card-photo-area img.dp { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: white; }
+                .card-body { padding: 10px 25px 20px 25px; text-align: center; }
+                .student-name { font-size: 18px; font-weight: 700; color: #0f172a; margin: 10px 0 5px 0; line-height: 1.2; }
+                .student-class { display: inline-block; background: #e0f2fe; color: #0284c7; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 15px; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+                .info-grid { display: grid; grid-template-columns: 1fr; gap: 8px; text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 15px; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+                .info-item p { font-size: 10px; color: #64748b; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 0.5px; }
+                .info-item h4 { font-size: 12px; color: #0f172a; margin: 0; font-weight: 600; word-break: break-all; }
+                .koku-item { border-top: 1px dashed #cbd5e1; padding-top: 5px; margin-top: 5px; }
+                .qr-section { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px; border-top: 1px dashed #cbd5e1;}
+                .qr-section img { width: 70px; height: 70px; }
+                .qr-section span { font-size: 9px; color: #64748b; margin-top: 5px; font-weight: 600;}
+                .card-footer { background: #0f172a; padding: 10px; text-align: center; color: white; font-size: 10px; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+                @media print { body { padding: 0; } .id-card-wrapper { border: 2px solid #000; box-shadow: none; margin-bottom: 20px;} }
+                </style></head><body>
+                <div class="print-container">
+                    ${cardsHTML}
+                </div>
+                <script>setTimeout(() => { window.print(); }, 1000);<\/script></body></html>
+            `;
+            printWin.document.open(); printWin.document.write(html); printWin.document.close();
+        }
+
+        // --- QR Scanner & Attendance Logic ---
+        function startScanner(elementId, callback) {
+            if (html5QrcodeScanner == null) {
+                html5QrcodeScanner = new Html5QrcodeScanner(elementId, { fps: 10, qrbox: {width: 250, height: 250} }, false);
+                html5QrcodeScanner.render(callback, (error) => {});
+            }
+        }
+        function stopScanner() {
+            if (html5QrcodeScanner != null) {
+                try { html5QrcodeScanner.clear().then(() => { html5QrcodeScanner = null; }).catch(err => { html5QrcodeScanner = null; });
+                } catch(e) { html5QrcodeScanner = null; }
+            }
+        }
+
+        function handleScanProfile(decodedText) {
+            const s = students.find(x => x.id === decodedText);
+            if(s) { stopScanner(); switchTab('list'); viewProfile(s.id); showNotification('Murid dijumpai!'); } 
+            else { showNotification('QR Code tidak sah atau murid tiada.', true); }
+        }
+
+        function handleScanAttendance(decodedText) {
+            const s = students.find(x => x.id === decodedText);
+            if(s) {
+                const lastScan = attendanceLogs.find(log => log.id === s.id);
+                const now = new Date();
+                if(lastScan && (now - new Date(lastScan.timestamp)) < 60000) {
+                    showNotification('Kehadiran sudah direkodkan sebentar tadi.', true);
+                    return;
+                }
+                
+                const log = { id: s.id, name: s.name, class: s.class, time: now.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', hour12: true }), timestamp: now.toISOString() };
+                
+                attendanceLogs.unshift(log); 
+                localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(attendanceLogs));
+                renderAttendanceLog();
+                showNotification(`Kehadiran direkod: ${s.name}`);
+                
+                stopScanner();
+                setTimeout(() => { if(document.getElementById('section-kehadiran').classList.contains('active')) startScanner('reader-kehadiran', handleScanAttendance); }, 3000);
+            } else {
+                showNotification('QR Code tidak sah.', true);
+            }
+        }
+
+        function renderAttendanceLog() {
+            const tbody = document.querySelector('#attendanceTable tbody');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            
+            const today = new Date().toDateString();
+            const todaysLogs = attendanceLogs.filter(log => new Date(log.timestamp).toDateString() === today);
+            
+            if(todaysLogs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted);">Tiada rekod kehadiran hari ini.</td></tr>`;
+                return;
+            }
+            
+            todaysLogs.forEach(log => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td style="font-weight:600; color:var(--secondary);">${log.time}</td><td>${log.name}</td><td><span class="tag" style="background:var(--primary);color:var(--bg-color); border:none;">${log.class}</span></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearAttendance() {
+            if(confirm('Adakah anda pasti untuk mengosongkan log kehadiran hari ini?')) {
+                attendanceLogs = []; localStorage.setItem(ATTENDANCE_KEY, JSON.stringify(attendanceLogs)); renderAttendanceLog(); showNotification('Log kehadiran berjaya dikosongkan.');
+            }
+        }
+
+        // --- Auto Promote Logic ---
+        function autoPromoteClass() {
+            const fromClass = document.getElementById('apFrom').value.trim();
+            const toClass = document.getElementById('apTo').value.trim();
+            
+            if(!fromClass || !toClass) { showNotification('Sila masukkan kelas asal dan kelas baru.', true); return; }
+            
+            let count = 0;
+            students.forEach(s => { if(s.class === fromClass) { s.class = toClass; count++; } });
+            
+            if(count > 0) {
+                saveData(); document.getElementById('apFrom').value = ''; document.getElementById('apTo').value = '';
+                showNotification(`${count} murid berjaya dinaikkan ke ${toClass}!`);
+            } else {
+                showNotification(`Tiada murid dijumpai dalam kelas "${fromClass}".`, true);
+            }
+        }
+
+        // --- CSV Logic ---
+        document.getElementById('csvFileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const lines = event.target.result.split('\n'); let added = 0;
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim(); if (!line) continue;
+                    const cols = line.split(',');
+                    if (cols.length >= 3) {
+                        const ic = cols[1]?.trim() || ''; if(ic && students.some(s => s.ic === ic)) continue;
+                        const name = cols[0]?.trim() || 'Tanpa Nama', gender = cols[4]?.trim() || 'Lelaki';
+                        students.push({ 
+                            id: generateId(), name, ic, class: cols[2]?.trim()||'', alamat: cols[3]?.trim()||'', gender, 
+                            dob: cols[5]?.trim()||'', pob: cols[6]?.trim()||'', hobby: cols[7]?.trim()||'', parentPhone: cols[8]?.trim()||'', 
+                            delima: cols[9]?.trim()||'', password: cols[10]?.trim()||'', kelab: cols[11]?.trim()||'', 
+                            uniform: cols[12]?.trim()||'', sukan: cols[13]?.trim()||'', rumahSukan: cols[14]?.trim()||'', 
+                            photo: getPhotoUrl(name, gender) 
+                        }); added++;
+                    }
+                }
+                if (added > 0) { saveData(); applyListFilters(); showNotification(`${added} data berjaya dimasukkan.`); } 
+                else showNotification('Tiada data baru dimasukkan. Semak format CSV.', true);
+                e.target.value = '';
+            }; reader.readAsText(file);
+        });
+
+        function exportCSV() {
+            if(students.length===0){showNotification('Tiada data.', true); return;}
+            let csvContent = "nama,ic,kelas,alamat,jantina,tarikh_lahir,tempat_lahir,hobi,no_tel_parent,id_delima,password,kelab,uniform,sukan,rumah_sukan\n";
+            students.forEach(s => csvContent += [`"${s.name}"`, `"${s.ic}"`, `"${s.class}"`, `"${s.alamat||''}"`, `"${s.gender}"`, `"${s.dob}"`, `"${s.pob}"`, `"${s.hobby}"`, `"${s.parentPhone}"`, `"${s.delima||''}"`, `"${s.password||''}"`, `"${s.kelab||''}"`, `"${s.uniform||''}"`, `"${s.sukan||''}"`, `"${s.rumahSukan||''}"`].join(",") + "\n");
+            const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a"); link.setAttribute("href", URL.createObjectURL(blob)); link.setAttribute("download", "data_murid_ikenal.csv"); document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        }
+
+        function downloadCSVSample() {
+            let csvContent = "nama,ic,kelas,alamat,jantina,tarikh_lahir,tempat_lahir,hobi,no_tel_parent,id_delima,password,kelab,uniform,sukan,rumah_sukan\n";
+            csvContent += '"Ali bin Abu","120101-01-1234","1 Mawar","No 1, Jalan Flora","Lelaki","2012-01-01","Kuala Lumpur","Membaca","012-3456789","m-1234567@moe-dl.edu.my","pass123","Kelab Rukun Negara","Pengakap","Bola Sepak","Merah"\n';
+            csvContent += '"Siti Aminah","120515-10-5678","1 Mawar","Blok B, Apt Indah","Perempuan","2012-05-15","Selangor","Melukis","019-8765432","m-9876543@moe-dl.edu.my","pass123","Kelab STEM","Pandu Puteri","Bola Jaring","Biru"\n';
+            const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a"); link.setAttribute("href", URL.createObjectURL(blob)); link.setAttribute("download", "template_sample_ikenalmurid.csv"); document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        }
+
+        // --- Reset Data Logic ---
+        function openResetModal() {
+            document.getElementById('resetConfirmText').value = '';
+            document.getElementById('resetConfirmPin').value = '';
+            document.getElementById('resetModal').classList.add('active');
+        }
+
+        function executeReset() {
+            const text = document.getElementById('resetConfirmText').value.trim().toUpperCase();
+            const pin = document.getElementById('resetConfirmPin').value.trim();
+
+            if (text !== 'SETUJU') {
+                showNotification('Perkataan pengesahan salah. Sila taip SETUJU.', true);
+                return;
+            }
+            if (pin !== '2912') {
+                showNotification('PIN keselamatan tidak sah!', true);
+                return;
+            }
+
+            students = [];
+            saveData();
+            applyListFilters();
+            closeModal('resetModal');
+            showNotification('Keseluruhan pangkalan data berjaya dikosongkan!');
+        }
+
+        function showNotification(msg, isError=false) {
+            const notif = document.getElementById('notification'); document.getElementById('notifMsg').innerText = msg;
+            notif.classList[isError?'add':'remove']('error'); document.getElementById('notifIcon').setAttribute('data-lucide', isError?'alert-circle':'check-circle'); lucide.createIcons();
+            notif.classList.add('show'); setTimeout(() => notif.classList.remove('show'), 3000);
+        }
+
+        // --- Admin Settings & PIN Logic ---
+        let currentPin = '';
+        const defaultSettings = { 
+            appName: 'iKENALMURID',
+            classes: ['1 Mawar', '2 Teratai', '3 Melur', '4 Orkid', '5 Kenanga', '6 Tanjung'],
+            feature_kehadiran: false,
+            view_delima: true, view_password: false, view_koku: true, view_tel: true, view_tempat: true, view_hobi: true, view_alamat: true, 
+            print_ic: true, print_gender: true, print_delima: true, print_tel: true, print_koku: true, print_qr: true,
+            teacherName: 'Admin', pinEnabled: true, adminPin: '1234' 
+        };
+        let appSettings = JSON.parse(localStorage.getItem('ikenalmurid_settings_v4')) || defaultSettings;
+        if(!appSettings.classes) appSettings.classes = defaultSettings.classes;
+
+        function openPinModal() {
+            if (!appSettings.pinEnabled) { switchTab('settings'); return; }
+            resetPin(); document.getElementById('pinModal').classList.add('active');
+        }
+        function addPin(num) { if (currentPin.length < 4) { currentPin += num; updatePinDisplay(); } if (currentPin.length === 4) setTimeout(checkPin, 200); }
+        function removePin() { if (currentPin.length > 0) { currentPin = currentPin.slice(0, -1); updatePinDisplay(); } }
+        function resetPin() { currentPin = ''; updatePinDisplay(); }
+        function updatePinDisplay() { document.querySelectorAll('.pin-dot').forEach((dot, idx) => { dot.classList[idx < currentPin.length ? 'add' : 'remove']('filled'); }); }
+        function checkPin() {
+            if (currentPin === (appSettings.adminPin || '1234')) { closeModal('pinModal'); switchTab('settings'); showNotification('Berjaya log masuk Admin Panel.'); } 
+            else { showNotification('PIN Salah! Cuba lagi.', true); resetPin(); }
+        }
+        
+        function togglePinSetting() { document.getElementById('pinInputContainer').style.display = document.getElementById('set_pinEnabled').checked ? 'flex' : 'none'; }
+        
+        function saveSettings(showNotif = false) {
+            appSettings.appName = document.getElementById('set_appName').value.trim() || 'iKENALMURID';
+            // appSettings.teacherName is now handled by Google Auth automatically
+            appSettings.pinEnabled = document.getElementById('set_pinEnabled').checked;
+            appSettings.feature_kehadiran = document.getElementById('set_feature_kehadiran').checked;
+            const newPin = document.getElementById('set_adminPin').value.trim();
+            if (appSettings.pinEnabled && newPin.length !== 4) { if(showNotif) showNotification('PIN mestilah 4 digit nombor.', true); return; }
+            if (appSettings.pinEnabled) appSettings.adminPin = newPin;
+
+            ['view_delima', 'view_password', 'view_koku', 'view_tel', 'view_tempat', 'view_hobi', 'view_alamat',
+             'print_ic', 'print_gender', 'print_delima', 'print_tel', 'print_koku', 'print_qr'].forEach(key => {
+                const cb = document.getElementById('set_' + key);
+                if(cb) appSettings[key] = cb.checked;
+            });
+
+            localStorage.setItem('ikenalmurid_settings_v4', JSON.stringify(appSettings)); 
+            applySettingsDisplay();
+            updateDashboard();
+            if(showNotif) showNotification('Tetapan berjaya disimpan!');
+        }
+
+        function applySettingsDisplay() {
+            document.getElementById('set_appName').value = appSettings.appName || 'iKENALMURID';
+            // Name input is disabled, handled by Auth
+            document.getElementById('set_pinEnabled').checked = appSettings.pinEnabled !== false; 
+            document.getElementById('set_adminPin').value = appSettings.adminPin || '1234'; 
+            document.getElementById('set_feature_kehadiran').checked = appSettings.feature_kehadiran === true;
+            togglePinSetting();
+
+            document.querySelectorAll('.app-name-display').forEach(el => el.innerText = appSettings.appName || 'iKENALMURID');
+            document.title = `${appSettings.appName || 'iKENALMURID'} - Sistem Profil Murid`;
+
+            renderClassSettings();
+            populateClassDropdowns();
+
+            document.querySelectorAll('.nav-item[data-target="kehadiran"]').forEach(el => {
+                el.style.display = appSettings.feature_kehadiran ? '' : 'none';
+            });
+            
+            if(!appSettings.feature_kehadiran && document.getElementById('section-kehadiran').classList.contains('active')) {
+                switchTab('dashboard');
+            }
+
+            ['view_delima', 'view_password', 'view_koku', 'view_tel', 'view_tempat', 'view_hobi', 'view_alamat',
+             'print_ic', 'print_gender', 'print_delima', 'print_tel', 'print_koku', 'print_qr'].forEach(key => {
+                const cb = document.getElementById('set_' + key);
+                if(cb) cb.checked = appSettings[key] !== false;
+                
+                if(key.startsWith('view_')) {
+                    document.querySelectorAll(`[data-field="${key}"]`).forEach(el => el.style.display = appSettings[key] ? '' : 'none');
+                }
+            });
+            
+            if(document.getElementById('section-list').classList.contains('active')) applyListFilters();
+        }
+
+        // --- Class Registration Management ---
+        function renderClassSettings() {
+            const container = document.getElementById('settingsClassList');
+            container.innerHTML = '';
+            (appSettings.classes || []).forEach(c => {
+                const badge = document.createElement('span');
+                badge.style.cssText = "background: var(--bg-color); border: 1px solid var(--border-light); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; color: var(--text-main);";
+                badge.innerHTML = `${c} <i data-lucide="x" style="width: 14px; height: 14px; cursor: pointer; color: var(--danger);" onclick="promptDeleteClass('${c}')"></i>`;
+                container.appendChild(badge);
+            });
+            lucide.createIcons();
+        }
+
+        function addClassSetting() {
+            const input = document.getElementById('set_newClass');
+            const val = input.value.trim();
+            if(!val) return;
+            if(!appSettings.classes) appSettings.classes = [];
+            if(!appSettings.classes.includes(val)) {
+                appSettings.classes.push(val);
+                appSettings.classes.sort();
+                localStorage.setItem('ikenalmurid_settings_v4', JSON.stringify(appSettings));
+                renderClassSettings();
+                populateClassDropdowns();
+                input.value = '';
+                showNotification(`Kelas ${val} berjaya didaftarkan.`);
+            } else {
+                showNotification('Kelas ini sudah wujud!', true);
+            }
+        }
+        
+        function populateClassDropdowns() {
+            const fKelas = document.getElementById('f_kelas');
+            if(fKelas) {
+                const currentVal = fKelas.value;
+                fKelas.innerHTML = '<option value="">Pilih Kelas</option>' + (appSettings.classes || []).map(c => `<option value="${c}">${c}</option>`).join('');
+                if(appSettings.classes && appSettings.classes.includes(currentVal)) fKelas.value = currentVal;
+            }
+            updateClassFilterOptions();
+        }
+
+        // --- Scroll to Top Logic ---
+        window.onscroll = function() {
+            const btn = document.getElementById("scrollTopBtn");
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                btn.classList.add("visible");
+            } else {
+                btn.classList.remove("visible");
+            }
+        };
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // TUNGGU SAMPAI FIREBASE CONFIRM DULU BARU LOAD DATA (DIUBAH DARI ASAL)
+        window.onload = () => { applySettingsDisplay(); };
+    </script>
+
+<script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+        // Konfigurasi Firebase Anda
+        const firebaseConfig = {
+            apiKey: "AIzaSyDsDqQTADe0aSfAnyFQQxx9RsnMqxJmWLQ",
+            authDomain: "ikenalmurid.firebaseapp.com",
+            projectId: "ikenalmurid",
+            storageBucket: "ikenalmurid.firebasestorage.app",
+            messagingSenderId: "432883639931",
+            appId: "1:432883639931:web:d023a63f444c1ad515a4de"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+        const provider = new GoogleAuthProvider();
+
+        // 1. FUNGSI LOGIN
+        window.loginGoogle = function() {
+            signInWithPopup(auth, provider).then((result) => {
+                console.log("Berjaya Log Masuk:", result.user.displayName);
+            }).catch((error) => {
+                alert("Gagal Log Masuk: " + error.message);
+            });
+        };
+
+        // 2. FUNGSI LOGOUT
+        window.logoutGoogle = function() {
+            if(confirm("Adakah anda pasti untuk log keluar?")) {
+                signOut(auth).then(() => {
+                    console.log("Berjaya Log Keluar");
+                }).catch((error) => {
+                    alert("Ralat Semasa Log Keluar: " + error.message);
+                });
+            }
+        };
+
+        // 3. PANTAU STATUS LOGIN (REALTIME)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // JIKA DAH LOGIN: Sorok Landing Page, Tunjuk Sistem
+                document.getElementById('landingPage').style.display = 'none';
+                document.getElementById('sidebar').style.display = 'flex';
+                document.querySelector('.main-content').style.display = 'flex';
+                
+                // Papar Nav Bawah (Mobile)
+                if(window.innerWidth <= 768) {
+                    document.querySelector('.bottom-nav').style.display = 'flex';
+                    document.getElementById('sidebar').style.display = 'none';
+                }
+
+                // Tukar nama cikgu kat dashboard
+                document.getElementById('dashTeacherName').innerText = user.displayName;
+                document.getElementById('set_teacherName').value = user.displayName; // Tukar di Tetapan juga
+
+                // Panggil fungsi loadData (dari script asal)
+                if (typeof window.loadData === 'function') {
+                    window.loadData();
+                    window.updateDashboard();
+                }
+
+            } else {
+                // JIKA BELUM LOGIN: Tunjuk Landing Page, Sorok Sistem
+                document.getElementById('landingPage').style.display = 'flex';
+                document.getElementById('sidebar').style.display = 'none';
+                document.querySelector('.main-content').style.display = 'none';
+                document.querySelector('.bottom-nav').style.display = 'none';
+            }
+        });
+
+        // Simpan dalam window (Untuk diakses kelak masa buat sistem simpan database)
+        window.db = db;
+        window.storage = storage;
+        window.auth = auth;
+    </script>
+</body>
+</html>
