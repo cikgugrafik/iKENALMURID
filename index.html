@@ -1154,6 +1154,48 @@
             pinEnabled: true
         };
 
+        // ── IMAGE COMPRESSION ────────────────────────────────────────────────────
+        // Compress gambar kepada max 800x800px, kualiti 75%, format WebP
+        // Jimat ~80-90% saiz berbanding gambar asal (contoh: 3MB → ~150KB)
+        window.compressImage = function(file, maxWidth = 800, maxHeight = 800, quality = 0.75) {
+            return new Promise((resolve) => {
+                // Kalau bukan gambar atau saiz dah kecil (<100KB), skip compress
+                if (!file.type.startsWith('image/') || file.size < 100 * 1024) {
+                    resolve(file); return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        // Kira saiz output dengan kekalkan aspect ratio
+                        let w = img.width, h = img.height;
+                        if (w > maxWidth || h > maxHeight) {
+                            const ratio = Math.min(maxWidth / w, maxHeight / h);
+                            w = Math.round(w * ratio);
+                            h = Math.round(h * ratio);
+                        }
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        // Background putih (untuk gambar PNG dengan transparency)
+                        ctx.fillStyle = '#ffffff';
+                        ctx.fillRect(0, 0, w, h);
+                        ctx.drawImage(img, 0, 0, w, h);
+                        canvas.toBlob((blob) => {
+                            // Kalau compressed lebih besar dari asal (rare), guna asal
+                            if (blob && blob.size < file.size) {
+                                resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.webp'), { type: 'image/webp' }));
+                            } else {
+                                resolve(file); // guna asal
+                            }
+                        }, 'image/webp', quality);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+
         // --- UTILITIES ---
         window.showLoading = function(show, text = "Sila tunggu...") {
             const n = document.getElementById('loadingOverlay');
@@ -1314,8 +1356,15 @@
 
             if (photoFile) {
                 try {
-                    const sRef = ref(storage, `murid/${user.uid}/${Date.now()}_${photoFile.name}`);
-                    await uploadBytes(sRef, photoFile);
+                    // Compress dulu sebelum upload — jimat storage quota
+                    window.showLoading(true, "Memampatkan gambar...");
+                    const compressed = await window.compressImage(photoFile);
+                    const kb1 = (photoFile.size/1024).toFixed(0);
+                    const kb2 = (compressed.size/1024).toFixed(0);
+                    console.log(`📸 Compress: ${kb1}KB → ${kb2}KB (${Math.round((1-compressed.size/photoFile.size)*100)}% jimat)`);
+                    window.showLoading(true, "Muat naik gambar...");
+                    const sRef = ref(storage, `murid/${user.uid}/${Date.now()}.webp`);
+                    await uploadBytes(sRef, compressed);
                     photoUrl = await getDownloadURL(sRef);
                 } catch (e) {
                     window.showNotification("Gagal upload gambar, teruskan simpan teks...", true);
@@ -1683,14 +1732,35 @@
             document.getElementById('saveBtn').innerText = "Simpan Rekod";
         };
 
-        document.getElementById('f_photo_input').addEventListener('change', function(e) {
+        document.getElementById('f_photo_input').addEventListener('change', async function(e) {
             const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('f_photo_preview').src = event.target.result;
-                };
-                reader.readAsDataURL(file);
+            if (!file) return;
+
+            // Preview gambar
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                document.getElementById('f_photo_preview').src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // Tunjuk info saiz + anggaran compression
+            const sizeKB = (file.size / 1024).toFixed(0);
+            let hint = document.getElementById('photo_size_hint');
+            if (!hint) {
+                hint = document.createElement('p');
+                hint.id = 'photo_size_hint';
+                hint.style.cssText = 'font-size:0.68rem; margin-top:0.3rem; color:var(--text-muted);';
+                document.querySelector('.photo-upload-wrapper').appendChild(hint);
+            }
+
+            if (file.size < 100 * 1024) {
+                hint.innerHTML = `<span style="color:var(--success);">✓ ${sizeKB}KB — saiz sudah kecil, tiada compression diperlukan.</span>`;
+            } else {
+                // Anggaran preview compression (buat compress untuk preview)
+                const compressed = await window.compressImage(file);
+                const compKB = (compressed.size / 1024).toFixed(0);
+                const saved = Math.round((1 - compressed.size / file.size) * 100);
+                hint.innerHTML = `📸 Asal: <b>${sizeKB}KB</b> → Selepas compress: <b style="color:var(--success);">${compKB}KB</b> <span style="color:var(--success);">(jimat ${saved}%)</span>`;
             }
         });
 
