@@ -69,7 +69,11 @@
 
         .landing-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; z-index: 9999; overflow-y: auto; padding: 2rem 1rem; }
         .landing-box { padding: 2.5rem 2rem; border-radius: var(--border-radius-lg); max-width: 500px; width: 100%; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: auto; }
-        .icon-circle { background: linear-gradient(135deg, var(--secondary), #60a5fa); color: white; width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem auto; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); }
+        .icon-circle { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%); color: white; width: 78px; height: 78px; border-radius: 22px; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.5rem auto; box-shadow: 0 12px 30px rgba(59, 130, 246, 0.45); position: relative; overflow: hidden; }
+        .icon-circle::after { content: ''; position: absolute; top: 0; left: -50%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); transform: skewX(-20deg);}
+        .icon-circle i { position: relative; z-index: 2; }
+        .brand-title-landing { font-size: 2rem; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 0; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        [data-theme="dark"] .brand-title-landing { background: linear-gradient(135deg, #f8fafc 0%, #60a5fa 100%); -webkit-background-clip: text; background-clip: text;}
         .feature-list { text-align: left; width: 100%; margin: 1rem 0; display: flex; flex-direction: column; gap: 0.8rem; background: var(--bg-color); padding: 1rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); }
         .feature-item { display: flex; align-items: flex-start; gap: 0.8rem; }
         .feature-item i { color: var(--success); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
@@ -87,8 +91,14 @@
         [data-theme="dark"] .google-btn:hover { background: #334155; }
 
         .sidebar { width: 260px; height: 100vh; position: fixed; left: 0; top: 0; padding: 2rem 1.5rem; display: none; flex-direction: column; gap: 1.5rem; z-index: 50; border-right: 1px solid var(--border-light); background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); transition: var(--transition); overflow-y: auto;}
-        .logo { font-size: 1.25rem; font-weight: 700; display: flex; align-items: center; gap: 0.5rem; color: var(--primary); }
-        .logo i { color: var(--secondary); width: 20px; height: 20px; }
+        .logo { font-size: 1.3rem; font-weight: 700; display: flex; align-items: center; gap: 0.7rem; color: var(--primary); padding: 0.3rem 0.5rem 1rem 0.5rem; border-bottom: 1px dashed var(--border-light); margin-bottom: 0.5rem; }
+        .logo-icon { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(59, 130, 246, 0.35); position: relative; overflow: hidden; flex-shrink: 0;}
+        .logo-icon::after { content: ''; position: absolute; top: 0; left: -50%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transform: skewX(-20deg);}
+        .logo-icon i { color: white; width: 22px; height: 22px; position: relative; z-index: 2;}
+        .logo-text { display: flex; flex-direction: column; line-height: 1; }
+        .logo-text .logo-name { font-size: 1.15rem; font-weight: 700; letter-spacing: 0.5px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;}
+        .logo-text .logo-tagline { font-size: 0.6rem; font-weight: 500; color: var(--text-muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 3px;}
+        [data-theme="dark"] .logo-text .logo-name { background: linear-gradient(135deg, #f8fafc 0%, #60a5fa 100%); -webkit-background-clip: text; background-clip: text;}
         .nav-menu { display: flex; flex-direction: column; gap: 0.4rem; flex-grow: 1; }
         .nav-item { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1.2rem; border-radius: 50px; color: var(--text-muted); text-decoration: none; font-weight: 500; cursor: pointer; transition: var(--transition); font-size: 0.95rem; }
         .nav-item:hover { background: var(--border-light); color: var(--primary); }
@@ -189,7 +199,9 @@
         .attendance-log th { background: var(--bg-color); font-weight: 600; color: var(--text-main); font-size: 0.85rem;}
         .attendance-log tr:last-child td { border-bottom: none; }
 
-        .pagination-container { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-light);}
+        .pagination-container { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 1.5rem;}
+        .pagination-container:empty { display: none; }
+        .pagination-container:not(:empty) { padding-top: 1.5rem; border-top: 1px dashed var(--border-light); }
         .page-btn { background: var(--box-bg); border: 1px solid var(--border-light); color: var(--text-main); width: 36px; height: 36px; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: var(--transition); font-weight: 500; font-size: 0.9rem; padding: 0;}
         .page-btn:hover:not(:disabled) { background: var(--border-light); color: var(--primary); }
         .page-btn.active { background: var(--secondary); color: white; border-color: var(--secondary); }
@@ -239,6 +251,47 @@
         .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content { background: var(--box-bg); padding: 2rem; border-radius: var(--border-radius-lg); width: 100%; max-width: 600px; position: relative; transform: scale(0.95); transition: transform 0.3s ease; max-height: 90vh; overflow-y: auto; color: var(--text-main);}
         .modal-overlay.active .modal-content { transform: scale(1); }
+
+        /* Profile Card Modal - Professional ID Style */
+        .profile-card-modal { background: var(--box-bg); }
+        .profile-header { position: relative; height: 110px; background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%); overflow: hidden; }
+        .profile-header-pattern { position: absolute; inset: 0; opacity: 0.15; background-image: radial-gradient(circle at 20% 50%, white 1px, transparent 1.5px), radial-gradient(circle at 80% 30%, white 1px, transparent 1.5px), radial-gradient(circle at 60% 80%, white 1.5px, transparent 2px); background-size: 30px 30px, 40px 40px, 50px 50px; }
+        .profile-header::after { content: ''; position: absolute; right: -40px; top: -30px; width: 180px; height: 180px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+        .profile-brand { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 0.6rem; padding-top: 1.5rem; color: white; font-weight: 700; letter-spacing: 1.5px; font-size: 0.85rem; }
+        .profile-brand i { width: 18px; height: 18px; }
+
+        .profile-photo-area { position: relative; text-align: center; margin-top: -55px; padding: 0 1rem; z-index: 3; }
+        .profile-photo { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 5px solid var(--box-bg); box-shadow: 0 10px 30px rgba(0,0,0,0.15); background: var(--bg-color); }
+
+        .profile-identity { text-align: center; padding: 0.8rem 1.5rem 0; }
+        .profile-name { font-size: 1.35rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.5rem; letter-spacing: -0.3px; }
+        .profile-class-badge { display: inline-block; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 0.3rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+
+        .profile-body { padding: 1.5rem 1.5rem 2rem 1.5rem; }
+        .profile-section { margin-bottom: 1.2rem; }
+        .profile-section-title { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); letter-spacing: 1.2px; text-transform: uppercase; padding: 0 0.3rem 0.6rem 0.3rem; margin-bottom: 0.6rem; border-bottom: 1px dashed var(--border-light); display: flex; align-items: center; gap: 0.5rem;}
+        .profile-section-title i { width: 14px; height: 14px; color: var(--secondary); }
+
+        .profile-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+        .profile-info-item { display: flex; align-items: flex-start; gap: 0.7rem; padding: 0.7rem 0.8rem; background: var(--bg-color); border-radius: var(--border-radius-md); border: 1px solid var(--border-light); transition: var(--transition); min-width: 0;}
+        .profile-info-item:hover { border-color: var(--secondary); transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+        .profile-info-item.full-row { grid-column: 1 / -1; }
+        .profile-info-item .info-icon { width: 16px; height: 16px; color: var(--secondary); flex-shrink: 0; margin-top: 2px;}
+        .profile-info-item .info-text { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; flex: 1;}
+        .profile-info-item .info-lbl { font-size: 0.65rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .profile-info-item .info-val { font-size: 0.85rem; color: var(--text-main); font-weight: 600; word-break: break-word; line-height: 1.3;}
+
+        .profile-qr-section { margin-top: 1.2rem; padding: 1.2rem; background: var(--bg-color); border-radius: var(--border-radius-md); text-align: center; border: 1px dashed var(--border-light);}
+        .profile-qr-section img { width: 130px; height: 130px; border-radius: 12px; padding: 8px; background: white; box-shadow: 0 4px 15px rgba(0,0,0,0.06);}
+        .profile-qr-section p { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.6rem; letter-spacing: 0.8px; font-weight: 500; }
+
+        .profile-actions { display: flex; gap: 0.6rem; margin-top: 1.2rem; }
+
+        @media (max-width: 480px) {
+            .profile-info-grid { grid-template-columns: 1fr; }
+            .profile-name { font-size: 1.15rem; }
+            .profile-body { padding: 1.2rem 1rem 1.5rem 1rem; }
+        }
         .close-modal { position: absolute; top: 15px; right: 15px; background: var(--bg-color); border: 1px solid var(--border-light); cursor: pointer; color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: var(--transition); }
         .close-modal:hover { background: var(--danger); color: white; border-color: var(--danger); transform: scale(1.1); }
 
@@ -325,8 +378,8 @@
     <div id="landingPage" class="landing-container">
         <div class="glass landing-box">
             <div class="icon-circle"><i data-lucide="graduation-cap" style="width: 40px; height: 40px;"></i></div>
-            <h1 style="font-size: 1.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0;">MURIDKU</h1>
-            <h2 style="font-size: 1rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem;">Sistem Pengurusan Profil Murid Bersepadu</h2>
+            <h1 class="brand-title-landing">MURIDKU</h1>
+            <h2 style="font-size: 0.95rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.3px;">Sistem Pengurusan Profil Murid Bersepadu</h2>
             <div class="feature-list">
                 <div class="feature-item"><i data-lucide="shield-check"></i><div><strong>Privasi Terjamin</strong><p>Pangkalan data dilindungi sistem awan Google. Hanya anda yang boleh akses data anda.</p></div></div>
                 <div class="feature-item"><i data-lucide="zap"></i><div><strong>Pantas & Efisien</strong><p>Urus rekod, kehadiran, dan cetak kad ID murid dalam beberapa saat sahaja.</p></div></div>
@@ -344,7 +397,13 @@
     </div>
 
     <aside class="sidebar glass" id="sidebar">
-        <div class="logo"><i data-lucide="graduation-cap"></i> <span>MURIDKU</span></div>
+        <div class="logo">
+            <div class="logo-icon"><i data-lucide="graduation-cap"></i></div>
+            <div class="logo-text">
+                <span class="logo-name">MURIDKU</span>
+                <span class="logo-tagline">Sistem Profil Murid</span>
+            </div>
+        </div>
         <nav class="nav-menu">
             <a class="nav-item active" data-target="dashboard"><i data-lucide="layout-dashboard"></i> Dashboard</a>
             <a class="nav-item" data-target="list"><i data-lucide="users"></i> Senarai Murid</a>
@@ -645,27 +704,113 @@
 
     <!-- MODALS -->
     <div class="modal-overlay" id="profileModal">
-        <div class="modal-content glass">
-            <button class="close-modal" onclick="window.closeModal('profileModal')">✕</button>
-            <div style="text-align:center;">
-                <img id="m_photo" src="" style="width:100px; height:100px; border-radius:50%; object-fit:cover; border:4px solid var(--secondary);">
-                <h2 id="m_nama" style="margin-top:1rem;"></h2>
-                <span id="m_kelas" class="tag" style="background:var(--primary); color:white; padding:0.3rem 1rem; border-radius:50px;"></span>
-                <div id="m_qr_area" style="margin-top:1.5rem;"><img id="m_qr" src=""></div>
-                <div style="text-align:left; margin-top:2rem; display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
-                    <div><small>No. IC</small><p id="m_ic" style="font-weight:600;"></p></div>
-                    <div><small>Jantina</small><p id="m_jantina" style="font-weight:600;"></p></div>
-                    <div><small>Tarikh Lahir</small><p id="m_tarikh" style="font-weight:600;"></p></div>
-                    <div data-field="view_tel"><small>No. Tel Penjaga</small><p id="m_tel" style="font-weight:600;"></p></div>
-                    <div data-field="view_tempat"><small>Tempat Lahir</small><p id="m_tempat" style="font-weight:600;"></p></div>
-                    <div data-field="view_hobi"><small>Hobi</small><p id="m_hobi" style="font-weight:600;"></p></div>
-                    <div data-field="view_alamat" style="grid-column: 1 / -1;"><small>Alamat Rumah</small><p id="m_alamat" style="font-weight:600;"></p></div>
-                    <div data-field="view_delima" style="grid-column: 1 / -1; border-top: 1px dashed #ccc; padding-top: 10px;"><small>ID DELIMA</small><p id="m_delima" style="font-weight:600; color:var(--secondary);"></p></div>
-                    <div data-field="view_password"><small>Kata Laluan Sistem</small><p id="m_password" style="font-weight:600;"></p></div>
-                    <div data-field="view_koku" style="grid-column: 1 / -1; border-top: 1px dashed #ccc; padding-top: 10px;"><small>Kelab / Persatuan</small><p id="m_kelab" style="font-weight:600;"></p></div>
-                    <div data-field="view_koku"><small>Badan Beruniform</small><p id="m_uniform" style="font-weight:600;"></p></div>
-                    <div data-field="view_koku"><small>Sukan / Permainan</small><p id="m_sukan" style="font-weight:600;"></p></div>
-                    <div data-field="view_koku"><small>Rumah Sukan</small><p id="m_rumah_sukan" style="font-weight:600;"></p></div>
+        <div class="modal-content profile-card-modal" style="padding: 0; max-width: 480px; overflow: hidden;">
+            <button class="close-modal" onclick="window.closeModal('profileModal')" style="z-index: 5; background: rgba(255,255,255,0.9); color: var(--text-main);">✕</button>
+
+            <!-- Header bergradient -->
+            <div class="profile-header">
+                <div class="profile-header-pattern"></div>
+                <div class="profile-brand">
+                    <i data-lucide="graduation-cap"></i>
+                    <span>KAD PROFIL MURID</span>
+                </div>
+            </div>
+
+            <!-- Photo area dengan overlay -->
+            <div class="profile-photo-area">
+                <img id="m_photo" src="" class="profile-photo" alt="Foto Murid">
+            </div>
+
+            <!-- Identity area -->
+            <div class="profile-identity">
+                <h2 id="m_nama" class="profile-name"></h2>
+                <span id="m_kelas" class="profile-class-badge"></span>
+            </div>
+
+            <div class="profile-body">
+                <!-- Maklumat Peribadi -->
+                <div class="profile-section">
+                    <div class="profile-section-title"><i data-lucide="user-round"></i> Maklumat Peribadi</div>
+                    <div class="profile-info-grid">
+                        <div class="profile-info-item">
+                            <i data-lucide="badge" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">No. IC / MyKid</span><span class="info-val" id="m_ic"></span></div>
+                        </div>
+                        <div class="profile-info-item">
+                            <i data-lucide="users" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Jantina</span><span class="info-val" id="m_jantina"></span></div>
+                        </div>
+                        <div class="profile-info-item">
+                            <i data-lucide="cake" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Tarikh Lahir</span><span class="info-val" id="m_tarikh"></span></div>
+                        </div>
+                        <div class="profile-info-item" data-field="view_tempat">
+                            <i data-lucide="map-pin" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Tempat Lahir</span><span class="info-val" id="m_tempat"></span></div>
+                        </div>
+                        <div class="profile-info-item" data-field="view_tel">
+                            <i data-lucide="phone" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">No. Tel Penjaga</span><span class="info-val" id="m_tel"></span></div>
+                        </div>
+                        <div class="profile-info-item" data-field="view_hobi">
+                            <i data-lucide="palette" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Hobi</span><span class="info-val" id="m_hobi"></span></div>
+                        </div>
+                        <div class="profile-info-item full-row" data-field="view_alamat">
+                            <i data-lucide="home" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Alamat Rumah</span><span class="info-val" id="m_alamat"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Maklumat DELIMA -->
+                <div class="profile-section" data-field="view_delima">
+                    <div class="profile-section-title"><i data-lucide="monitor-smartphone"></i> Akaun DELIMA</div>
+                    <div class="profile-info-grid">
+                        <div class="profile-info-item full-row" data-field="view_delima">
+                            <i data-lucide="at-sign" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">ID DELIMA</span><span class="info-val" id="m_delima" style="color:var(--secondary);"></span></div>
+                        </div>
+                        <div class="profile-info-item full-row" data-field="view_password">
+                            <i data-lucide="key-round" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Kata Laluan Sistem</span><span class="info-val" id="m_password"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kokurikulum -->
+                <div class="profile-section" data-field="view_koku">
+                    <div class="profile-section-title"><i data-lucide="medal"></i> Kokurikulum</div>
+                    <div class="profile-info-grid">
+                        <div class="profile-info-item">
+                            <i data-lucide="users-round" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Kelab/Persatuan</span><span class="info-val" id="m_kelab"></span></div>
+                        </div>
+                        <div class="profile-info-item">
+                            <i data-lucide="shield" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Badan Beruniform</span><span class="info-val" id="m_uniform"></span></div>
+                        </div>
+                        <div class="profile-info-item">
+                            <i data-lucide="trophy" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Sukan/Permainan</span><span class="info-val" id="m_sukan"></span></div>
+                        </div>
+                        <div class="profile-info-item">
+                            <i data-lucide="flag" class="info-icon"></i>
+                            <div class="info-text"><span class="info-lbl">Rumah Sukan</span><span class="info-val" id="m_rumah_sukan"></span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- QR Code area -->
+                <div class="profile-qr-section">
+                    <img id="m_qr" src="" alt="QR Code">
+                    <p>Imbas QR untuk pengesahan</p>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="profile-actions">
+                    <button class="btn-primary" id="profilePrintBtn" style="flex:1; justify-content:center;"><i data-lucide="printer"></i> Cetak Kad</button>
+                    <button class="btn-secondary" id="profileEditBtn" style="flex:1; justify-content:center;"><i data-lucide="edit-2"></i> Kemaskini</button>
                 </div>
             </div>
         </div>
@@ -1182,7 +1327,23 @@
             const container = document.getElementById('paginationControls');
             container.innerHTML = '';
             const totalPages = Math.ceil(totalRecords / window.recordsPerPage);
-            if (totalPages <= 1) return;
+
+            // Indikator jumlah keseluruhan (selalu tunjuk kalau ada rekod)
+            if (totalRecords > 0) {
+                const info = document.createElement('div');
+                info.style.cssText = 'text-align:center; color:var(--text-muted); font-size:0.8rem; font-weight:500; margin-bottom: 0.8rem;';
+                if (totalPages <= 1) {
+                    info.innerHTML = `<i data-lucide="users" style="width:14px; height:14px; vertical-align:-2px; color:var(--secondary);"></i> Memaparkan <b style="color:var(--text-main);">${totalRecords}</b> rekod`;
+                } else {
+                    const start = (window.currentPage - 1) * window.recordsPerPage + 1;
+                    const end = Math.min(window.currentPage * window.recordsPerPage, totalRecords);
+                    info.innerHTML = `<i data-lucide="users" style="width:14px; height:14px; vertical-align:-2px; color:var(--secondary);"></i> Memaparkan <b style="color:var(--text-main);">${start}–${end}</b> daripada <b style="color:var(--text-main);">${totalRecords}</b> rekod`;
+                }
+                container.appendChild(info);
+            }
+
+            if (totalPages <= 1) { lucide.createIcons(); return; }
+
             const wrap = document.createElement('div');
             wrap.style.cssText = 'display:flex; gap:0.4rem; flex-wrap:wrap; justify-content:center;';
             const btnPrev = document.createElement('button');
@@ -1261,9 +1422,10 @@
             const s = window.students.find(x => x.id === id);
             if (!s) return;
             document.getElementById('m_photo').src = s.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=e2e8f0`;
+            document.getElementById('m_photo').onerror = function() { this.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name || 'X')}&background=e2e8f0`; };
             document.getElementById('m_nama').innerText = s.name;
-            document.getElementById('m_ic').innerText = s.ic;
-            document.getElementById('m_kelas').innerText = s.class;
+            document.getElementById('m_ic').innerText = s.ic || '-';
+            document.getElementById('m_kelas').innerText = s.class || '-';
             document.getElementById('m_jantina').innerText = s.gender || '-';
             document.getElementById('m_tarikh').innerText = s.dob || '-';
             document.getElementById('m_tel').innerText = s.tel || '-';
@@ -1276,8 +1438,17 @@
             document.getElementById('m_uniform').innerText = s.uniform || '-';
             document.getElementById('m_sukan').innerText = s.sukan || '-';
             document.getElementById('m_rumah_sukan').innerText = s.rumah_sukan || '-';
-            document.getElementById('m_qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(s.ic)}`;
+            document.getElementById('m_qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(s.ic)}`;
+
+            // Wire action buttons
+            const printBtn = document.getElementById('profilePrintBtn');
+            const editBtn = document.getElementById('profileEditBtn');
+            if (printBtn) printBtn.onclick = () => { window.closeModal('profileModal'); window.printIDCard(id); };
+            if (editBtn) editBtn.onclick = () => { window.closeModal('profileModal'); window.editStudent(id); };
+
             document.getElementById('profileModal').classList.add('active');
+            // Re-create lucide icons inside modal (since they were just inserted via static HTML earlier, this is safe)
+            lucide.createIcons();
         };
 
         window.editStudent = (id) => {
