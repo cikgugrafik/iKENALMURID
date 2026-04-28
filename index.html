@@ -4,7 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MURIDKU - Sistem Profil Murid</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Favicon SVG (inline gradient seperti logo) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='50%25' stop-color='%231e3a8a'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M50 28 L78 42 L50 56 L22 42 Z' fill='white'/%3E%3Cpath d='M30 47 L30 60 Q30 68 50 68 Q70 68 70 60 L70 47 L50 56 Z' fill='white'/%3E%3Cpath d='M78 42 L78 58' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='78' cy='62' r='3' fill='white'/%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230f172a'/%3E%3Cstop offset='50%25' stop-color='%231e3a8a'/%3E%3Cstop offset='100%25' stop-color='%233b82f6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Cpath d='M50 28 L78 42 L50 56 L22 42 Z' fill='white'/%3E%3Cpath d='M30 47 L30 60 Q30 68 50 68 Q70 68 70 60 L70 47 L50 56 Z' fill='white'/%3E%3Cpath d='M78 42 L78 58' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='78' cy='62' r='3' fill='white'/%3E%3C/svg%3E">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0f172a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="MURIDKU">
+    <meta name="application-name" content="MURIDKU">
+    <meta name="description" content="MURIDKU - Sistem Pengurusan Profil Murid Bersepadu untuk guru-guru di Malaysia">
+
+    <!-- PWA Manifest (inline data URI) -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"MURIDKU - Sistem Profil Murid","short_name":"MURIDKU","description":"Sistem Pengurusan Profil Murid Bersepadu","start_url":"./","display":"standalone","orientation":"portrait","background_color":"%23f8fafc","theme_color":"%230f172a","icons":[{"src":"data:image/svg%2Bxml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%230f172a%27/%3E%3Cstop offset=%2750%25%27 stop-color=%27%231e3a8a%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%233b82f6%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%27100%27 height=%27100%27 rx=%2722%27 fill=%27url(%23g)%27/%3E%3Cpath d=%27M50 28 L78 42 L50 56 L22 42 Z%27 fill=%27white%27/%3E%3Cpath d=%27M30 47 L30 60 Q30 68 50 68 Q70 68 70 60 L70 47 L50 56 Z%27 fill=%27white%27/%3E%3Cpath d=%27M78 42 L78 58%27 stroke=%27white%27 stroke-width=%273%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%2778%27 cy=%2762%27 r=%273%27 fill=%27white%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},{"src":"data:image/svg%2Bxml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Cdefs%3E%3ClinearGradient id=%27g%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27%3E%3Cstop offset=%270%25%27 stop-color=%27%230f172a%27/%3E%3Cstop offset=%2750%25%27 stop-color=%27%231e3a8a%27/%3E%3Cstop offset=%27100%25%27 stop-color=%27%233b82f6%27/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width=%27100%27 height=%27100%27 rx=%2722%27 fill=%27url(%23g)%27/%3E%3Cpath d=%27M50 28 L78 42 L50 56 L22 42 Z%27 fill=%27white%27/%3E%3Cpath d=%27M30 47 L30 60 Q30 68 50 68 Q70 68 70 60 L70 47 L50 56 Z%27 fill=%27white%27/%3E%3Cpath d=%27M78 42 L78 58%27 stroke=%27white%27 stroke-width=%273%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%2778%27 cy=%2762%27 r=%273%27 fill=%27white%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}]}'>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -332,6 +348,44 @@
         [data-theme="dark"] #scrollTopBtn { color: #0f172a; }
 
         .notification { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--box-bg); padding: 0.8rem 1.5rem; border-radius: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 0.75rem; opacity: 0; transition: var(--transition); z-index: 3000; font-size: 0.9rem; border: 1px solid var(--border-light); color: var(--text-main); font-weight: 500;}
+
+        /* Install Banner (Add to Home Screen) */
+        .install-banner {
+            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%) translateY(150px);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3b82f6 100%);
+            color: white; padding: 1rem 1.2rem; border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.4);
+            display: none; align-items: center; gap: 1rem;
+            z-index: 4000; max-width: 92%; width: 380px;
+            opacity: 0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .install-banner.show { display: flex; opacity: 1; transform: translateX(-50%) translateY(0); }
+        .install-banner-icon { flex-shrink: 0; width: 44px; height: 44px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);}
+        .install-banner-icon i { width: 22px; height: 22px; color: white; }
+        .install-banner-text { flex: 1; min-width: 0; }
+        .install-banner-text h4 { font-size: 0.9rem; font-weight: 700; margin: 0 0 0.15rem 0; color: white;}
+        .install-banner-text p { font-size: 0.72rem; margin: 0; color: rgba(255,255,255,0.85); line-height: 1.3;}
+        .install-banner-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+        .install-banner-actions button { padding: 0.5rem 0.8rem; border-radius: 50px; border: none; font-size: 0.75rem; font-weight: 600; cursor: pointer; font-family: 'Poppins', sans-serif; transition: var(--transition);}
+        .install-banner-btn-primary { background: white; color: #0f172a; }
+        .install-banner-btn-primary:hover { transform: scale(1.05); }
+        .install-banner-btn-close { background: rgba(255,255,255,0.15); color: white; padding: 0.5rem !important; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;}
+        .install-banner-btn-close:hover { background: rgba(255,255,255,0.25); }
+
+        @media (max-width: 480px) {
+            .install-banner { bottom: 90px; padding: 0.8rem 1rem; gap: 0.7rem; }
+            .install-banner-icon { width: 38px; height: 38px; }
+            .install-banner-text h4 { font-size: 0.82rem; }
+            .install-banner-text p { font-size: 0.66rem; }
+            .install-banner-actions button { padding: 0.4rem 0.7rem; font-size: 0.7rem;}
+        }
+
+        /* iOS Install Instructions Modal */
+        .ios-step { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.8rem; background: var(--bg-color); border-radius: var(--border-radius-md); border: 1px solid var(--border-light); margin-bottom: 0.6rem;}
+        .ios-step-num { flex-shrink: 0; width: 28px; height: 28px; background: var(--secondary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem;}
+        .ios-step-text { flex: 1; font-size: 0.85rem; color: var(--text-main); line-height: 1.5;}
+        .ios-step-text strong { color: var(--secondary); }
+        .ios-share-icon { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: var(--secondary); color: white; border-radius: 6px; vertical-align: middle; margin: 0 3px;}
         .notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
         .footer-support { font-size: 0.65rem; opacity: 0.6; margin-top: 0.2rem; text-align: center; color: var(--text-muted); padding: 1rem 0 3rem 0; }
@@ -608,6 +662,14 @@
                                 <input type="password" id="set_adminPin" maxlength="4" placeholder="Tekan untuk tukar PIN" pattern="[0-9]*" inputmode="numeric" readonly style="cursor: pointer; background: var(--bg-color);" onclick="window.openSetPinKeypad()">
                                 <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem;"><i data-lucide="info" style="width:12px; height:12px; vertical-align:-2px;"></i> Tekan kotak di atas untuk buka keypad nombor.</p>
                             </div>
+
+                            <!-- Install PWA Button (only shown if installable & not already installed) -->
+                            <div id="installSettingsRow" style="display: none; padding-top: 1rem; border-top: 1px dashed var(--border-light);">
+                                <button class="btn-primary" onclick="window.triggerInstall()" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #0f172a 0%, #3b82f6 100%);">
+                                    <i data-lucide="download"></i> Pasang ke Skrin Utama
+                                </button>
+                                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.4rem; text-align: center;">Akses MURIDKU lebih pantas seperti aplikasi sebenar.</p>
+                            </div>
                         </div>
 
                         <div class="settings-card glass">
@@ -699,7 +761,7 @@
             </div>
         </section>
 
-        <p class="footer-support">created by <a href="https://cikgugrafik.my" target="_blank">CIKGUGRAFIK</a> &middot; © 2026 MURIDKU v1.5</p>
+        <p class="footer-support">Copyright <b>MURIDKU</b> 2026 ©</p>
     </main>
 
     <!-- MODALS -->
@@ -909,6 +971,48 @@
     </div>
 
     <div class="notification" id="notification"><i data-lucide="check-circle" id="notifIcon"></i> <span id="notifMsg"></span></div>
+
+    <!-- Install Banner (PWA Add to Home Screen) -->
+    <div class="install-banner" id="installBanner">
+        <div class="install-banner-icon"><i data-lucide="download"></i></div>
+        <div class="install-banner-text">
+            <h4>Pasang MURIDKU</h4>
+            <p>Akses pantas dari skrin utama telefon anda</p>
+        </div>
+        <div class="install-banner-actions">
+            <button class="install-banner-btn-primary" onclick="window.triggerInstall()">Pasang</button>
+            <button class="install-banner-btn-close" onclick="window.dismissInstall()" title="Tutup"><i data-lucide="x" style="width:14px; height:14px;"></i></button>
+        </div>
+    </div>
+
+    <!-- iOS Install Instructions Modal (Safari tak support beforeinstallprompt) -->
+    <div class="modal-overlay" id="iosInstallModal">
+        <div class="modal-content glass" style="max-width: 420px;">
+            <button class="close-modal" onclick="window.closeModal('iosInstallModal')">✕</button>
+            <div style="text-align: center; margin-bottom: 1rem;">
+                <div class="icon-circle" style="width: 60px; height: 60px; margin: 0 auto 0.8rem auto;">
+                    <i data-lucide="smartphone" style="width: 28px; height: 28px;"></i>
+                </div>
+                <h3 style="margin: 0 0 0.3rem 0; color: var(--text-main);">Pasang MURIDKU</h3>
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Ikut langkah berikut pada Safari iOS:</p>
+            </div>
+            <div style="margin-top: 1rem;">
+                <div class="ios-step">
+                    <div class="ios-step-num">1</div>
+                    <div class="ios-step-text">Tekan butang <strong>Share</strong> <span class="ios-share-icon"><i data-lucide="share" style="width:14px;height:14px;"></i></span> di bahagian bawah Safari.</div>
+                </div>
+                <div class="ios-step">
+                    <div class="ios-step-num">2</div>
+                    <div class="ios-step-text">Tatal ke bawah dan pilih <strong>"Add to Home Screen"</strong> <span class="ios-share-icon"><i data-lucide="plus-square" style="width:14px;height:14px;"></i></span>.</div>
+                </div>
+                <div class="ios-step">
+                    <div class="ios-step-num">3</div>
+                    <div class="ios-step-text">Tekan <strong>"Add"</strong> di sudut kanan atas. MURIDKU akan muncul sebagai aplikasi di skrin utama anda.</div>
+                </div>
+            </div>
+            <button class="btn-primary" onclick="window.closeModal('iosInstallModal')" style="width: 100%; justify-content: center; margin-top: 1rem;">Faham, Terima Kasih</button>
+        </div>
+    </div>
 
     <button id="scrollTopBtn" onclick="window.scrollToTop()" title="Kembali ke atas">
         <i data-lucide="chevron-up"></i>
@@ -1968,6 +2072,16 @@
                 }
             });
 
+            // Show install button kalau boleh dipasang (dan belum standalone)
+            const installRow = document.getElementById('installSettingsRow');
+            if (installRow) {
+                if (!window.isStandalone() && (window.isIOS() || window._deferredInstallPrompt)) {
+                    installRow.style.display = 'block';
+                } else {
+                    installRow.style.display = 'none';
+                }
+            }
+
             lucide.createIcons();
         };
 
@@ -2165,6 +2279,93 @@
             }
         };
 
+        // ===== PWA: Add to Home Screen =====
+        window._deferredInstallPrompt = null;
+
+        // Detect platform
+        window.isIOS = function() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        };
+        window.isStandalone = function() {
+            return window.matchMedia('(display-mode: standalone)').matches ||
+                   window.navigator.standalone === true ||
+                   document.referrer.includes('android-app://');
+        };
+        window.isMobile = function() {
+            return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+        };
+
+        // Capture beforeinstallprompt (Android Chrome / desktop Chrome / Edge)
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            window._deferredInstallPrompt = e;
+            window.maybeShowInstallBanner();
+        });
+
+        // Apa nak buat bila pengguna tekan "Pasang"
+        window.triggerInstall = async function() {
+            // iOS: tunjuk modal cara install manual sebab no native prompt
+            if (window.isIOS()) {
+                window.dismissInstall(false); // hide banner tanpa simpan dismissed flag
+                document.getElementById('iosInstallModal').classList.add('active');
+                lucide.createIcons();
+                return;
+            }
+            // Android/Chrome: gunakan deferred prompt
+            if (window._deferredInstallPrompt) {
+                window._deferredInstallPrompt.prompt();
+                const result = await window._deferredInstallPrompt.userChoice;
+                if (result.outcome === 'accepted') {
+                    window.showNotification('MURIDKU berjaya dipasang!');
+                }
+                window._deferredInstallPrompt = null;
+                window.dismissInstall(true);
+            } else {
+                window.showNotification('Buka menu pelayar dan pilih "Install App" atau "Add to Home Screen"', false);
+            }
+        };
+
+        // Tutup banner; kalau permanent=true, simpan supaya tak muncul lagi
+        window.dismissInstall = function(permanent = true) {
+            const banner = document.getElementById('installBanner');
+            if (banner) banner.classList.remove('show');
+            if (permanent) {
+                localStorage.setItem('muridku_install_dismissed', String(Date.now()));
+            }
+        };
+
+        // Decide kalau perlu show banner
+        window.maybeShowInstallBanner = function() {
+            // Skip kalau dah dipasang (standalone)
+            if (window.isStandalone()) return;
+            // Skip kalau bukan mobile
+            if (!window.isMobile()) return;
+            // Skip kalau user dah dismiss dalam 7 hari lepas
+            const dismissed = localStorage.getItem('muridku_install_dismissed');
+            if (dismissed) {
+                const days = (Date.now() - parseInt(dismissed, 10)) / (1000 * 60 * 60 * 24);
+                if (days < 7) return;
+            }
+            // Untuk iOS: tunjuk banner walaupun tak ada deferred prompt
+            // Untuk Android: tunggu sampai deferred prompt available
+            if (window.isIOS() || window._deferredInstallPrompt) {
+                // Delay sikit supaya tak ganggu user yang baru masuk
+                setTimeout(() => {
+                    const banner = document.getElementById('installBanner');
+                    if (banner) {
+                        banner.classList.add('show');
+                        lucide.createIcons();
+                    }
+                }, 4000);
+            }
+        };
+
+        // Listen apabila app dipasang (Android)
+        window.addEventListener('appinstalled', () => {
+            window.dismissInstall(true);
+            window.showNotification('MURIDKU berjaya dipasang ke skrin utama!');
+        });
+
         // Init on DOMContentLoaded
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
@@ -2176,6 +2377,11 @@
             // Apply settings display for initial render (pre-auth)
             const dashName = document.getElementById('dashTeacherName');
             if (dashName) dashName.innerText = window.appSettings.teacherName || 'Admin';
+
+            // Check install banner (untuk iOS terus, Android tunggu beforeinstallprompt event)
+            if (window.isIOS()) {
+                window.maybeShowInstallBanner();
+            }
         });
 
     </script>
