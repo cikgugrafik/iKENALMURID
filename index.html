@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         :root {
+            /* Light Mode Variables */
             --primary: #0f172a;
             --primary-hover: #1e293b;
             --secondary: #3b82f6;
@@ -33,6 +34,7 @@
         }
 
         [data-theme="dark"] {
+            /* Dark Mode Variables */
             --primary: #f8fafc;
             --primary-hover: #e2e8f0;
             --secondary: #60a5fa;
@@ -58,6 +60,34 @@
         }
 
         .glass { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border-light); box-shadow: var(--shadow-soft); transition: var(--transition); }
+
+        /* --- LOADING ANIMATION CUSTOM --- */
+        #loadingOverlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(255,255,255,0.85); z-index: 10000; display: none; 
+            align-items: center; justify-content: center; flex-direction: column; 
+            backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+        }
+        [data-theme="dark"] #loadingOverlay { background: rgba(15,23,42,0.85); }
+        
+        .custom-loader {
+            position: relative; width: 70px; height: 70px; display: flex;
+            align-items: center; justify-content: center; margin-bottom: 1rem;
+        }
+        .custom-loader::before {
+            content: ''; position: absolute; width: 100%; height: 100%;
+            border-radius: 50%; border: 4px solid var(--border-light);
+            border-top-color: var(--secondary);
+            animation: spin 1s linear infinite;
+        }
+        .custom-loader i {
+            color: var(--primary); width: 28px; height: 28px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .loading-text { font-weight: 600; color: var(--primary); font-size: 1.1rem; letter-spacing: 0.5px; animation: pulse 1.5s ease-in-out infinite; }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse { 50% { transform: scale(0.8); opacity: 0.6; } }
 
         /* --- LANDING PAGE CSS --- */
         .landing-container {
@@ -141,7 +171,7 @@
         .stat-value { font-size: 1.75rem; font-weight: 700; color: var(--text-main);}
         .stat-label { font-size: 0.8rem; color: var(--text-muted); font-weight: 500; }
 
-        /* Toolbar, Filters & Toggles (DIKEMBALIKAN) */
+        /* Toolbar, Filters & Toggles */
         .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; gap: 1rem; flex-wrap: wrap; }
         .search-box { display: flex; align-items: center; background: var(--box-bg); padding: 0.6rem 1.2rem; border-radius: 50px; flex: 1; min-width: 250px; box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); }
         .search-box input { border: none; outline: none; background: transparent; width: 100%; padding-left: 0.75rem; font-size: 0.9rem; color: var(--text-main);}
@@ -344,12 +374,16 @@
         .notification { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--box-bg); padding: 0.8rem 1.5rem; border-radius: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); display: flex; align-items: center; gap: 0.75rem; opacity: 0; transition: var(--transition); z-index: 3000; font-size: 0.9rem; border: 1px solid var(--border-light); color: var(--text-main); font-weight: 500;}
         .notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        #loadingOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.8); z-index: 10000; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 1rem; font-weight: 600; color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <div id="loadingOverlay"><i data-lucide="loader-2" class="animate-spin" style="width: 40px; height: 40px;"></i> <span>Sila tunggu...</span></div>
+    <div id="loadingOverlay">
+        <div class="custom-loader">
+            <i data-lucide="book-open"></i>
+        </div>
+        <span class="loading-text">Sila tunggu...</span>
+    </div>
 
     <div id="landingPage" class="landing-container">
         <div class="glass landing-box">
@@ -650,7 +684,7 @@
                             <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Muat naik profil berkelompok ke dalam pangkalan data awan (Cloud).</p>
                             <div style="display: flex; flex-direction: column; gap: 0.8rem;">
                                 <div class="file-input-wrapper" style="position: relative; overflow: hidden; display: inline-block; width: 100%;">
-                                    <button class="btn-success" style="width: 100%; justify-content: center;"><i data-lucide="upload"></i> Upload Fail CSV</button>
+                                    <button class="btn-success" style="width: 100%; justify-content: center; pointer-events: none;"><i data-lucide="upload"></i> Upload Fail CSV</button>
                                     <input type="file" id="csvFileInput" accept=".csv" style="font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%;">
                                 </div>
                                 <button class="btn-secondary" onclick="exportCSV()" style="width: 100%; justify-content: center;"><i data-lucide="download"></i> Download / Export CSV</button>
@@ -890,7 +924,6 @@
             const photoFile = document.getElementById('f_photo_input').files[0];
             let photoUrl = document.getElementById('f_photo_preview').src;
 
-            // Upload gambar ke Firebase Storage
             if(photoFile) {
                 const sRef = ref(storage, `murid/${user.uid}/${Date.now()}_${photoFile.name}`);
                 await uploadBytes(sRef, photoFile);
@@ -931,7 +964,7 @@
             showLoading(false);
         };
 
-        // Custom Delete Confirmation Logic (G2 Fix)
+        // Custom Delete Confirmation Logic
         let studentToDelete = null;
         window.deleteStudent = (id) => {
             studentToDelete = id;
@@ -1054,7 +1087,7 @@
         let isBulkMode = false;
         let currentListView = 'grid';
 
-        // DARK MODE LOGIC (DIKEMBALIKAN)
+        // DARK MODE LOGIC 
         window.toggleDarkMode = function() {
             let isDark = document.body.hasAttribute('data-theme');
             if (isDark) {
@@ -1076,7 +1109,7 @@
             });
         }
 
-        // SCROLL TO TOP LOGIC (DIKEMBALIKAN)
+        // SCROLL TO TOP LOGIC 
         window.onscroll = function() {
             const btn = document.getElementById("scrollTopBtn");
             if (btn && (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300)) {
@@ -1489,45 +1522,22 @@
 
         window.printIDCard = (id) => {
             const s = students.find(x => x.id === id); if(!s) return;
-            openPrintWindow([s]);
-        }
-        
-        window.openPrintWindow = function(studentsArray) {
-            if(studentsArray.length === 0) return;
             const printWin = window.open('', '_blank');
             const appNameText = 'MURIDKU';
+            const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${s.id}`;
             
-            let cardsHTML = '';
-            studentsArray.forEach(s => {
-                const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${s.id}`;
-                
-                let infoHTML = '';
-                if(appSettings.print_ic) infoHTML += `<div class="info-item"><p>No. IC / MyKid</p><h4>${s.ic}</h4></div>`;
-                if(appSettings.print_gender) infoHTML += `<div class="info-item"><p>Jantina</p><h4>${s.gender}</h4></div>`;
-                if(appSettings.print_delima && s.delima) infoHTML += `<div class="info-item"><p>ID DELIMA</p><h4>${s.delima}</h4></div>`;
-                if(appSettings.print_tel && s.tel) infoHTML += `<div class="info-item"><p>No. Telefon</p><h4>${s.tel}</h4></div>`;
-                
-                let kokuHTML = '';
-                if(appSettings.print_koku && (s.kelab || s.uniform || s.sukan)) {
-                    const list = [s.kelab, s.uniform, s.sukan].filter(Boolean).join(', ');
-                    kokuHTML = `<div class="info-item koku-item"><p>Kokurikulum</p><h4>${list}</h4></div>`;
-                }
-
-                const qrHTML = appSettings.print_qr ? `<div class="qr-section"><img src="${qrSrc}"><span>SCAN UNTUK PROFIL</span></div>` : '';
-
-                cardsHTML += `
-                    <div class="id-card-wrapper">
-                        <div class="card-header"><h2>KAD PROFIL MURID</h2><p>${appNameText}</p></div>
-                        <div class="card-photo-area"><img src="${s.photo}" class="dp"></div>
-                        <div class="card-body">
-                            <h3 class="student-name">${s.name}</h3><div class="student-class">${s.class}</div>
-                            <div class="info-grid">${infoHTML}${kokuHTML}</div>
-                            ${qrHTML}
-                        </div>
-                        <div class="card-footer">Sistem ${appNameText} &copy; 2026 | BY CIKGUGRAFIK</div>
-                    </div>
-                `;
-            });
+            let infoHTML = '';
+            if(appSettings.print_ic) infoHTML += `<div class="info-item"><p>No. IC / MyKid</p><h4>${s.ic}</h4></div>`;
+            if(appSettings.print_gender) infoHTML += `<div class="info-item"><p>Jantina</p><h4>${s.gender}</h4></div>`;
+            if(appSettings.print_delima && s.delima) infoHTML += `<div class="info-item"><p>ID DELIMA</p><h4>${s.delima}</h4></div>`;
+            if(appSettings.print_tel && s.tel) infoHTML += `<div class="info-item"><p>No. Telefon</p><h4>${s.tel}</h4></div>`;
+            
+            let kokuHTML = '';
+            if(appSettings.print_koku && (s.kelab || s.uniform || s.sukan)) {
+                const list = [s.kelab, s.uniform, s.sukan].filter(Boolean).join(', ');
+                kokuHTML = `<div class="info-item koku-item"><p>Kokurikulum</p><h4>${list}</h4></div>`;
+            }
+            const qrHTML = appSettings.print_qr ? `<div class="qr-section"><img src="${qrSrc}"><span>SCAN UNTUK PROFIL</span></div>` : '';
 
             const html = `
                 <!DOCTYPE html><html><head><title>Cetak Kad Profil</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"><style>
@@ -1552,40 +1562,19 @@
                 @media print { body { padding: 0; } .id-card-wrapper { border: 2px solid #000; box-shadow: none; margin-bottom: 20px;} }
                 </style></head><body>
                 <div class="print-container">
-                    ${cardsHTML}
+                    <div class="id-card-wrapper">
+                        <div class="card-header"><h2>KAD PROFIL MURID</h2><p>${appNameText}</p></div>
+                        <div class="card-photo-area"><img src="${s.photo}" class="dp"></div>
+                        <div class="card-body">
+                            <h3 class="student-name">${s.name}</h3><div class="student-class">${s.class}</div>
+                            <div class="info-grid">${infoHTML}${kokuHTML}</div>
+                            ${qrHTML}
+                        </div>
+                        <div class="card-footer">Sistem ${appNameText} &copy; 2026 | BY CIKGUGRAFIK</div>
+                    </div>
                 </div>
                 <script>setTimeout(() => { window.print(); }, 1000);<\/script></body></html>`;
             printWin.document.open(); printWin.document.write(html); printWin.document.close();
-        }
-
-        // Handle Scan QR Profile
-        function handleScanProfile(decodedText) {
-            const s = students.find(x => x.id === decodedText);
-            if(s) { stopScanners(); switchTab('list'); viewProfile(s.id); showNotification('Murid dijumpai!'); } 
-            else { showNotification('QR Code tidak sah atau murid tiada.', true); }
-        }
-
-        // Handle Scan QR Kehadiran
-        function handleScanAttendance(decodedText) {
-            const s = students.find(x => x.id === decodedText);
-            if(s) {
-                const lastScan = attendanceLogs.find(log => log.id === s.id);
-                const now = new Date();
-                if(lastScan && (now - new Date(lastScan.timestamp)) < 60000) {
-                    showNotification('Kehadiran sudah direkodkan sebentar tadi.', true);
-                    return;
-                }
-                
-                const log = { id: s.id, name: s.name, class: s.class, time: now.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', hour12: true }), timestamp: now.toISOString() };
-                attendanceLogs.unshift(log); 
-                renderAttendanceLog();
-                showNotification(`Kehadiran direkod: ${s.name}`);
-                
-                stopScanners();
-                setTimeout(() => { if(document.getElementById('section-kehadiran').classList.contains('active')) startAttendanceScanner(); }, 3000);
-            } else {
-                showNotification('QR Code tidak sah.', true);
-            }
         }
 
         window.promptClearAttendance = function() {
