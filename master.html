@@ -9,237 +9,246 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.min.js"></script>
     <style>
         :root {
-            --primary: #0f172a;
-            --secondary: #3b82f6;
-            --bg: #f8fafc;
-            --text: #0f172a;
-            --muted: #64748b;
-            --card: #ffffff;
-            --border: rgba(0,0,0,0.07);
-            --danger: #ef4444;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --radius: 16px;
-            --shadow: 0 4px 24px -4px rgba(0,0,0,0.08);
-            --transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+            --primary:#0f172a; --secondary:#3b82f6; --bg:#f8fafc; --text:#0f172a;
+            --muted:#64748b; --card:#ffffff; --border:rgba(0,0,0,0.07);
+            --danger:#ef4444; --success:#10b981; --warning:#f59e0b;
+            --radius:16px; --shadow:0 4px 24px -4px rgba(0,0,0,0.08);
+            --transition:all 0.25s cubic-bezier(0.4,0,0.2,1);
         }
         [data-theme="dark"] {
-            --primary: #f8fafc;
-            --secondary: #60a5fa;
-            --bg: #0f172a;
-            --text: #f1f5f9;
-            --muted: #94a3b8;
-            --card: #1e293b;
-            --border: rgba(255,255,255,0.08);
-            --shadow: 0 4px 24px -4px rgba(0,0,0,0.4);
+            --primary:#f8fafc; --secondary:#60a5fa; --bg:#0f172a; --text:#f1f5f9;
+            --muted:#94a3b8; --card:#1e293b; --border:rgba(255,255,255,0.08);
+            --shadow:0 4px 24px -4px rgba(0,0,0,0.4);
         }
-        * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
-        body { background:var(--bg); color:var(--text); min-height:100vh; font-size:14px; transition:background .3s,color .3s; }
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+        body{background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;transition:background .3s,color .3s;}
 
-        /* ===== LOCK SCREEN ===== */
-        #lockScreen {
-            position:fixed; inset:0; background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);
-            display:flex; align-items:center; justify-content:center; z-index:9999; flex-direction:column; gap:1rem;
-        }
-        .lock-box { background:rgba(255,255,255,0.05); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.1); border-radius:24px; padding:2.5rem 2rem; width:100%; max-width:420px; text-align:center; }
-        .lock-logo { width:72px; height:72px; background:linear-gradient(135deg,#1e3a8a,#3b82f6); border-radius:20px; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; box-shadow:0 12px 30px rgba(59,130,246,0.4); }
-        .lock-logo i { width:36px; height:36px; color:white; }
-        .lock-title { font-size:1.5rem; font-weight:800; color:white; letter-spacing:1px; margin-bottom:.2rem; }
-        .lock-sub { font-size:.8rem; color:rgba(255,255,255,.6); margin-bottom:1.5rem; letter-spacing:.5px; }
-        .google-login-btn { background:white; color:#1e293b; border:none; padding:.85rem 1.5rem; border-radius:50px; font-weight:600; font-size:.9rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.75rem; width:100%; transition:var(--transition); font-family:'Poppins',sans-serif; box-shadow:0 4px 15px rgba(0,0,0,.15); }
-        .google-login-btn img { width:22px; height:22px; }
-        .google-login-btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,0,0,.2); }
-        .lock-note { font-size:.7rem; color:rgba(255,255,255,.4); margin-top:1rem; line-height:1.5; }
-        #lockError { color:#fca5a5; font-size:.8rem; margin-top:.8rem; display:none; padding:.6rem 1rem; background:rgba(239,68,68,.15); border-radius:8px; }
+        /* LOCK SCREEN */
+        #lockScreen{position:fixed;inset:0;background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 50%,#0f172a 100%);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:1rem;}
+        .lock-box{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:2.5rem 2rem;width:100%;max-width:420px;text-align:center;}
+        .lock-logo{width:72px;height:72px;background:linear-gradient(135deg,#1e3a8a,#3b82f6);border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 12px 30px rgba(59,130,246,.4);}
+        .lock-logo i{width:36px;height:36px;color:white;}
+        .lock-title{font-size:1.5rem;font-weight:800;color:white;letter-spacing:1px;margin-bottom:.2rem;}
+        .lock-sub{font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1.5rem;letter-spacing:.5px;}
+        .google-btn{background:white;color:#1e293b;border:none;padding:.85rem 1.5rem;border-radius:50px;font-weight:600;font-size:.9rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.75rem;width:100%;transition:var(--transition);font-family:'Poppins',sans-serif;box-shadow:0 4px 15px rgba(0,0,0,.15);}
+        .google-btn img{width:22px;height:22px;}
+        .google-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,.2);}
+        .uid-section{margin-top:1rem;text-align:left;}
+        .uid-section label{display:block;font-size:.72rem;color:rgba(255,255,255,.6);margin-bottom:.4rem;}
+        .uid-section input{width:100%;padding:.7rem 1rem;border-radius:10px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:white;font-family:'Poppins',sans-serif;font-size:.82rem;outline:none;}
+        .uid-section input:focus{border-color:rgba(59,130,246,.6);}
+        .uid-save-btn{margin-top:.6rem;width:100%;padding:.7rem;border-radius:10px;background:rgba(59,130,246,.8);border:none;color:white;font-family:'Poppins',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;transition:var(--transition);}
+        .uid-save-btn:hover{background:rgba(59,130,246,1);}
+        #lockError{color:#fca5a5;font-size:.8rem;margin-top:.8rem;display:none;padding:.6rem 1rem;background:rgba(239,68,68,.15);border-radius:8px;}
+        .lock-note{font-size:.68rem;color:rgba(255,255,255,.35);margin-top:.8rem;line-height:1.5;}
 
-        /* ===== MAIN APP ===== */
-        #app { display:none; min-height:100vh; }
+        /* TABS */
+        #app{display:none;}
+        .topbar{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:.8rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+        [data-theme="dark"] .topbar{background:rgba(15,23,42,.85);}
+        .topbar-brand{display:flex;align-items:center;gap:.8rem;}
+        .topbar-logo{width:38px;height:38px;background:linear-gradient(135deg,#0f172a,#3b82f6);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+        .topbar-logo i{width:18px;height:18px;color:white;}
+        .topbar-title{font-size:1rem;font-weight:700;}
+        .topbar-badge{font-size:.6rem;background:rgba(239,68,68,.12);color:#ef4444;padding:.2rem .6rem;border-radius:50px;font-weight:700;letter-spacing:.5px;border:1px solid rgba(239,68,68,.25);}
+        .topbar-right{display:flex;align-items:center;gap:.8rem;}
+        .topbar-user{display:flex;align-items:center;gap:.6rem;font-size:.8rem;color:var(--muted);}
+        .topbar-user img{width:30px;height:30px;border-radius:50%;border:2px solid var(--border);}
+        .icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);}
+        .icon-btn:hover{background:var(--border);transform:scale(1.05);}
+        .icon-btn i{width:16px;height:16px;}
 
-        /* Topbar */
-        .topbar { position:sticky; top:0; z-index:100; background:rgba(255,255,255,.8); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); padding:.8rem 2rem; display:flex; align-items:center; justify-content:space-between; }
-        [data-theme="dark"] .topbar { background:rgba(15,23,42,.8); }
-        .topbar-brand { display:flex; align-items:center; gap:.8rem; }
-        .topbar-logo { width:38px; height:38px; background:linear-gradient(135deg,#0f172a,#3b82f6); border-radius:10px; display:flex; align-items:center; justify-content:center; }
-        .topbar-logo i { width:18px; height:18px; color:white; }
-        .topbar-title { font-size:1rem; font-weight:700; letter-spacing:.3px; }
-        .topbar-badge { font-size:.6rem; background:rgba(239,68,68,.15); color:#ef4444; padding:.2rem .6rem; border-radius:50px; font-weight:700; letter-spacing:.5px; border:1px solid rgba(239,68,68,.3); }
-        .topbar-right { display:flex; align-items:center; gap:.8rem; }
-        .topbar-user { display:flex; align-items:center; gap:.6rem; font-size:.8rem; color:var(--muted); }
-        .topbar-user img { width:30px; height:30px; border-radius:50%; border:2px solid var(--border); }
-        .icon-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border); background:var(--card); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); }
-        .icon-btn:hover { background:var(--border); transform:scale(1.05); }
-        .icon-btn i { width:16px; height:16px; }
+        /* Tab nav */
+        .tab-nav{display:flex;gap:.3rem;background:var(--card);border:1px solid var(--border);border-radius:50px;padding:.3rem;margin:1.5rem 2rem .5rem;width:fit-content;box-shadow:var(--shadow);}
+        .tab-btn{padding:.45rem 1.1rem;border-radius:50px;border:none;background:transparent;color:var(--muted);font-family:'Poppins',sans-serif;font-size:.8rem;font-weight:500;cursor:pointer;transition:var(--transition);display:flex;align-items:center;gap:.4rem;white-space:nowrap;}
+        .tab-btn i{width:14px;height:14px;}
+        .tab-btn.active{background:var(--primary);color:var(--bg);box-shadow:0 2px 8px rgba(0,0,0,.15);}
+        [data-theme="dark"] .tab-btn.active{color:#0f172a;}
+        .tab-panel{display:none;padding:0 2rem 2rem;}
+        .tab-panel.active{display:block;}
 
-        /* Main layout */
-        .main { padding:2rem; max-width:1400px; margin:0 auto; }
+        /* Cards & layout */
+        .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.2rem;margin-bottom:2rem;}
+        .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow);transition:var(--transition);}
+        .stat-card:hover{transform:translateY(-2px);border-color:var(--secondary);}
+        .stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;}
+        .stat-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;}
+        .stat-icon i{width:20px;height:20px;}
+        .si-blue{background:rgba(59,130,246,.1);color:#3b82f6;}
+        .si-green{background:rgba(16,185,129,.1);color:#10b981;}
+        .si-amber{background:rgba(245,158,11,.1);color:#f59e0b;}
+        .si-purple{background:rgba(168,85,247,.1);color:#a855f7;}
+        .si-red{background:rgba(239,68,68,.1);color:#ef4444;}
+        .si-teal{background:rgba(20,184,166,.1);color:#14b8a6;}
+        .stat-val{font-size:1.9rem;font-weight:700;line-height:1;}
+        .stat-lbl{font-size:.73rem;color:var(--muted);font-weight:500;margin-top:.3rem;}
+        .stat-sub{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
 
-        /* Stats cards */
-        .stats-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:1.2rem; margin-bottom:2rem; }
-        .stat-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.4rem; box-shadow:var(--shadow); transition:var(--transition); }
-        .stat-card:hover { transform:translateY(-2px); border-color:var(--secondary); }
-        .stat-card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:.8rem; }
-        .stat-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; }
-        .stat-icon i { width:20px; height:20px; }
-        .stat-icon.blue { background:rgba(59,130,246,.1); color:#3b82f6; }
-        .stat-icon.green { background:rgba(16,185,129,.1); color:#10b981; }
-        .stat-icon.amber { background:rgba(245,158,11,.1); color:#f59e0b; }
-        .stat-icon.purple { background:rgba(168,85,247,.1); color:#a855f7; }
-        .stat-icon.red { background:rgba(239,68,68,.1); color:#ef4444; }
-        .stat-val { font-size:2rem; font-weight:700; color:var(--text); line-height:1; }
-        .stat-lbl { font-size:.75rem; color:var(--muted); font-weight:500; margin-top:.3rem; }
-        .stat-trend { font-size:.7rem; font-weight:600; padding:.15rem .5rem; border-radius:50px; }
-        .stat-trend.up { background:rgba(16,185,129,.1); color:#059669; }
-        .stat-trend.down { background:rgba(239,68,68,.1); color:#dc2626; }
+        /* Usage meter */
+        .usage-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;box-shadow:var(--shadow);margin-bottom:1.5rem;}
+        .usage-title{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:1.2rem;display:flex;align-items:center;gap:.5rem;}
+        .usage-title i{width:16px;height:16px;color:var(--secondary);}
+        .meter-wrap{margin-bottom:1.2rem;}
+        .meter-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.5rem;}
+        .meter-label{font-size:.8rem;font-weight:600;color:var(--text);}
+        .meter-pct{font-size:.75rem;color:var(--muted);}
+        .meter-track{height:12px;background:var(--border);border-radius:50px;overflow:hidden;position:relative;}
+        .meter-fill{height:100%;border-radius:50px;transition:width 1s cubic-bezier(0.4,0,0.2,1);}
+        .meter-fill.safe{background:linear-gradient(90deg,#10b981,#34d399);}
+        .meter-fill.warn{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+        .meter-fill.danger{background:linear-gradient(90deg,#ef4444,#f87171);}
+        .meter-info{font-size:.72rem;color:var(--muted);margin-top:.4rem;}
+        .quota-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-top:1.2rem;padding-top:1.2rem;border-top:1px dashed var(--border);}
+        .quota-item{text-align:center;padding:.8rem;background:var(--bg);border-radius:10px;border:1px solid var(--border);}
+        .quota-val{font-size:1.2rem;font-weight:700;color:var(--text);}
+        .quota-lbl{font-size:.68rem;color:var(--muted);margin-top:.2rem;}
+        .quota-status{font-size:.65rem;font-weight:600;padding:.15rem .5rem;border-radius:50px;margin-top:.3rem;display:inline-block;}
+        .qs-safe{background:rgba(16,185,129,.1);color:#059669;}
+        .qs-warn{background:rgba(245,158,11,.1);color:#d97706;}
+        .qs-danger{background:rgba(239,68,68,.1);color:#dc2626;}
 
-        /* Section title */
-        .section-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.2rem; flex-wrap:wrap; gap:.8rem; }
-        .section-head h2 { font-size:1rem; font-weight:700; color:var(--text); display:flex; align-items:center; gap:.5rem; }
-        .section-head h2 i { width:18px; height:18px; color:var(--secondary); }
-
-        /* Search + filter bar */
-        .filter-bar { display:flex; gap:.8rem; flex-wrap:wrap; align-items:center; margin-bottom:1.5rem; }
-        .search-wrap { flex:1; min-width:220px; display:flex; align-items:center; background:var(--card); border:1px solid var(--border); border-radius:50px; padding:.55rem 1rem; gap:.6rem; box-shadow:var(--shadow); }
-        .search-wrap:focus-within { border-color:var(--secondary); }
-        .search-wrap i { width:16px; height:16px; color:var(--muted); flex-shrink:0; }
-        .search-wrap input { border:none; outline:none; background:transparent; font-size:.85rem; color:var(--text); width:100%; font-family:'Poppins',sans-serif; }
-        .filter-select { padding:.55rem 1rem; border:1px solid var(--border); border-radius:50px; background:var(--card); color:var(--text); font-family:'Poppins',sans-serif; font-size:.8rem; cursor:pointer; outline:none; box-shadow:var(--shadow); }
+        /* Storage top users bar */
+        .bar-chart{display:flex;flex-direction:column;gap:.6rem;}
+        .bar-row{display:flex;align-items:center;gap:.8rem;}
+        .bar-lbl{font-size:.72rem;color:var(--muted);min-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .bar-track{flex:1;height:8px;background:var(--border);border-radius:50px;overflow:hidden;}
+        .bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,#3b82f6,#60a5fa);transition:width .8s cubic-bezier(0.4,0,0.2,1);}
+        .bar-count{font-size:.72rem;font-weight:600;color:var(--text);min-width:55px;text-align:right;}
 
         /* Users table */
-        .table-wrap { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); margin-bottom:2rem; overflow-x:auto; }
-        table { width:100%; border-collapse:collapse; min-width:700px; }
-        thead { background:var(--bg); }
-        th { padding:.9rem 1.2rem; text-align:left; font-size:.75rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); white-space:nowrap; }
-        td { padding:.85rem 1.2rem; border-bottom:1px solid var(--border); font-size:.82rem; color:var(--text); vertical-align:middle; }
-        tr:last-child td { border-bottom:none; }
-        tr.user-row:hover { background:var(--bg); cursor:pointer; }
-        .user-cell { display:flex; align-items:center; gap:.75rem; }
-        .user-avatar { width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid var(--border); flex-shrink:0; }
-        .user-name { font-weight:600; color:var(--text); font-size:.85rem; }
-        .user-email { font-size:.72rem; color:var(--muted); }
-        .badge { display:inline-flex; align-items:center; gap:.25rem; padding:.2rem .6rem; border-radius:50px; font-size:.7rem; font-weight:600; }
-        .badge.blue { background:rgba(59,130,246,.1); color:#2563eb; }
-        .badge.green { background:rgba(16,185,129,.1); color:#059669; }
-        .badge.gray { background:rgba(100,116,139,.1); color:#475569; }
-        .badge.red { background:rgba(239,68,68,.1); color:#dc2626; }
-        .badge i { width:11px; height:11px; }
-        td .action-btns { display:flex; gap:.4rem; opacity:0; transition:var(--transition); }
-        tr:hover .action-btns { opacity:1; }
-        .act-btn { width:28px; height:28px; border-radius:8px; border:1px solid var(--border); background:var(--bg); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:var(--transition); }
-        .act-btn:hover { background:var(--border); }
-        .act-btn i { width:13px; height:13px; color:var(--muted); }
-        .act-btn.danger:hover { background:rgba(239,68,68,.1); border-color:rgba(239,68,68,.3); }
-        .act-btn.danger:hover i { color:#ef4444; }
+        .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);margin-bottom:1.5rem;overflow-x:auto;}
+        table{width:100%;border-collapse:collapse;min-width:750px;}
+        thead{background:var(--bg);}
+        th{padding:.9rem 1.2rem;text-align:left;font-size:.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--border);white-space:nowrap;}
+        td{padding:.8rem 1.2rem;border-bottom:1px solid var(--border);font-size:.82rem;vertical-align:middle;}
+        tr:last-child td{border-bottom:none;}
+        tr.user-row:hover{background:var(--bg);cursor:pointer;}
+        .user-cell{display:flex;align-items:center;gap:.75rem;}
+        .user-avatar{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--border);flex-shrink:0;}
+        .uname{font-weight:600;font-size:.85rem;}
+        .uemail{font-size:.68rem;color:var(--muted);}
+        .badge{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .6rem;border-radius:50px;font-size:.7rem;font-weight:600;}
+        .badge i{width:11px;height:11px;}
+        .b-blue{background:rgba(59,130,246,.1);color:#2563eb;}
+        .b-green{background:rgba(16,185,129,.1);color:#059669;}
+        .b-gray{background:rgba(100,116,139,.1);color:#475569;}
+        .b-red{background:rgba(239,68,68,.1);color:#dc2626;}
+        .b-amber{background:rgba(245,158,11,.1);color:#d97706;}
+        .b-purple{background:rgba(168,85,247,.1);color:#7c3aed;}
 
-        /* Expand row (murid detail) */
-        .expand-row td { padding:0; }
-        .expand-inner { background:var(--bg); border-top:1px solid var(--border); padding:1.2rem 1.5rem; }
-        .murid-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px,1fr)); gap:.8rem; }
-        .murid-item { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:.8rem; display:flex; align-items:center; gap:.7rem; }
-        .murid-photo { width:36px; height:36px; border-radius:50%; object-fit:cover; flex-shrink:0; background:var(--border); }
-        .murid-name { font-size:.78rem; font-weight:600; color:var(--text); line-height:1.2; }
-        .murid-class { font-size:.68rem; color:var(--muted); }
+        /* Action buttons */
+        .action-btns{display:flex;gap:.4rem;}
+        .act-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);flex-shrink:0;}
+        .act-btn:hover{background:var(--border);}
+        .act-btn i{width:13px;height:13px;color:var(--muted);}
+        .act-btn.expand-btn:hover i{color:var(--secondary);}
+        .act-btn.block-btn:hover{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.3);}
+        .act-btn.block-btn:hover i{color:#d97706;}
+        .act-btn.unblock-btn:hover{background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);}
+        .act-btn.unblock-btn:hover i{color:#059669;}
+        .act-btn.delete-btn:hover{background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.3);}
+        .act-btn.delete-btn:hover i{color:#ef4444;}
+        .act-btn.export-btn:hover{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.3);}
+        .act-btn.export-btn:hover i{color:#2563eb;}
 
-        /* Chart area */
-        .charts-row { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:2rem; }
-        @media(max-width:768px){ .charts-row { grid-template-columns:1fr; } }
-        .chart-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; box-shadow:var(--shadow); }
-        .chart-title { font-size:.85rem; font-weight:600; color:var(--text); margin-bottom:1.2rem; display:flex; align-items:center; gap:.5rem; }
-        .chart-title i { width:16px; height:16px; color:var(--secondary); }
+        /* Expand row */
+        .expand-row td{padding:0;}
+        .expand-inner{background:var(--bg);border-top:1px solid var(--border);padding:1.2rem 1.5rem;}
+        .murid-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.7rem;}
+        .murid-item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.75rem;display:flex;align-items:center;gap:.65rem;}
+        .murid-photo{width:34px;height:34px;border-radius:50%;object-fit:cover;flex-shrink:0;background:var(--border);}
+        .mname{font-size:.78rem;font-weight:600;line-height:1.2;}
+        .mclass{font-size:.67rem;color:var(--muted);}
 
-        /* Bar chart */
-        .bar-chart { display:flex; flex-direction:column; gap:.6rem; }
-        .bar-row { display:flex; align-items:center; gap:.8rem; }
-        .bar-lbl { font-size:.72rem; color:var(--muted); min-width:100px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap; }
-        .bar-track { flex:1; height:8px; background:var(--border); border-radius:50px; overflow:hidden; }
-        .bar-fill { height:100%; border-radius:50px; background:linear-gradient(90deg,#3b82f6,#60a5fa); transition:width .8s cubic-bezier(0.4,0,0.2,1); }
-        .bar-fill.green { background:linear-gradient(90deg,#10b981,#34d399); }
-        .bar-count { font-size:.72rem; font-weight:600; color:var(--text); min-width:24px; text-align:right; }
+        /* Modal confirm */
+        .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:5000;display:none;align-items:center;justify-content:center;padding:1rem;}
+        .modal-overlay.active{display:flex;}
+        .modal-box{background:var(--card);border-radius:var(--radius);padding:2rem;width:100%;max-width:380px;position:relative;text-align:center;}
+        .modal-icon{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;}
+        .modal-icon i{width:26px;height:26px;}
+        .modal-icon.warn{background:rgba(245,158,11,.1);color:#f59e0b;}
+        .modal-icon.danger{background:rgba(239,68,68,.1);color:#ef4444;}
+        .modal-title{font-size:1.1rem;font-weight:700;margin-bottom:.5rem;}
+        .modal-msg{font-size:.83rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.5;}
+        .modal-btns{display:flex;gap:.8rem;}
+        .modal-btns button{flex:1;padding:.7rem;border-radius:50px;border:none;font-family:'Poppins',sans-serif;font-weight:600;font-size:.85rem;cursor:pointer;transition:var(--transition);}
+        .btn-cancel{background:var(--bg);color:var(--text);border:1px solid var(--border)!important;}
+        .btn-warn{background:#f59e0b;color:white;}
+        .btn-danger{background:#ef4444;color:white;}
+        .btn-warn:hover{background:#d97706;}
+        .btn-danger:hover{background:#dc2626;}
 
-        /* Donut chart (CSS) */
-        .donut-wrap { display:flex; align-items:center; gap:1.5rem; }
-        .donut-svg { flex-shrink:0; }
-        .donut-legend { display:flex; flex-direction:column; gap:.5rem; }
-        .legend-item { display:flex; align-items:center; gap:.5rem; font-size:.78rem; }
-        .legend-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+        /* Filter bar */
+        .filter-bar{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin-bottom:1.2rem;}
+        .search-wrap{flex:1;min-width:200px;display:flex;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:50px;padding:.5rem 1rem;gap:.6rem;box-shadow:var(--shadow);}
+        .search-wrap:focus-within{border-color:var(--secondary);}
+        .search-wrap i{width:15px;height:15px;color:var(--muted);flex-shrink:0;}
+        .search-wrap input{border:none;outline:none;background:transparent;font-size:.83rem;color:var(--text);width:100%;font-family:'Poppins',sans-serif;}
+        .filter-select{padding:.5rem 1rem;border:1px solid var(--border);border-radius:50px;background:var(--card);color:var(--text);font-family:'Poppins',sans-serif;font-size:.78rem;cursor:pointer;outline:none;}
 
-        /* Recent activity log */
-        .activity-list { display:flex; flex-direction:column; gap:.6rem; }
-        .activity-item { display:flex; align-items:flex-start; gap:.8rem; padding:.8rem; background:var(--bg); border-radius:10px; border:1px solid var(--border); }
-        .activity-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:4px; }
-        .activity-dot.blue { background:#3b82f6; }
-        .activity-dot.green { background:#10b981; }
-        .activity-dot.amber { background:#f59e0b; }
-        .activity-dot.red { background:#ef4444; }
-        .activity-msg { font-size:.8rem; color:var(--text); line-height:1.4; flex:1; }
-        .activity-time { font-size:.7rem; color:var(--muted); white-space:nowrap; }
+        /* Section head */
+        .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.8rem;}
+        .sec-head h2{font-size:.95rem;font-weight:700;display:flex;align-items:center;gap:.5rem;}
+        .sec-head h2 i{width:16px;height:16px;color:var(--secondary);}
+        .refresh-btn{padding:.4rem 1rem;border-radius:50px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:'Poppins',sans-serif;font-size:.75rem;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:var(--transition);}
+        .refresh-btn:hover{background:var(--border);}
+        .refresh-btn i{width:14px;height:14px;}
 
-        /* Notifications / alert */
-        .alert { padding:.9rem 1.2rem; border-radius:10px; margin-bottom:1.5rem; display:flex; align-items:flex-start; gap:.75rem; font-size:.82rem; }
-        .alert i { width:18px; height:18px; flex-shrink:0; margin-top:1px; }
-        .alert.info { background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.2); color:#1d4ed8; }
-        [data-theme="dark"] .alert.info { color:#93c5fd; }
+        /* Alert */
+        .alert{padding:.85rem 1.2rem;border-radius:10px;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:.75rem;font-size:.8rem;}
+        .alert i{width:16px;height:16px;flex-shrink:0;margin-top:1px;}
+        .alert.info{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.18);color:#1d4ed8;}
+        .alert.warn{background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.25);color:#92400e;}
+        [data-theme="dark"] .alert.info{color:#93c5fd;}
+        [data-theme="dark"] .alert.warn{color:#fcd34d;}
 
-        /* Empty state */
-        .empty { text-align:center; padding:3rem 1rem; color:var(--muted); }
-        .empty i { width:48px; height:48px; opacity:.3; margin-bottom:.8rem; }
+        /* Loader */
+        .loader{display:flex;align-items:center;justify-content:center;padding:3rem;gap:.8rem;color:var(--muted);font-size:.83rem;}
+        @keyframes spin{to{transform:rotate(360deg);}}
+        .spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--secondary);border-radius:50%;animation:spin .8s linear infinite;}
 
-        /* Loading */
-        .loader { display:flex; align-items:center; justify-content:center; padding:3rem; gap:.8rem; color:var(--muted); font-size:.85rem; }
-        @keyframes spin { to { transform:rotate(360deg); } }
-        .spinner { width:20px; height:20px; border:2px solid var(--border); border-top-color:var(--secondary); border-radius:50%; animation:spin .8s linear infinite; }
+        /* Donut */
+        .donut-wrap{display:flex;align-items:center;gap:1.5rem;}
+        .donut-legend{display:flex;flex-direction:column;gap:.5rem;}
+        .legend-item{display:flex;align-items:center;gap:.5rem;font-size:.78rem;}
+        .legend-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
 
-        /* Notification toast */
-        .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%) translateY(100px); background:var(--card); border:1px solid var(--border); border-radius:50px; padding:.7rem 1.4rem; box-shadow:0 10px 30px rgba(0,0,0,.15); font-size:.85rem; font-weight:500; display:flex; align-items:center; gap:.6rem; z-index:9998; opacity:0; transition:var(--transition); pointer-events:none; }
-        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-        .toast.err { border-color:rgba(239,68,68,.3); color:#ef4444; }
+        /* Charts row */
+        .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;}
+        @media(max-width:768px){.charts-row{grid-template-columns:1fr;} .tab-nav{flex-wrap:wrap;width:calc(100% - 4rem);} .tab-btn{font-size:.72rem;padding:.4rem .8rem;}}
 
-        /* Responsive */
-        @media(max-width:640px){
-            .main { padding:1rem; }
-            .topbar { padding:.7rem 1rem; }
-            .topbar-user span { display:none; }
-            th, td { padding:.7rem .8rem; }
-        }
+        /* Toast */
+        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--card);border:1px solid var(--border);border-radius:50px;padding:.7rem 1.4rem;box-shadow:0 10px 30px rgba(0,0,0,.15);font-size:.83rem;font-weight:500;display:flex;align-items:center;gap:.6rem;z-index:9997;opacity:0;transition:var(--transition);pointer-events:none;white-space:nowrap;}
+        .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+        .toast.err{border-color:rgba(239,68,68,.3);color:#ef4444;}
+        .toast.ok{border-color:rgba(16,185,129,.3);color:#059669;}
 
-        /* UID config input */
-        .uid-input-wrap { margin-top:1rem; }
-        .uid-input-wrap label { display:block; font-size:.72rem; color:rgba(255,255,255,.6); margin-bottom:.4rem; }
-        .uid-input-wrap input { width:100%; padding:.7rem 1rem; border-radius:10px; border:1px solid rgba(255,255,255,.15); background:rgba(255,255,255,.08); color:white; font-family:'Poppins',sans-serif; font-size:.82rem; outline:none; }
-        .uid-input-wrap input::placeholder { color:rgba(255,255,255,.3); }
-        .uid-input-wrap input:focus { border-color:rgba(59,130,246,.6); background:rgba(255,255,255,.12); }
-        .uid-save-btn { margin-top:.8rem; width:100%; padding:.7rem; border-radius:10px; background:rgba(59,130,246,.8); border:none; color:white; font-family:'Poppins',sans-serif; font-weight:600; font-size:.85rem; cursor:pointer; transition:var(--transition); }
-        .uid-save-btn:hover { background:rgba(59,130,246,1); }
+        @media(max-width:640px){.tab-panel{padding:0 1rem 2rem;}.topbar{padding:.7rem 1rem;}.tab-nav{margin:1rem 1rem .5rem;}}
     </style>
 </head>
 <body>
 
-<!-- ===== LOCK SCREEN ===== -->
+<!-- LOCK SCREEN -->
 <div id="lockScreen">
     <div class="lock-box">
         <div class="lock-logo"><i data-lucide="shield-check"></i></div>
         <h1 class="lock-title">MURIDKU MASTER</h1>
         <p class="lock-sub">SUPER ADMIN DASHBOARD</p>
-
-        <button class="google-login-btn" id="loginBtn">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg">
-            Log Masuk dengan Google
+        <button class="google-btn" id="loginBtn">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg"> Log Masuk dengan Google
         </button>
-
-        <!-- First time: input UID -->
-        <div class="uid-input-wrap" id="uidSection">
-            <label>🔑 Masukkan UID Super Admin (pertama kali sahaja)</label>
-            <input type="text" id="uidInput" placeholder="Paste UID Firebase anda di sini...">
+        <div class="uid-section" id="uidSection">
+            <label>🔑 UID Super Admin (pertama kali sahaja)</label>
+            <input type="text" id="uidInput" placeholder="Paste Firebase UID awak...">
             <button class="uid-save-btn" onclick="saveUID()">Simpan & Kunci Akses</button>
         </div>
-
-        <div id="lockError">Akses ditolak. Akaun Google ini tidak dibenarkan.</div>
-        <p class="lock-note">Hanya akaun Google yang telah didaftarkan sebagai Super Admin boleh akses panel ini.</p>
+        <div id="lockError"></div>
+        <p class="lock-note">Hanya UID yang telah didaftarkan boleh akses panel ini.</p>
     </div>
 </div>
 
-<!-- ===== MAIN APP ===== -->
+<!-- MAIN APP -->
 <div id="app">
-    <!-- Topbar -->
     <nav class="topbar">
         <div class="topbar-brand">
             <div class="topbar-logo"><i data-lucide="shield-check"></i></div>
@@ -250,121 +259,154 @@
         </div>
         <div class="topbar-right">
             <div class="topbar-user">
-                <img id="adminPhoto" src="" alt="admin">
+                <img id="adminPhoto" src="" alt="">
                 <span id="adminName"></span>
             </div>
-            <button class="icon-btn" onclick="toggleDark()" title="Tukar tema">
-                <i data-lucide="moon" id="darkIcon"></i>
-            </button>
-            <button class="icon-btn" onclick="doLogout()" title="Log keluar" style="color:var(--danger)">
-                <i data-lucide="log-out"></i>
-            </button>
+            <button class="icon-btn" onclick="toggleDark()" title="Tukar tema"><i data-lucide="moon" id="darkIcon"></i></button>
+            <button class="icon-btn" onclick="doLogout()" title="Log keluar" style="color:var(--danger)"><i data-lucide="log-out"></i></button>
         </div>
     </nav>
 
-    <div class="main">
-        <!-- Alert info -->
-        <div class="alert info">
-            <i data-lucide="info"></i>
-            <span>Data dikemaskini secara <b>real-time</b> dari Firestore. Klik nama pengguna untuk lihat senarai murid mereka.</span>
-        </div>
+    <!-- TAB NAV -->
+    <div class="tab-nav">
+        <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')"><i data-lucide="layout-dashboard"></i> Overview</button>
+        <button class="tab-btn" data-tab="users" onclick="switchTab('users')"><i data-lucide="users"></i> Pengguna</button>
+        <button class="tab-btn" data-tab="usage" onclick="switchTab('usage')"><i data-lucide="database"></i> Data Usage</button>
+    </div>
 
-        <!-- Stats -->
-        <div class="stats-row" id="statsRow">
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-icon blue"><i data-lucide="users"></i></div>
-                    <span class="stat-trend up" id="trendUsers">—</span>
-                </div>
-                <div class="stat-val" id="statUsers">—</div>
-                <div class="stat-lbl">Jumlah Pengguna</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-icon green"><i data-lucide="graduation-cap"></i></div>
-                    <span class="stat-trend up" id="trendMurid">—</span>
-                </div>
-                <div class="stat-val" id="statMurid">—</div>
-                <div class="stat-lbl">Jumlah Rekod Murid</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-icon amber"><i data-lucide="bar-chart-2"></i></div>
-                </div>
-                <div class="stat-val" id="statAvg">—</div>
-                <div class="stat-lbl">Purata Murid / Pengguna</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-card-top">
-                    <div class="stat-icon purple"><i data-lucide="building-2"></i></div>
-                </div>
-                <div class="stat-val" id="statActiveToday">—</div>
-                <div class="stat-lbl">Pengguna Ada Data</div>
-            </div>
+    <!-- TAB: OVERVIEW -->
+    <div class="tab-panel active" id="tab-overview">
+        <div class="alert info"><i data-lucide="info"></i><span>Data dibaca secara real-time dari Firestore. Klik tab <b>Data Usage</b> untuk monitor quota Firebase.</span></div>
+        <div class="stats-row">
+            <div class="stat-card"><div class="stat-top"><div class="stat-icon si-blue"><i data-lucide="users"></i></div></div><div class="stat-val" id="statUsers">—</div><div class="stat-lbl">Pengguna Terdaftar</div></div>
+            <div class="stat-card"><div class="stat-top"><div class="stat-icon si-green"><i data-lucide="graduation-cap"></i></div></div><div class="stat-val" id="statMurid">—</div><div class="stat-lbl">Jumlah Rekod Murid</div></div>
+            <div class="stat-card"><div class="stat-top"><div class="stat-icon si-amber"><i data-lucide="bar-chart-2"></i></div></div><div class="stat-val" id="statAvg">—</div><div class="stat-lbl">Purata Murid / Pengguna</div></div>
+            <div class="stat-card"><div class="stat-top"><div class="stat-icon si-purple"><i data-lucide="check-circle"></i></div></div><div class="stat-val" id="statActive">—</div><div class="stat-lbl">Pengguna Ada Data</div></div>
         </div>
-
-        <!-- Charts row -->
         <div class="charts-row">
-            <div class="chart-card">
-                <div class="chart-title"><i data-lucide="bar-chart-3"></i> Top 8 Pengguna (Bilangan Murid)</div>
-                <div class="bar-chart" id="topUsersChart">
-                    <div class="loader"><div class="spinner"></div> Memuatkan...</div>
-                </div>
-            </div>
-            <div class="chart-card">
-                <div class="chart-title"><i data-lucide="pie-chart"></i> Agihan Murid (Jantina)</div>
-                <div class="donut-wrap" id="genderChart">
-                    <div class="loader"><div class="spinner"></div> Memuatkan...</div>
-                </div>
-            </div>
+            <div class="usage-card"><div class="usage-title"><i data-lucide="bar-chart-3"></i> Top 8 Pengguna</div><div class="bar-chart" id="topChart"><div class="loader"><div class="spinner"></div></div></div></div>
+            <div class="usage-card"><div class="usage-title"><i data-lucide="pie-chart"></i> Agihan Jantina</div><div class="donut-wrap" id="genderChart"><div class="loader"><div class="spinner"></div></div></div></div>
         </div>
+    </div>
 
-        <!-- Users table -->
-        <div class="section-head">
-            <h2><i data-lucide="users"></i> Semua Pengguna MURIDKU</h2>
-            <button class="icon-btn" onclick="refreshData()" title="Refresh data" style="width:auto; padding:.4rem .9rem; border-radius:50px; gap:.4rem; display:flex; font-size:.75rem; font-weight:600;">
-                <i data-lucide="refresh-cw" style="width:14px;height:14px;"></i> Refresh
-            </button>
+    <!-- TAB: USERS -->
+    <div class="tab-panel" id="tab-users">
+        <div class="sec-head">
+            <h2><i data-lucide="users"></i> Semua Pengguna</h2>
+            <button class="refresh-btn" onclick="loadAllData()"><i data-lucide="refresh-cw"></i> Refresh</button>
         </div>
-
         <div class="filter-bar">
-            <div class="search-wrap">
-                <i data-lucide="search"></i>
-                <input type="text" id="userSearch" placeholder="Cari nama atau email..." oninput="filterTable()">
-            </div>
+            <div class="search-wrap"><i data-lucide="search"></i><input type="text" id="userSearch" placeholder="Cari nama atau email..." oninput="filterTable()"></div>
             <select class="filter-select" id="sortBy" onchange="filterTable()">
                 <option value="murid_desc">Terbanyak Murid</option>
                 <option value="murid_asc">Paling Sedikit</option>
                 <option value="name">Nama A-Z</option>
-                <option value="latest">Terbaru Daftar</option>
+                <option value="disabled">Diblok Dahulu</option>
+            </select>
+            <select class="filter-select" id="filterStatus" onchange="filterTable()">
+                <option value="">Semua Status</option>
+                <option value="active">Aktif Sahaja</option>
+                <option value="blocked">Diblok Sahaja</option>
             </select>
         </div>
-
         <div class="table-wrap">
             <table>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Pengguna</th>
-                        <th>Jumlah Murid</th>
-                        <th>Kelas Terbanyak</th>
-                        <th>Jantina (L/P)</th>
-                        <th>Status</th>
-                        <th>Tindakan</th>
-                    </tr>
-                </thead>
-                <tbody id="usersTableBody">
-                    <tr><td colspan="7"><div class="loader"><div class="spinner"></div> Memuatkan data pengguna...</div></td></tr>
-                </tbody>
+                <thead><tr>
+                    <th>#</th><th>Pengguna</th><th>Murid</th><th>Kelas Utama</th><th>L/P</th>
+                    <th>Login Terakhir</th><th>Status</th><th>Tindakan</th>
+                </tr></thead>
+                <tbody id="usersBody"><tr><td colspan="8"><div class="loader"><div class="spinner"></div> Memuatkan...</div></td></tr></tbody>
             </table>
         </div>
+    </div>
 
-        <!-- Activity Feed -->
-        <div class="section-head">
-            <h2><i data-lucide="activity"></i> Log Aktiviti Terkini</h2>
+    <!-- TAB: DATA USAGE -->
+    <div class="tab-panel" id="tab-usage">
+        <div class="sec-head">
+            <h2><i data-lucide="database"></i> Firebase Data Usage</h2>
+            <button class="refresh-btn" onclick="loadUsageData()"><i data-lucide="refresh-cw"></i> Semak Semula</button>
         </div>
-        <div class="activity-list" id="activityList">
-            <div class="loader"><div class="spinner"></div> Memuatkan...</div>
+        <div class="alert warn" id="usageAlert" style="display:none">
+            <i data-lucide="alert-triangle"></i><span id="usageAlertMsg"></span>
+        </div>
+
+        <!-- Storage Usage -->
+        <div class="usage-card" id="storageCard">
+            <div class="usage-title"><i data-lucide="hard-drive"></i> Firebase Storage (Gambar Murid)</div>
+            <div class="loader" id="storageLoader"><div class="spinner"></div> Memuatkan data storage...</div>
+            <div id="storageContent" style="display:none">
+                <div class="meter-wrap">
+                    <div class="meter-top">
+                        <span class="meter-label">Penggunaan Storage</span>
+                        <span class="meter-pct" id="storagePct">0%</span>
+                    </div>
+                    <div class="meter-track"><div class="meter-fill safe" id="storageMeter" style="width:0%"></div></div>
+                    <div class="meter-info" id="storageInfo">—</div>
+                </div>
+                <div class="quota-grid">
+                    <div class="quota-item"><div class="quota-val" id="qTotalFiles">—</div><div class="quota-lbl">Jumlah Fail</div><div class="quota-status qs-safe">Storage</div></div>
+                    <div class="quota-item"><div class="quota-val" id="qImageFiles">—</div><div class="quota-lbl">Fail Imej</div><div class="quota-status qs-safe">Gambar Profil</div></div>
+                    <div class="quota-item"><div class="quota-val" id="qStorageUsed">—</div><div class="quota-lbl">Saiz Digunakan</div><div class="quota-status qs-safe" id="qStorageStatus">—</div></div>
+                    <div class="quota-item"><div class="quota-val" id="qStorageFree">—</div><div class="quota-lbl">Baki Percuma</div><div class="quota-status qs-safe">Limit: 5 GB</div></div>
+                </div>
+                <div style="margin-top:1.5rem">
+                    <div class="usage-title" style="font-size:.78rem; margin-bottom:.8rem;"><i data-lucide="users"></i> Top 10 Pengguna (Saiz Storage)</div>
+                    <div class="bar-chart" id="storageTopUsers"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Users Stats -->
+        <div class="usage-card" id="authCard">
+            <div class="usage-title"><i data-lucide="key-round"></i> Firebase Auth (Pengguna Berdaftar)</div>
+            <div class="loader" id="authLoader"><div class="spinner"></div> Memuatkan data auth...</div>
+            <div id="authContent" style="display:none">
+                <div class="meter-wrap">
+                    <div class="meter-top">
+                        <span class="meter-label">Penggunaan Auth</span>
+                        <span class="meter-pct" id="authPct">0%</span>
+                    </div>
+                    <div class="meter-track"><div class="meter-fill safe" id="authMeter" style="width:0%"></div></div>
+                    <div class="meter-info" id="authInfo">Limit percuma: 10,000 pengguna aktif sebulan</div>
+                </div>
+                <div class="quota-grid">
+                    <div class="quota-item"><div class="quota-val" id="qTotalAuth">—</div><div class="quota-lbl">Jumlah Akaun</div><div class="quota-status qs-safe" id="qAuthStatus">—</div></div>
+                    <div class="quota-item"><div class="quota-val" id="qActiveAuth">—</div><div class="quota-lbl">Akaun Aktif</div><div class="quota-status qs-safe">Pernah Login</div></div>
+                    <div class="quota-item"><div class="quota-val" id="qDisabledAuth">—</div><div class="quota-lbl">Akaun Diblok</div><div class="quota-status qs-warn">Disabled</div></div>
+                    <div class="quota-item"><div class="quota-val" id="qGoogleAuth">—</div><div class="quota-lbl">Via Google</div><div class="quota-status qs-safe">Sign-in Provider</div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Firestore estimate -->
+        <div class="usage-card">
+            <div class="usage-title"><i data-lucide="database"></i> Firestore (Anggaran Bacaan)</div>
+            <div class="quota-grid">
+                <div class="quota-item"><div class="quota-val" id="qFsDocs">—</div><div class="quota-lbl">Jumlah Dokumen</div><div class="quota-status qs-safe">Dalam murid/</div></div>
+                <div class="quota-item"><div class="quota-val">50,000</div><div class="quota-lbl">Limit Baca/Hari</div><div class="quota-status qs-safe">Free Tier</div></div>
+                <div class="quota-item"><div class="quota-val">20,000</div><div class="quota-lbl">Limit Tulis/Hari</div><div class="quota-status qs-safe">Free Tier</div></div>
+                <div class="quota-item"><div class="quota-val">1 GB</div><div class="quota-lbl">Limit Storan</div><div class="quota-status qs-safe">Free Tier</div></div>
+            </div>
+            <div class="alert info" style="margin-top:1rem; margin-bottom:0; font-size:.75rem;">
+                <i data-lucide="info"></i>
+                <span>Bacaan tepat Firestore hanya tersedia dari Firebase Console → Usage → Firestore. Panel ini menunjukkan anggaran berdasarkan bilangan dokumen.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal-overlay" id="confirmModal">
+    <div class="modal-box">
+        <div class="modal-icon" id="modalIcon"><i data-lucide="alert-triangle" id="modalIconInner"></i></div>
+        <div class="modal-title" id="modalTitle">Sahkan Tindakan</div>
+        <div class="modal-msg" id="modalMsg">Adakah anda pasti?</div>
+        <div style="margin-bottom:1rem; display:none;" id="modalPinWrap">
+            <input type="text" id="modalConfirmText" placeholder="Taip SETUJU untuk sahkan" style="width:100%; padding:.7rem 1rem; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:'Poppins',sans-serif; font-size:.83rem; outline:none; text-transform:uppercase;">
+        </div>
+        <div class="modal-btns">
+            <button class="modal-btns btn-cancel" onclick="closeConfirm()">Batal</button>
+            <button class="modal-btns" id="modalConfirmBtn" onclick="executeAction()">Teruskan</button>
         </div>
     </div>
 </div>
@@ -374,7 +416,8 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, where, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDsDqQTADe0aSfAnyFQQxx9RsnMqxJmWLQ",
@@ -388,360 +431,421 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
+const functions = getFunctions(app, "asia-southeast1");
 
-// ===== UID MANAGEMENT =====
-const UID_KEY = 'muridku_master_uid';
+// Cloud Function callables
+const masterAction   = httpsCallable(functions, "masterAction");
+const getAuthUsers   = httpsCallable(functions, "getAuthUsers");
+const getStorageStats = httpsCallable(functions, "getStorageStats");
 
-function getSuperAdminUID() { return localStorage.getItem(UID_KEY) || ''; }
-
-window.saveUID = function() {
-    const val = document.getElementById('uidInput').value.trim();
-    if (!val || val.length < 20) { showToast('UID tidak sah. Salin dari Firebase Console.', true); return; }
-    localStorage.setItem(UID_KEY, val);
-    showToast('UID disimpan. Sila log masuk.');
-    document.getElementById('uidSection').style.display = 'none';
+// UID MANAGEMENT
+const UID_KEY = "muridku_master_uid";
+const getSuperUID = () => localStorage.getItem(UID_KEY) || "";
+window.saveUID = () => {
+    const v = document.getElementById("uidInput").value.trim();
+    if (!v || v.length < 20) { showToast("UID tidak sah.", true); return; }
+    localStorage.setItem(UID_KEY, v);
+    showToast("UID disimpan! Sila log masuk.");
+    document.getElementById("uidSection").style.display = "none";
 };
+if (getSuperUID()) document.getElementById("uidSection").style.display = "none";
 
-// Show/hide UID section based on whether UID is already saved
-if (getSuperAdminUID()) {
-    document.getElementById('uidSection').style.display = 'none';
-}
-
-// ===== AUTH =====
-document.getElementById('loginBtn').onclick = () => {
-    signInWithPopup(auth, provider).catch(e => showToast('Gagal log masuk: ' + e.message, true));
-};
-
+// AUTH
+document.getElementById("loginBtn").onclick = () =>
+    signInWithPopup(auth, new GoogleAuthProvider()).catch(e => showToast("Gagal: " + e.message, true));
 window.doLogout = () => signOut(auth).then(() => location.reload());
 
 onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-        document.getElementById('lockScreen').style.display = 'flex';
-        document.getElementById('app').style.display = 'none';
-        return;
-    }
-
-    const allowedUID = getSuperAdminUID();
-    if (!allowedUID) {
-        document.getElementById('lockError').style.display = 'block';
-        document.getElementById('lockError').textContent = 'Sila masukkan UID Super Admin anda dulu (di bawah).';
-        document.getElementById('uidSection').style.display = 'block';
-        return;
-    }
-
-    if (user.uid !== allowedUID) {
-        document.getElementById('lockError').style.display = 'block';
-        document.getElementById('lockError').textContent = 'Akses ditolak. UID: ' + user.uid;
-        await signOut(auth);
-        return;
-    }
-
-    // ACCESS GRANTED
-    document.getElementById('lockScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    document.getElementById('adminName').textContent = user.displayName || 'Admin';
-    document.getElementById('adminPhoto').src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'A')}&background=0f172a&color=fff`;
+    if (!user) { document.getElementById("lockScreen").style.display = "flex"; document.getElementById("app").style.display = "none"; return; }
+    const uid = getSuperUID();
+    if (!uid) { showLockError("Masukkan UID Super Admin dulu."); return; }
+    if (user.uid !== uid) { showLockError("Akses ditolak. UID: " + user.uid); await signOut(auth); return; }
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("adminName").textContent = user.displayName || "Admin";
+    document.getElementById("adminPhoto").src = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||"A")}&background=0f172a&color=fff`;
     lucide.createIcons();
-
     await loadAllData();
 });
 
-// ===== DATA LOADING =====
-let allUsersData = [];
+function showLockError(msg) {
+    const el = document.getElementById("lockError");
+    el.textContent = msg; el.style.display = "block";
+    document.getElementById("uidSection").style.display = "block";
+}
 
-window.refreshData = async function() {
-    showToast('Memuatkan semula data...');
-    await loadAllData();
-};
+// ── DATA ──────────────────────────────────────────────────────────────────────
+window.allUsersData = [];
+window.authUsersMap = {}; // uid → auth record
 
-async function loadAllData() {
+window.loadAllData = async () => {
     try {
-        // Ambil SEMUA rekod murid dari Firestore (collectionGroup semua userId)
-        const muridSnap = await getDocs(collection(db, 'murid'));
-        const allMurid = muridSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        // Load Firestore murid data
+        const snap = await getDocs(collection(db, "murid"));
+        const allMurid = snap.docs.map(d => ({ id: d.id, ...d.data() }));
 
         // Group by userId
-        const userMap = {};
+        const uMap = {};
         allMurid.forEach(m => {
             if (!m.userId) return;
-            if (!userMap[m.userId]) {
-                userMap[m.userId] = {
-                    userId: m.userId,
-                    murid: [],
-                    classes: {},
-                    lelaki: 0,
-                    perempuan: 0,
-                };
-            }
-            userMap[m.userId].murid.push(m);
-            if (m.gender === 'Lelaki') userMap[m.userId].lelaki++;
-            else userMap[m.userId].perempuan++;
-            if (m.class) {
-                userMap[m.userId].classes[m.class] = (userMap[m.userId].classes[m.class] || 0) + 1;
-            }
+            if (!uMap[m.userId]) uMap[m.userId] = { userId: m.userId, murid: [], classes: {}, lelaki: 0, perempuan: 0 };
+            uMap[m.userId].murid.push(m);
+            m.gender === "Lelaki" ? uMap[m.userId].lelaki++ : uMap[m.userId].perempuan++;
+            if (m.class) uMap[m.userId].classes[m.class] = (uMap[m.userId].classes[m.class] || 0) + 1;
         });
 
-        // Ambil info user dari Firebase Auth (kita simpan nama dari murid records sahaja)
-        // Attempt to get displayName from stored profile or fallback to UID
-        allUsersData = Object.values(userMap).map(u => {
+        // Try get Auth info via Cloud Function
+        try {
+            const result = await getAuthUsers();
+            if (result.data?.users) {
+                result.data.users.forEach(u => { window.authUsersMap[u.uid] = u; });
+            }
+        } catch(e) {
+            console.warn("getAuthUsers failed (function not deployed yet?):", e.message);
+        }
+
+        window.allUsersData = Object.values(uMap).map(u => {
             const topClass = Object.entries(u.classes).sort((a,b) => b[1]-a[1])[0];
+            const authInfo = window.authUsersMap[u.userId] || {};
             return {
-                ...u,
-                displayName: u.murid[0]?._teacherName || null,
-                topClass: topClass ? topClass[0] : '-',
-                muridCount: u.murid.length,
+                ...u, muridCount: u.murid.length,
+                topClass: topClass ? topClass[0] : "—",
+                displayName: authInfo.displayName || u.murid[0]?.name?.split(" ")[0] || "—",
+                email: authInfo.email || "—",
+                photoURL: authInfo.photoURL || null,
+                disabled: authInfo.disabled || false,
+                lastSignIn: authInfo.lastSignInTime || null,
+                creationTime: authInfo.creationTime || null,
             };
-        });
+        }).sort((a,b) => b.muridCount - a.muridCount);
 
-        // Sort by murid count desc by default
-        allUsersData.sort((a,b) => b.muridCount - a.muridCount);
+        // Update overview
+        document.getElementById("statUsers").textContent = window.allUsersData.length;
+        document.getElementById("statMurid").textContent = allMurid.length;
+        document.getElementById("statAvg").textContent = window.allUsersData.length ? (allMurid.length / window.allUsersData.length).toFixed(1) : "0";
+        document.getElementById("statActive").textContent = window.allUsersData.filter(u => u.muridCount > 0).length;
+        document.getElementById("qFsDocs").textContent = allMurid.length;
 
-        updateStats(allMurid, allUsersData);
-        renderCharts(allUsersData, allMurid);
-        renderTable(allUsersData);
-        renderActivity(allMurid);
-
+        renderOverviewCharts(window.allUsersData, allMurid);
+        renderUsersTable(window.allUsersData);
         lucide.createIcons();
-
     } catch(e) {
         console.error(e);
-        showToast('Ralat membaca data: ' + e.message, true);
+        showToast("Ralat: " + e.message, true);
     }
-}
+};
 
-function updateStats(allMurid, usersData) {
-    const totalUsers = usersData.length;
-    const totalMurid = allMurid.length;
-    const avg = totalUsers > 0 ? (totalMurid / totalUsers).toFixed(1) : 0;
-    const activeUsers = usersData.filter(u => u.muridCount > 0).length;
+function renderOverviewCharts(users, allMurid) {
+    const top8 = users.slice(0,8);
+    const maxC = top8[0]?.muridCount || 1;
+    document.getElementById("topChart").innerHTML = top8.length === 0
+        ? '<p style="color:var(--muted);font-size:.8rem;text-align:center">Tiada data</p>'
+        : top8.map((u,i) => `
+            <div class="bar-row">
+                <div class="bar-lbl" title="${u.displayName}">${u.displayName}</div>
+                <div class="bar-track"><div class="bar-fill" style="width:${Math.round(u.muridCount/maxC*100)}%"></div></div>
+                <div class="bar-count">${u.muridCount}</div>
+            </div>`).join("");
 
-    document.getElementById('statUsers').textContent = totalUsers;
-    document.getElementById('statMurid').textContent = totalMurid;
-    document.getElementById('statAvg').textContent = avg;
-    document.getElementById('statActiveToday').textContent = activeUsers;
-    document.getElementById('trendUsers').textContent = totalUsers + ' pengguna';
-    document.getElementById('trendMurid').textContent = totalMurid + ' rekod';
-}
-
-function renderCharts(usersData, allMurid) {
-    // Top users bar chart
-    const top8 = usersData.slice(0, 8);
-    const maxCount = top8[0]?.muridCount || 1;
-    const barChart = document.getElementById('topUsersChart');
-    if (top8.length === 0) { barChart.innerHTML = '<div class="empty"><i data-lucide="inbox"></i><p>Tiada data</p></div>'; return; }
-    barChart.innerHTML = top8.map((u, i) => `
-        <div class="bar-row">
-            <div class="bar-lbl" title="${u.userId}">${u.displayName || 'User ' + (i+1)}</div>
-            <div class="bar-track">
-                <div class="bar-fill ${i === 0 ? '' : 'green'}" style="width:${Math.round(u.muridCount/maxCount*100)}%" data-w="${Math.round(u.muridCount/maxCount*100)}"></div>
-            </div>
-            <div class="bar-count">${u.muridCount}</div>
-        </div>
-    `).join('');
-
-    // Gender donut chart (CSS conic-gradient)
-    const totalL = allMurid.filter(m => m.gender === 'Lelaki').length;
-    const totalP = allMurid.filter(m => m.gender === 'Perempuan').length;
-    const total = totalL + totalP || 1;
-    const pctL = Math.round(totalL/total*100);
-    const pctP = 100 - pctL;
-    document.getElementById('genderChart').innerHTML = `
-        <svg class="donut-svg" viewBox="0 0 80 80" width="80" height="80">
+    const tL = allMurid.filter(m => m.gender === "Lelaki").length;
+    const tP = allMurid.filter(m => m.gender === "Perempuan").length;
+    const tot = tL + tP || 1;
+    const pL = Math.round(tL/tot*100);
+    const pP = 100 - pL;
+    document.getElementById("genderChart").innerHTML = `
+        <svg viewBox="0 0 80 80" width="80" height="80" style="flex-shrink:0">
             <circle cx="40" cy="40" r="32" fill="none" stroke="#3b82f6" stroke-width="14"
-                stroke-dasharray="${pctL * 2.01} ${(100-pctL) * 2.01}" stroke-dashoffset="50.265" transform="rotate(-90 40 40)"/>
+                stroke-dasharray="${pL*2.01} ${pP*2.01}" stroke-dashoffset="50.265" transform="rotate(-90 40 40)"/>
             <circle cx="40" cy="40" r="32" fill="none" stroke="#a855f7" stroke-width="14"
-                stroke-dasharray="${pctP * 2.01} ${(100-pctP) * 2.01}" stroke-dashoffset="${50.265 - pctL * 2.01}" transform="rotate(-90 40 40)"/>
-            <text x="40" y="38" text-anchor="middle" font-size="11" font-weight="700" fill="var(--text)" font-family="Poppins">${pctL}%</text>
-            <text x="40" y="50" text-anchor="middle" font-size="7" fill="var(--muted)" font-family="Poppins">Lelaki</text>
+                stroke-dasharray="${pP*2.01} ${pL*2.01}" stroke-dashoffset="${50.265 - pL*2.01}" transform="rotate(-90 40 40)"/>
+            <text x="40" y="37" text-anchor="middle" font-size="11" font-weight="700" fill="var(--text)" font-family="Poppins">${pL}%</text>
+            <text x="40" y="49" text-anchor="middle" font-size="7" fill="var(--muted)" font-family="Poppins">Lelaki</text>
         </svg>
         <div class="donut-legend">
-            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Lelaki — <b>${totalL}</b> (${pctL}%)</div>
-            <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div> Perempuan — <b>${totalP}</b> (${pctP}%)</div>
-            <div class="legend-item" style="margin-top:.3rem; color:var(--muted); font-size:.72rem;">Jumlah: ${total} murid</div>
-        </div>
-    `;
+            <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div>Lelaki — <b>${tL}</b> (${pL}%)</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#a855f7"></div>Perempuan — <b>${tP}</b> (${pP}%)</div>
+            <div class="legend-item" style="font-size:.7rem;color:var(--muted);margin-top:.3rem">Jumlah: ${tot}</div>
+        </div>`;
 }
 
 let expandedUID = null;
+window.renderUsersTable = (data) => {
+    const tbody = document.getElementById("usersBody");
+    if (!data.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="loader">Tiada pengguna.</div></td></tr>`; return; }
+    tbody.innerHTML = data.map((u,i) => {
+        const isExp = expandedUID === u.userId;
+        const statusBadge = u.disabled
+            ? `<span class="badge b-red"><i data-lucide="ban"></i> Diblok</span>`
+            : u.muridCount > 0 ? `<span class="badge b-green"><i data-lucide="check-circle"></i> Aktif</span>`
+            : `<span class="badge b-gray"><i data-lucide="minus-circle"></i> Kosong</span>`;
+        const lastLogin = u.lastSignIn ? new Date(u.lastSignIn).toLocaleDateString("ms-MY",{day:"numeric",month:"short",year:"numeric"}) : "—";
+        const avatar = u.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.displayName||"U")}&background=0f172a&color=fff&size=80`;
 
-function renderTable(data) {
-    const tbody = document.getElementById('usersTableBody');
-    if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><i data-lucide="users"></i><p>Tiada pengguna dijumpai</p></div></td></tr>`;
-        lucide.createIcons(); return;
-    }
-
-    tbody.innerHTML = data.map((u, i) => {
-        const isExpanded = expandedUID === u.userId;
-        const statusBadge = u.muridCount > 0
-            ? `<span class="badge green"><i data-lucide="check-circle"></i> Aktif</span>`
-            : `<span class="badge gray"><i data-lucide="minus-circle"></i> Kosong</span>`;
-
-        const muridPreview = isExpanded ? `
-            <tr class="expand-row" id="expand-${u.userId.replace(/[^a-z0-9]/gi,'_')}">
-                <td colspan="7">
+        const expandHTML = isExp ? `
+            <tr class="expand-row">
+                <td colspan="8">
                     <div class="expand-inner">
-                        <div style="font-size:.78rem; font-weight:600; color:var(--muted); margin-bottom:.8rem;">
-                            SENARAI MURID (${u.muridCount} rekod)
+                        <div style="font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.8rem;">
+                            ${u.muridCount} Rekod Murid
                         </div>
                         <div class="murid-grid">
                             ${u.murid.map(m => `
                                 <div class="murid-item">
-                                    <img src="${m.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(m.name||'M')}&background=e2e8f0&size=80`}" class="murid-photo" onerror="this.src='https://ui-avatars.com/api/?name=M&background=e2e8f0'">
-                                    <div>
-                                        <div class="murid-name">${m.name || '-'}</div>
-                                        <div class="murid-class">${m.class || '-'} · ${m.gender || '-'}</div>
-                                    </div>
-                                </div>
-                            `).join('')}
+                                    <img src="${m.photo||`https://ui-avatars.com/api/?name=${encodeURIComponent(m.name||"M")}&background=e2e8f0`}" class="murid-photo" onerror="this.src='https://ui-avatars.com/api/?name=M&background=e2e8f0'">
+                                    <div><div class="mname">${m.name||"—"}</div><div class="mclass">${m.class||"—"} · ${m.gender||"—"}</div></div>
+                                </div>`).join("")}
                         </div>
                     </div>
                 </td>
-            </tr>
-        ` : '';
+            </tr>` : "";
 
         return `
-            <tr class="user-row" onclick="toggleExpand('${u.userId}')" data-uid="${u.userId}">
-                <td style="color:var(--muted); font-weight:600;">${i+1}</td>
-                <td>
-                    <div class="user-cell">
-                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(u.displayName||'U')}&background=0f172a&color=fff&size=80" class="user-avatar">
-                        <div>
-                            <div class="user-name">${u.displayName || '—'}</div>
-                            <div class="user-email" style="font-size:.68rem;">${u.userId.substring(0,20)}...</div>
-                        </div>
-                    </div>
-                </td>
-                <td><b>${u.muridCount}</b> murid</td>
-                <td><span class="badge blue">${u.topClass}</span></td>
-                <td><span style="color:#3b82f6; font-weight:600;">${u.lelaki}L</span> / <span style="color:#a855f7; font-weight:600;">${u.perempuan}P</span></td>
+            <tr class="user-row" onclick="toggleExpandRow('${u.userId}')">
+                <td style="color:var(--muted);font-weight:600;">${i+1}</td>
+                <td><div class="user-cell">
+                    <img src="${avatar}" class="user-avatar" onerror="this.src='https://ui-avatars.com/api/?name=U&background=0f172a&color=fff'">
+                    <div><div class="uname">${u.displayName}</div><div class="uemail">${u.email}</div></div>
+                </div></td>
+                <td><b>${u.muridCount}</b></td>
+                <td><span class="badge b-blue">${u.topClass}</span></td>
+                <td><span style="color:#3b82f6;font-weight:600;">${u.lelaki}L</span> / <span style="color:#a855f7;font-weight:600;">${u.perempuan}P</span></td>
+                <td style="color:var(--muted);font-size:.78rem;">${lastLogin}</td>
                 <td>${statusBadge}</td>
-                <td>
+                <td onclick="event.stopPropagation()">
                     <div class="action-btns">
-                        <div class="act-btn" title="Lihat murid" onclick="event.stopPropagation(); toggleExpand('${u.userId}')">
-                            <i data-lucide="eye"></i>
-                        </div>
-                        <div class="act-btn" title="Export CSV" onclick="event.stopPropagation(); exportUserCSV('${u.userId}')">
-                            <i data-lucide="download"></i>
-                        </div>
+                        <div class="act-btn expand-btn" title="Lihat murid" onclick="toggleExpandRow('${u.userId}')"><i data-lucide="eye"></i></div>
+                        <div class="act-btn export-btn" title="Export CSV" onclick="exportUserCSV('${u.userId}')"><i data-lucide="download"></i></div>
+                        ${u.disabled
+                            ? `<div class="act-btn unblock-btn" title="Buka Blok" onclick="promptAction('unblock','${u.userId}','${u.displayName}')"><i data-lucide="unlock"></i></div>`
+                            : `<div class="act-btn block-btn" title="Blok User" onclick="promptAction('block','${u.userId}','${u.displayName}')"><i data-lucide="ban"></i></div>`
+                        }
+                        <div class="act-btn delete-btn" title="Padam Pengguna + Semua Data" onclick="promptAction('delete','${u.userId}','${u.displayName}')"><i data-lucide="trash-2"></i></div>
                     </div>
                 </td>
-            </tr>
-            ${muridPreview}
-        `;
-    }).join('');
+            </tr>${expandHTML}`;
+    }).join("");
     lucide.createIcons();
-}
+};
 
-window.toggleExpand = function(uid) {
+window.toggleExpandRow = (uid) => {
     expandedUID = expandedUID === uid ? null : uid;
     filterTable();
 };
 
-function renderActivity(allMurid) {
-    // Sort by createdAt desc, take latest 10
-    const sorted = allMurid
-        .filter(m => m.createdAt)
-        .sort((a,b) => {
-            const ta = a.createdAt?.seconds || 0;
-            const tb = b.createdAt?.seconds || 0;
-            return tb - ta;
-        })
-        .slice(0, 10);
-
-    const container = document.getElementById('activityList');
-    if (sorted.length === 0) {
-        container.innerHTML = `<div class="empty"><i data-lucide="activity"></i><p>Tiada aktiviti direkodkan</p></div>`;
-        lucide.createIcons(); return;
-    }
-
-    container.innerHTML = sorted.map(m => {
-        const d = m.createdAt?.seconds ? new Date(m.createdAt.seconds * 1000) : null;
-        const timeStr = d ? d.toLocaleString('ms-MY', {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—';
-        return `
-            <div class="activity-item">
-                <div class="activity-dot green"></div>
-                <div class="activity-msg">
-                    Rekod murid <b>${m.name || 'Tanpa Nama'}</b> (${m.class || '—'}) ditambah oleh pengguna <span style="color:var(--secondary);">${m.userId?.substring(0,12)}...</span>
-                </div>
-                <div class="activity-time">${timeStr}</div>
-            </div>
-        `;
-    }).join('');
-    lucide.createIcons();
-}
-
-window.filterTable = function() {
-    const term = document.getElementById('userSearch').value.toLowerCase();
-    const sort = document.getElementById('sortBy').value;
-    let data = [...allUsersData];
-
-    if (term) {
-        data = data.filter(u =>
-            (u.displayName || '').toLowerCase().includes(term) ||
-            u.userId.toLowerCase().includes(term)
-        );
-    }
-
-    if (sort === 'murid_desc') data.sort((a,b) => b.muridCount - a.muridCount);
-    else if (sort === 'murid_asc') data.sort((a,b) => a.muridCount - b.muridCount);
-    else if (sort === 'name') data.sort((a,b) => (a.displayName||'').localeCompare(b.displayName||''));
-
-    renderTable(data);
+window.filterTable = () => {
+    const term = document.getElementById("userSearch").value.toLowerCase();
+    const sort = document.getElementById("sortBy").value;
+    const status = document.getElementById("filterStatus").value;
+    let data = [...window.allUsersData];
+    if (term) data = data.filter(u => (u.displayName||"").toLowerCase().includes(term) || (u.email||"").toLowerCase().includes(term) || u.userId.toLowerCase().includes(term));
+    if (status === "active") data = data.filter(u => !u.disabled);
+    if (status === "blocked") data = data.filter(u => u.disabled);
+    if (sort === "murid_desc") data.sort((a,b) => b.muridCount - a.muridCount);
+    else if (sort === "murid_asc") data.sort((a,b) => a.muridCount - b.muridCount);
+    else if (sort === "name") data.sort((a,b) => (a.displayName||"").localeCompare(b.displayName||""));
+    else if (sort === "disabled") data.sort((a,b) => (b.disabled?1:0) - (a.disabled?1:0));
+    renderUsersTable(data);
 };
 
-window.exportUserCSV = function(uid) {
-    const user = allUsersData.find(u => u.userId === uid);
-    if (!user) return;
-    let csv = 'nama,ic,kelas,jantina,tarikh_lahir,tempat_lahir,hobi,no_tel,delima,password,kelab,uniform,sukan,rumah_sukan\n';
-    user.murid.forEach(m => {
-        csv += [m.name,m.ic,m.class,m.gender,m.dob,m.tempat,m.hobi,m.tel,m.delima,m.password,m.kelab,m.uniform,m.sukan,m.rumah_sukan]
-            .map(v => `"${v||''}"`)
-            .join(',') + '\n';
-    });
-    const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
+window.exportUserCSV = (uid) => {
+    const u = window.allUsersData.find(x => x.userId === uid);
+    if (!u) return;
+    let csv = "nama,ic,kelas,jantina,tarikh_lahir,tempat,hobi,tel,delima,password,kelab,uniform,sukan,rumah_sukan\n";
+    u.murid.forEach(m => csv += [m.name,m.ic,m.class,m.gender,m.dob,m.tempat,m.hobi,m.tel,m.delima,m.password,m.kelab,m.uniform,m.sukan,m.rumah_sukan].map(v=>`"${v||""}"`).join(",")+"\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(["\uFEFF"+csv],{type:"text/csv;charset=utf-8;"}));
     a.download = `murid_${uid.substring(0,8)}.csv`;
     a.click();
-    showToast('CSV berjaya dimuat turun.');
+    showToast("CSV dimuat turun.");
 };
+
+// ── ACTION: BLOCK / UNBLOCK / DELETE ────────────────────────────────────────
+let pendingAction = null;
+window.promptAction = (action, uid, name) => {
+    pendingAction = { action, uid, name };
+    const isDelete = action === "delete";
+    const isBlock = action === "block";
+    const icon = document.getElementById("modalIcon");
+    const iconInner = document.getElementById("modalIconInner");
+    const pinWrap = document.getElementById("modalPinWrap");
+    const confirmBtn = document.getElementById("modalConfirmBtn");
+
+    icon.className = "modal-icon " + (isDelete ? "danger" : "warn");
+    iconInner.setAttribute("data-lucide", isDelete ? "trash-2" : isBlock ? "ban" : "unlock");
+    document.getElementById("modalTitle").textContent = isDelete ? "Padam Pengguna?" : isBlock ? "Blok Pengguna?" : "Buka Blok Pengguna?";
+    document.getElementById("modalMsg").textContent = isDelete
+        ? `Tindakan ini akan MEMADAM akaun "${name}" dan semua ${window.allUsersData.find(u=>u.userId===uid)?.muridCount||0} rekod murid mereka secara kekal.`
+        : isBlock ? `"${name}" tidak akan dapat log masuk ke MURIDKU. Data murid mereka dikekalkan.`
+        : `"${name}" akan dibolehkan log masuk semula ke MURIDKU.`;
+    pinWrap.style.display = isDelete ? "block" : "none";
+    if (isDelete) document.getElementById("modalConfirmText").value = "";
+    confirmBtn.className = "modal-btns " + (isDelete ? "btn-danger" : isBlock ? "btn-warn" : "btn-warn");
+    confirmBtn.style.background = isDelete ? "#ef4444" : isBlock ? "#f59e0b" : "#10b981";
+    confirmBtn.textContent = isDelete ? "Ya, Padam" : isBlock ? "Ya, Blok" : "Ya, Buka Blok";
+
+    document.getElementById("confirmModal").classList.add("active");
+    lucide.createIcons();
+};
+
+window.closeConfirm = () => {
+    document.getElementById("confirmModal").classList.remove("active");
+    pendingAction = null;
+};
+
+window.executeAction = async () => {
+    if (!pendingAction) return;
+    const { action, uid, name } = pendingAction;
+    if (action === "delete") {
+        const typed = document.getElementById("modalConfirmText").value.trim().toUpperCase();
+        if (typed !== "SETUJU") { showToast("Taip perkataan SETUJU untuk sahkan.", true); return; }
+    }
+    closeConfirm();
+    showToast(`Sedang memproses...`);
+    try {
+        const result = await masterAction({ action, targetUid: uid });
+        showToast(result.data?.message || "Berjaya!", false, true);
+        await loadAllData();
+    } catch(e) {
+        console.error(e);
+        if (e.code === "functions/not-found" || e.code === "functions/internal") {
+            showToast("Cloud Function belum di-deploy. Lihat panduan setup.", true);
+        } else {
+            showToast("Ralat: " + e.message, true);
+        }
+    }
+};
+
+// ── USAGE DATA ──────────────────────────────────────────────────────────────
+window.loadUsageData = async () => {
+    document.getElementById("storageLoader").style.display = "flex";
+    document.getElementById("storageContent").style.display = "none";
+    document.getElementById("authLoader").style.display = "flex";
+    document.getElementById("authContent").style.display = "none";
+
+    // Storage stats
+    try {
+        const res = await getStorageStats();
+        const d = res.data;
+        const usedBytes = d.totalSize;
+        const freeBytes = d.freeQuotaBytes;
+        const pct = parseFloat(d.usagePct);
+        const fillClass = pct < 60 ? "safe" : pct < 80 ? "warn" : "danger";
+        const statusClass = pct < 60 ? "qs-safe" : pct < 80 ? "qs-warn" : "qs-danger";
+
+        document.getElementById("storagePct").textContent = pct + "%";
+        document.getElementById("storageMeter").className = `meter-fill ${fillClass}`;
+        document.getElementById("storageMeter").style.width = Math.min(pct,100) + "%";
+        document.getElementById("storageInfo").textContent = `${fmtBytes(usedBytes)} digunakan daripada 5 GB (percuma)`;
+        document.getElementById("qTotalFiles").textContent = d.totalFiles;
+        document.getElementById("qImageFiles").textContent = d.imageCount;
+        document.getElementById("qStorageUsed").textContent = fmtBytes(usedBytes);
+        document.getElementById("qStorageStatus").textContent = pct + "% digunakan";
+        document.getElementById("qStorageStatus").className = `quota-status ${statusClass}`;
+        document.getElementById("qStorageFree").textContent = fmtBytes(freeBytes - usedBytes);
+
+        if (pct > 70) {
+            document.getElementById("usageAlert").style.display = "flex";
+            document.getElementById("usageAlertMsg").textContent = `Amaran: Storage Firebase anda telah mencapai ${pct}% daripada had percuma 5 GB. Pertimbangkan untuk memadam gambar lama atau naik taraf plan.`;
+        }
+
+        // Top users storage bar chart
+        if (d.topUsers?.length) {
+            const maxS = d.topUsers[0].size || 1;
+            document.getElementById("storageTopUsers").innerHTML = d.topUsers.map((u,i) => {
+                const authU = window.authUsersMap[u.uid] || {};
+                const label = authU.displayName || `User ${i+1}`;
+                return `<div class="bar-row">
+                    <div class="bar-lbl" title="${u.uid}">${label}</div>
+                    <div class="bar-track"><div class="bar-fill" style="width:${Math.round(u.size/maxS*100)}%"></div></div>
+                    <div class="bar-count">${fmtBytes(u.size)}</div>
+                </div>`;
+            }).join("");
+        } else {
+            document.getElementById("storageTopUsers").innerHTML = `<p style="color:var(--muted);font-size:.8rem;">Tiada data storage.</p>`;
+        }
+
+        document.getElementById("storageLoader").style.display = "none";
+        document.getElementById("storageContent").style.display = "block";
+    } catch(e) {
+        document.getElementById("storageLoader").innerHTML = `<span style="color:var(--danger);font-size:.8rem;">⚠ ${e.code === "functions/not-found" ? "Cloud Function belum di-deploy." : e.message}</span>`;
+    }
+
+    // Auth stats
+    try {
+        const res = await getAuthUsers();
+        const users = res.data?.users || [];
+        const total = users.length;
+        const active = users.filter(u => u.lastSignInTime).length;
+        const disabled = users.filter(u => u.disabled).length;
+        const google = users.filter(u => u.providerData?.includes("google.com")).length;
+        const pct = Math.round(total / 10000 * 100);
+        const fillClass = pct < 60 ? "safe" : pct < 80 ? "warn" : "danger";
+        const statusClass = pct < 60 ? "qs-safe" : pct < 80 ? "qs-warn" : "qs-danger";
+
+        document.getElementById("authPct").textContent = pct + "%";
+        document.getElementById("authMeter").className = `meter-fill ${fillClass}`;
+        document.getElementById("authMeter").style.width = Math.min(pct,100) + "%";
+        document.getElementById("authInfo").textContent = `${total} daripada 10,000 pengguna percuma (${pct}%)`;
+        document.getElementById("qTotalAuth").textContent = total;
+        document.getElementById("qAuthStatus").textContent = pct + "% daripada quota";
+        document.getElementById("qAuthStatus").className = `quota-status ${statusClass}`;
+        document.getElementById("qActiveAuth").textContent = active;
+        document.getElementById("qDisabledAuth").textContent = disabled;
+        document.getElementById("qGoogleAuth").textContent = google;
+
+        document.getElementById("authLoader").style.display = "none";
+        document.getElementById("authContent").style.display = "block";
+    } catch(e) {
+        document.getElementById("authLoader").innerHTML = `<span style="color:var(--danger);font-size:.8rem;">⚠ ${e.code === "functions/not-found" ? "Cloud Function belum di-deploy." : e.message}</span>`;
+    }
+
+    lucide.createIcons();
+};
+
+function fmtBytes(bytes) {
+    if (!bytes) return "0 B";
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + " KB";
+    if (bytes < 1024*1024*1024) return (bytes/1024/1024).toFixed(1) + " MB";
+    return (bytes/1024/1024/1024).toFixed(2) + " GB";
+}
+
+window.fmtBytes = fmtBytes;
 </script>
 
 <script>
-// Dark mode
-function toggleDark() {
-    const isDark = document.body.hasAttribute('data-theme');
-    if (isDark) {
-        document.body.removeAttribute('data-theme');
-        localStorage.setItem('master_dark','false');
-        document.getElementById('darkIcon').setAttribute('data-lucide','moon');
-    } else {
-        document.body.setAttribute('data-theme','dark');
-        localStorage.setItem('master_dark','true');
-        document.getElementById('darkIcon').setAttribute('data-lucide','sun');
-    }
+function switchTab(tab) {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+    document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === "tab-" + tab));
+    if (tab === "usage") window.loadUsageData?.();
     lucide.createIcons();
 }
-if (localStorage.getItem('master_dark') === 'true') {
-    document.body.setAttribute('data-theme','dark');
-    document.addEventListener('DOMContentLoaded', () => {
-        const icon = document.getElementById('darkIcon');
-        if (icon) icon.setAttribute('data-lucide','sun');
+
+function toggleDark() {
+    const isDark = document.body.hasAttribute("data-theme");
+    document.body.toggleAttribute("data-theme", !isDark);
+    localStorage.setItem("master_dark", isDark ? "false" : "true");
+    document.getElementById("darkIcon").setAttribute("data-lucide", isDark ? "moon" : "sun");
+    lucide.createIcons();
+}
+if (localStorage.getItem("master_dark") === "true") {
+    document.body.setAttribute("data-theme", "dark");
+    document.addEventListener("DOMContentLoaded", () => {
+        const i = document.getElementById("darkIcon");
+        if (i) { i.setAttribute("data-lucide","sun"); lucide.createIcons(); }
     });
 }
 
-// Toast notification
-function showToast(msg, isErr=false) {
-    const t = document.getElementById('toast');
+function showToast(msg, isErr=false, isOk=false) {
+    const t = document.getElementById("toast");
     t.textContent = msg;
-    t.className = 'toast show' + (isErr ? ' err' : '');
-    setTimeout(() => t.className = 'toast', 3000);
+    t.className = "toast show" + (isErr?" err":"") + (isOk?" ok":"");
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.className = "toast", 3500);
 }
 window.showToast = showToast;
 
-document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+document.addEventListener("DOMContentLoaded", () => lucide.createIcons());
 </script>
 </body>
 </html>
