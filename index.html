@@ -196,6 +196,7 @@
         .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .form-container { max-width: 850px; padding: 2rem; border-radius: var(--border-radius-lg); margin-bottom: 2rem;}
+        .form-container.full-width { max-width: 100%; }
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
         .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
         .form-group.full-width { grid-column: 1 / -1; }
@@ -206,12 +207,18 @@
         .section-header-title { font-size: 1.1rem; font-weight: 600; color: var(--text-main); margin: 1.5rem 0 0.5rem 0; padding-bottom: 0.5rem; border-bottom: 2px dashed var(--border-light); grid-column: 1 / -1; display: flex; align-items: center; gap: 0.75rem; }
         .section-header-title i { width: 22px; height: 22px; color: var(--secondary); flex-shrink: 0;}
 
-        .photo-upload-wrapper { display: flex; align-items: center; gap: 1rem; background: var(--bg-color); padding: 1rem; border-radius: var(--border-radius-md); border: 1px dashed var(--border-light); }
-        .photo-upload-wrapper img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--box-bg); box-shadow: var(--shadow-soft); }
-        .file-input-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; background: var(--box-bg); border-radius: 50px; cursor: pointer; border: 1px solid var(--border-light); display: inline-block; margin-top: 0.2rem; color: var(--text-main);}
+        .photo-upload-wrapper { display: flex; align-items: center; gap: 1.2rem; background: var(--bg-color); padding: 1.2rem; border-radius: var(--border-radius-md); border: 1px dashed var(--border-light); }
+        .photo-upload-wrapper img { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--box-bg); box-shadow: var(--shadow-soft); flex-shrink: 0; }
+        .file-input-btn { font-size: 0.8rem; padding: 0.5rem 1rem; background: var(--box-bg); border-radius: 50px; cursor: pointer; border: 1px solid var(--border-light); display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-main); transition: var(--transition);}
+        .file-input-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-soft); }
         .file-input-btn input[type="file"] { display: none; }
 
-        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; width: 100%; }
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; width: 100%; }
+        .settings-grid > div { display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; }
+        @media (min-width: 1100px) {
+            .settings-grid { grid-template-columns: repeat(3, 1fr); }
+            .settings-grid > div { display: contents; }
+        }
         .settings-card { background: var(--box-bg); padding: 1.5rem; border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); min-width: 0; }
         .settings-category-title { font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin: 1.5rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border-light); }
         .toggle-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-weight: 500; font-size: 0.85rem; cursor: pointer; background: var(--bg-color); padding: 0.8rem 1rem; border-radius: var(--border-radius-md); transition: var(--transition); border: 1px solid var(--border-light); width: 100%; color: var(--text-main);}
@@ -235,11 +242,32 @@
         .close-modal { position: absolute; top: 15px; right: 15px; background: var(--bg-color); border: 1px solid var(--border-light); cursor: pointer; color: var(--text-muted); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: var(--transition); }
         .close-modal:hover { background: var(--danger); color: white; border-color: var(--danger); transform: scale(1.1); }
 
-        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
-        .key-btn { background: var(--bg-color); border: 1px solid var(--border-light); border-radius: 50%; width: 60px; height: 60px; font-size: 1.5rem; font-weight: 600; color: var(--text-main); cursor: pointer; margin: 0 auto; display: flex; align-items: center; justify-content: center; transition: all 0.1s; }
+        .keypad-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; margin-top: 1.5rem; max-width: 280px; margin-left: auto; margin-right: auto;}
+        .key-btn {
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 50%;
+            width: 64px; height: 64px;
+            font-size: 1.5rem; font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+            font-family: 'Poppins', sans-serif;
+        }
+        .key-btn:hover { background: rgba(255,255,255,0.8); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+        .key-btn:active { transform: scale(0.92); background: rgba(59, 130, 246, 0.15); border-color: var(--secondary); }
+        .key-btn.action-btn { background: rgba(239, 68, 68, 0.85); color: white; border-color: rgba(239,68,68,0.3); font-size: 1.2rem;}
+        .key-btn.action-btn:hover { background: rgba(239, 68, 68, 1); }
+        [data-theme="dark"] .key-btn { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); color: var(--text-main); box-shadow: 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05);}
+        [data-theme="dark"] .key-btn:hover { background: rgba(255,255,255,0.15); }
         .pin-display { display: flex; justify-content: center; gap: 1rem; margin: 1.5rem auto; }
-        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border-light); transition: 0.1s; }
-        .pin-dot.filled { background: var(--secondary); border-color: var(--secondary); }
+        .pin-dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--border-light); transition: 0.2s; background: transparent; }
+        .pin-dot.filled { background: var(--secondary); border-color: var(--secondary); transform: scale(1.1); box-shadow: 0 0 10px rgba(59,130,246,0.4); }
 
         /* FIX: CSV upload progress */
         .upload-progress { background: var(--bg-color); border: 1px solid var(--border-light); border-radius: var(--border-radius-md); padding: 1rem; margin-top: 0.5rem; display: none; }
@@ -416,16 +444,20 @@
 
         <section id="section-form" class="section">
             <div class="form-container glass">
-                <h2 id="formTitle">Tambah Murid Baru</h2>
+                <h2 id="formTitle" style="margin-bottom: 0.3rem;">Tambah Murid Baru</h2>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Lengkapkan maklumat di bawah untuk menambah/kemaskini rekod murid.</p>
                 <form id="studentForm">
                     <input type="hidden" id="studentId">
                     <div class="form-grid">
-                        <div class="section-header-title"><i data-lucide="user-round"></i> Maklumat Peribadi</div>
+                        <div class="section-header-title" style="margin-top:0;"><i data-lucide="user-round"></i> Maklumat Peribadi</div>
                         <div class="form-group full-width photo-upload-wrapper">
-                            <img id="f_photo_preview" src="https://ui-avatars.com/api/?name=Baru&background=e2e8f0" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid var(--primary);">
-                            <div>
-                                <label class="file-input-btn" style="cursor:pointer; background:var(--secondary); color:white; padding: 0.5rem 1rem; border-radius:50px; font-size:0.8rem;">
-                                    Pilih Gambar <input type="file" id="f_photo_input" accept="image/*" style="display:none;">
+                            <img id="f_photo_preview" src="https://ui-avatars.com/api/?name=Baru&background=e2e8f0">
+                            <div style="flex:1;">
+                                <p style="font-size: 0.85rem; font-weight: 500; color: var(--text-main); margin-bottom: 0.3rem;">Gambar Profil Murid</p>
+                                <p style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem;">JPG/PNG. Saiz disyorkan 1:1.</p>
+                                <label class="file-input-btn" style="background:var(--secondary); color:white; border-color:var(--secondary);">
+                                    <i data-lucide="upload" style="width:14px; height:14px; vertical-align:-2px;"></i> Pilih Gambar
+                                    <input type="file" id="f_photo_input" accept="image/*">
                                 </label>
                             </div>
                         </div>
@@ -450,8 +482,8 @@
                         <div class="form-group" data-field="view_koku"><label>Rumah Sukan</label><input type="text" id="f_rumah_sukan" placeholder="Merah, Biru, dll."></div>
 
                         <div class="form-actions">
-                            <button type="button" class="btn-secondary" onclick="window.switchTab('list')">Batal</button>
-                            <button type="submit" class="btn-primary" id="saveBtn">Simpan Rekod</button>
+                            <button type="button" class="btn-secondary" onclick="window.switchTab('list')"><i data-lucide="x" style="width:14px;"></i> Batal</button>
+                            <button type="submit" class="btn-primary" id="saveBtn"><i data-lucide="save" style="width:14px;"></i> Simpan Rekod</button>
                         </div>
                     </div>
                 </form>
@@ -492,7 +524,7 @@
         </section>
 
         <section id="section-settings" class="section">
-            <div class="form-container glass">
+            <div class="form-container glass full-width">
                 <h2>Admin Panel (Tetapan)</h2>
                 <div class="settings-grid">
                     <div style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0;">
@@ -514,7 +546,8 @@
                             </div>
                             <div class="form-group" id="pinInputContainer" style="margin-bottom: 1rem;">
                                 <label>PIN Akses (4 Digit)</label>
-                                <input type="password" id="set_adminPin" maxlength="4" placeholder="1234" pattern="[0-9]*" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <input type="password" id="set_adminPin" maxlength="4" placeholder="Tekan untuk tukar PIN" pattern="[0-9]*" inputmode="numeric" readonly style="cursor: pointer; background: var(--bg-color);" onclick="window.openSetPinKeypad()">
+                                <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.3rem;"><i data-lucide="info" style="width:12px; height:12px; vertical-align:-2px;"></i> Tekan kotak di atas untuk buka keypad nombor.</p>
                             </div>
                         </div>
 
@@ -647,12 +680,32 @@
                 <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
             </div>
             <div class="keypad-grid">
-                <button class="key-btn glass" onclick="window.addPin(1)">1</button><button class="key-btn glass" onclick="window.addPin(2)">2</button><button class="key-btn glass" onclick="window.addPin(3)">3</button>
-                <button class="key-btn glass" onclick="window.addPin(4)">4</button><button class="key-btn glass" onclick="window.addPin(5)">5</button><button class="key-btn glass" onclick="window.addPin(6)">6</button>
-                <button class="key-btn glass" onclick="window.addPin(7)">7</button><button class="key-btn glass" onclick="window.addPin(8)">8</button><button class="key-btn glass" onclick="window.addPin(9)">9</button>
-                <button class="key-btn" style="background:var(--danger); color:white; font-size:1.1rem; border:none;" onclick="window.resetPin()">↺</button>
-                <button class="key-btn glass" onclick="window.addPin(0)">0</button>
-                <button class="key-btn" style="background:var(--danger); color:white; font-size:1.1rem; border:none;" onclick="window.removePin()">⌫</button>
+                <button class="key-btn" onclick="window.addPin(1)">1</button><button class="key-btn" onclick="window.addPin(2)">2</button><button class="key-btn" onclick="window.addPin(3)">3</button>
+                <button class="key-btn" onclick="window.addPin(4)">4</button><button class="key-btn" onclick="window.addPin(5)">5</button><button class="key-btn" onclick="window.addPin(6)">6</button>
+                <button class="key-btn" onclick="window.addPin(7)">7</button><button class="key-btn" onclick="window.addPin(8)">8</button><button class="key-btn" onclick="window.addPin(9)">9</button>
+                <button class="key-btn action-btn" onclick="window.resetPin()" title="Reset">↺</button>
+                <button class="key-btn" onclick="window.addPin(0)">0</button>
+                <button class="key-btn action-btn" onclick="window.removePin()" title="Padam">⌫</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal untuk SET (tukar) PIN baru -->
+    <div class="modal-overlay" id="setPinModal">
+        <div class="modal-content glass" style="max-width:350px; text-align:center;">
+            <button class="close-modal" onclick="window.closeModal('setPinModal'); window.resetSetPin();">✕</button>
+            <h3 style="font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--text-main);"><i data-lucide="key-round" style="width:20px;vertical-align:-3px;"></i> Tukar PIN Admin</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted);" id="setPinHint">Masukkan PIN baru (4 digit)</p>
+            <div class="pin-display" id="setPinDisplay">
+                <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+            </div>
+            <div class="keypad-grid">
+                <button class="key-btn" onclick="window.addSetPin(1)">1</button><button class="key-btn" onclick="window.addSetPin(2)">2</button><button class="key-btn" onclick="window.addSetPin(3)">3</button>
+                <button class="key-btn" onclick="window.addSetPin(4)">4</button><button class="key-btn" onclick="window.addSetPin(5)">5</button><button class="key-btn" onclick="window.addSetPin(6)">6</button>
+                <button class="key-btn" onclick="window.addSetPin(7)">7</button><button class="key-btn" onclick="window.addSetPin(8)">8</button><button class="key-btn" onclick="window.addSetPin(9)">9</button>
+                <button class="key-btn action-btn" onclick="window.resetSetPin()" title="Reset">↺</button>
+                <button class="key-btn" onclick="window.addSetPin(0)">0</button>
+                <button class="key-btn action-btn" onclick="window.removeSetPin()" title="Padam">⌫</button>
             </div>
         </div>
     </div>
@@ -1020,15 +1073,7 @@
 
         // --- TAB SWITCHING ---
         window.switchTab = function(target) {
-            // FIX: use PIN modal instead of browser prompt() for scan & kehadiran
-            if (target === 'scan' || target === 'kehadiran') {
-                if (window.appSettings.pinEnabled) {
-                    window._pinModalTarget = target;
-                    window.resetPin();
-                    document.getElementById('pinModal').classList.add('active');
-                    return;
-                }
-            }
+            // PIN hanya untuk Tetapan sahaja - menu lain (scan, kehadiran) bebas akses
             window._doSwitchTab(target);
         };
 
@@ -1043,7 +1088,11 @@
             if (target === 'scan') window.startProfileScanner();
             else if (target === 'kehadiran') { window.renderAttendanceLog(); window.startAttendanceScanner(); }
             else if (target === 'list') { window.currentPage = 1; window.applyListFilters(); }
-            else if (target === 'form') { window.resetForm(); }
+            else if (target === 'form') {
+                // Hanya reset form bila bukan dari editStudent
+                if (!window._editingMode) { window.resetForm(); }
+                window._editingMode = false;
+            }
             else if (target === 'harijadi') { window.updateHariJadi(); }
             else if (target === 'settings') { window.applySettingsDisplay(); }
             lucide.createIcons();
@@ -1234,12 +1283,15 @@
         window.editStudent = (id) => {
             const s = window.students.find(x => x.id === id);
             if (!s) return;
-            window.resetForm();
+            // Switch dulu ke tab form, kemudian populate data (set flag supaya form tak di-reset)
+            window._editingMode = true;
+            window._doSwitchTab('form');
+            // Populate selepas tab aktif
             document.getElementById('studentId').value = s.id;
-            document.getElementById('f_nama').value = s.name;
-            document.getElementById('f_ic').value = s.ic;
-            document.getElementById('f_kelas').value = s.class;
-            document.getElementById('f_jantina').value = s.gender;
+            document.getElementById('f_nama').value = s.name || '';
+            document.getElementById('f_ic').value = s.ic || '';
+            document.getElementById('f_kelas').value = s.class || '';
+            document.getElementById('f_jantina').value = s.gender || 'Lelaki';
             document.getElementById('f_tarikh').value = s.dob || '';
             document.getElementById('f_tel').value = s.tel || '';
             document.getElementById('f_tempat').value = s.tempat || '';
@@ -1252,8 +1304,8 @@
             document.getElementById('f_sukan').value = s.sukan || '';
             document.getElementById('f_rumah_sukan').value = s.rumah_sukan || '';
             document.getElementById('f_photo_preview').src = s.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=e2e8f0`;
-            document.getElementById('formTitle').innerText = "Kemaskini Rekod";
-            window._doSwitchTab('form');
+            document.getElementById('formTitle').innerText = "Kemaskini Rekod Murid";
+            document.getElementById('saveBtn').innerText = "Kemaskini Rekod";
         };
 
         window.resetForm = function() {
@@ -1262,6 +1314,7 @@
             document.getElementById('f_photo_input').value = '';
             document.getElementById('f_photo_preview').src = "https://ui-avatars.com/api/?name=Baru&background=e2e8f0";
             document.getElementById('formTitle').innerText = "Tambah Murid Baru";
+            document.getElementById('saveBtn').innerText = "Simpan Rekod";
         };
 
         document.getElementById('f_photo_input').addEventListener('change', function(e) {
@@ -1323,7 +1376,27 @@
             const printWin = window.open('', '_blank');
             const htmlCards = studentsArray.map(s => {
                 const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(s.ic)}`;
-                let kokuList = [s.kelab, s.uniform, s.sukan, s.rumah_sukan].filter(Boolean).join(', ');
+
+                // Build kokurikulum sebagai senarai berasingan ikut field
+                let kokuItemsHtml = '';
+                if (cfg.print_koku !== false) {
+                    const kokuFields = [
+                        { label: 'Kelab/Persatuan', val: s.kelab, icon: '🏛️' },
+                        { label: 'Badan Beruniform', val: s.uniform, icon: '🎖️' },
+                        { label: 'Sukan & Permainan', val: s.sukan, icon: '⚽' },
+                        { label: 'Rumah Sukan', val: s.rumah_sukan, icon: '🏠' }
+                    ];
+                    const filled = kokuFields.filter(k => k.val && k.val.trim());
+                    if (filled.length > 0) {
+                        kokuItemsHtml = `<div class="koku-section">
+                            <div class="koku-title">🏆 KOKURIKULUM</div>
+                            <div class="koku-grid">
+                                ${filled.map(k => `<div class="koku-row"><span class="koku-lbl">${k.icon} ${k.label}</span><span class="koku-val">${k.val}</span></div>`).join('')}
+                            </div>
+                        </div>`;
+                    }
+                }
+
                 return `<div class="id-card-wrapper">
                     <div class="card-header"><h2>KAD PROFIL MURID</h2></div>
                     <div class="card-photo-area"><img src="${s.photo || `https://ui-avatars.com/api/?name=${encodeURIComponent(s.name)}&background=e2e8f0`}" class="dp" onerror="this.src='https://ui-avatars.com/api/?name=X&background=e2e8f0'"></div>
@@ -1333,41 +1406,47 @@
                         <div class="info-grid">
                             ${cfg.print_ic !== false ? `<div class="info-item"><p class="info-label">🆔 No. IC</p><h4 class="info-val">${s.ic}</h4></div>` : ''}
                             ${cfg.print_gender !== false ? `<div class="info-item"><p class="info-label">🚻 Jantina</p><h4 class="info-val">${s.gender}</h4></div>` : ''}
-                            ${(cfg.print_delima !== false && s.delima) ? `<div class="info-item koku-item"><p class="info-label">📧 DELIMA ID</p><h4 class="info-val">${s.delima}</h4></div>` : ''}
+                            ${(cfg.print_delima !== false && s.delima) ? `<div class="info-item"><p class="info-label">📧 DELIMA ID</p><h4 class="info-val">${s.delima}</h4></div>` : ''}
                             ${(cfg.print_tel !== false && s.tel) ? `<div class="info-item"><p class="info-label">📞 Tel Penjaga</p><h4 class="info-val">${s.tel}</h4></div>` : ''}
-                            ${(cfg.print_koku !== false && kokuList) ? `<div class="info-item koku-item"><p class="info-label">🏆 Kokurikulum</p><h4 class="info-val">${kokuList}</h4></div>` : ''}
                         </div>
+                        ${kokuItemsHtml}
                         ${cfg.print_qr !== false ? `<div class="qr-section"><img src="${qrSrc}"><span>SCAN UNTUK PROFIL</span></div>` : ''}
                     </div>
-                    <div class="card-footer">MURIDKU ID v1.5 | CIKGUGRAFIK</div>
+                    <div class="card-footer">dijana <b>MURIDKU.online</b> &nbsp;|&nbsp; SISTEM PROFIL MURID</div>
                 </div>`;
             }).join('');
 
             const html = `<!DOCTYPE html><html><head><title>Cetak Kad Profil</title>
-            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
             <style>
             @media print { * { font-family:'Poppins',sans-serif !important; } body { -webkit-print-color-adjust:exact; print-color-adjust:exact; margin:0; padding:20px; color:black;} }
-            body { font-family:'Poppins',sans-serif; background:#ffffff; margin:0; padding:20px; }
-            .print-container { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 340px)); gap:20px; justify-content:center; }
-            .id-card-wrapper { width:340px; background:white; border-radius:20px; overflow:hidden; position:relative; border:2px solid #e2e8f0; page-break-inside:avoid; margin-bottom:20px; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+            body { font-family:'Poppins',sans-serif; background:#f1f5f9; margin:0; padding:20px; }
+            .print-container { display:grid; grid-template-columns:repeat(auto-fit, minmax(340px, 360px)); gap:20px; justify-content:center; }
+            .id-card-wrapper { width:360px; background:white; border-radius:20px; overflow:hidden; position:relative; border:2px solid #e2e8f0; page-break-inside:avoid; margin-bottom:20px; -webkit-print-color-adjust:exact; print-color-adjust:exact; box-shadow: 0 10px 30px rgba(0,0,0,0.08);}
             .card-header { background:linear-gradient(135deg,#0f172a,#3b82f6); color:white; text-align:center; padding:25px 15px 50px 15px; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-            .card-header h2 { margin:0; font-size:18px; letter-spacing:1px; color:white; }
+            .card-header h2 { margin:0; font-size:18px; letter-spacing:1.5px; color:white; font-weight:700; }
             .card-photo-area { text-align:center; margin-top:-45px; }
             .card-photo-area img.dp { width:90px; height:90px; border-radius:50%; object-fit:cover; border:4px solid white; box-shadow:0 5px 15px rgba(0,0,0,0.1); background:white; }
-            .card-body { padding:10px 25px 20px 25px; text-align:center; }
+            .card-body { padding:10px 22px 18px 22px; text-align:center; }
             .student-name { font-size:18px; font-weight:700; color:#0f172a; margin:10px 0 5px 0; line-height:1.2; }
-            .student-class { display:inline-block; background:#e0f2fe; color:#0284c7; padding:4px 12px; border-radius:50px; font-size:12px; font-weight:600; margin-bottom:15px; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
-            .info-grid { display:grid; grid-template-columns:1fr; gap:8px; text-align:left; background:#f8fafc; padding:15px; border-radius:12px; margin-bottom:15px; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
-            .info-item { display:flex; align-items:start; gap:8px; margin-bottom:3px; }
-            .info-item p.info-label { font-size:10px; color:#64748b; margin:0; font-weight:500; min-width:90px;}
-            .info-item h4.info-val { font-size:12px; color:#0f172a; margin:0; font-weight:600; word-break:break-all; flex:1;}
-            .koku-item { border-top:1px dashed #cbd5e1; padding-top:8px; margin-top:8px; display:block; width:100%;}
-            .koku-item p.info-label { font-size:10px; color:#64748b; margin:0; font-weight:500;}
-            .koku-item h4.info-val { font-size:11px; color:#0f172a; margin:0; font-weight:600; line-height:1.3;}
+            .student-class { display:inline-block; background:#e0f2fe; color:#0284c7; padding:4px 14px; border-radius:50px; font-size:12px; font-weight:600; margin-bottom:14px; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+            .info-grid { display:grid; grid-template-columns:1fr; gap:10px; text-align:left; background:#f8fafc; padding:14px 16px; border-radius:12px; margin-bottom:12px; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+            .info-item { display:grid; grid-template-columns: 110px 1fr; align-items:center; gap:8px;}
+            .info-item p.info-label { font-size:10px; color:#64748b; margin:0; font-weight:500;}
+            .info-item h4.info-val { font-size:12px; color:#0f172a; margin:0; font-weight:600; word-break:break-word;}
+
+            .koku-section { background:#fef3c7; padding:12px 16px; border-radius:12px; margin-bottom:12px; text-align:left; -webkit-print-color-adjust:exact; print-color-adjust:exact; border:1px solid #fde68a;}
+            .koku-title { font-size:10px; font-weight:700; color:#92400e; letter-spacing:1px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px dashed #fbbf24;}
+            .koku-grid { display:flex; flex-direction:column; gap:6px;}
+            .koku-row { display:grid; grid-template-columns: 130px 1fr; gap:6px; align-items:center;}
+            .koku-lbl { font-size:10px; color:#78350f; font-weight:500;}
+            .koku-val { font-size:11px; color:#0f172a; font-weight:600; word-break:break-word;}
+
             .qr-section { display:flex; flex-direction:column; align-items:center; justify-content:center; padding-top:10px; border-top:1px dashed #cbd5e1;}
-            .qr-section img { width:70px; height:70px; }
-            .qr-section span { font-size:9px; color:#64748b; margin-top:5px; font-weight:600;}
-            .card-footer { background:#0f172a; padding:10px; text-align:center; color:white; font-size:10px; -webkit-print-color-adjust:exact; print-color-adjust:exact;}
+            .qr-section img { width:75px; height:75px; }
+            .qr-section span { font-size:9px; color:#64748b; margin-top:5px; font-weight:600; letter-spacing:1px;}
+            .card-footer { background:#0f172a; padding:10px; text-align:center; color:white; font-size:9.5px; -webkit-print-color-adjust:exact; print-color-adjust:exact; letter-spacing:0.5px;}
+            .card-footer b { color:#60a5fa; }
             </style></head><body>
             <div class="print-container">${htmlCards}</div>
             <script>setTimeout(()=>{ window.print(); }, 1000);<\/script>
@@ -1733,12 +1812,13 @@
             if (featKehadiran) window.appSettings.feature_kehadiran = featKehadiran.checked;
 
             if (pinEnabled && pinEnabled.checked) {
-                const newPin = adminPin ? adminPin.value.trim() : '';
-                if (newPin.length !== 4) {
-                    if (showNotif) window.showNotification('PIN mestilah 4 digit.', true);
+                // PIN dah disimpan oleh keypad. Pastikan ia ada nilai sah.
+                const currentPin = window.appSettings.adminPin || '';
+                if (!currentPin || currentPin.length !== 4) {
+                    if (showNotif) window.showNotification('Sila set PIN 4 digit dulu (tekan kotak PIN Akses).', true);
                     return;
                 }
-                window.appSettings.adminPin = newPin;
+                if (adminPin) adminPin.value = currentPin;
             }
 
             ['view_delima', 'view_password', 'view_koku', 'view_tel', 'view_tempat', 'view_hobi', 'view_alamat',
@@ -1824,7 +1904,8 @@
             window.updatePinDisp();
         };
         window.updatePinDisp = function() {
-            document.querySelectorAll('.pin-dot').forEach((dot, idx) => {
+            // Hanya update dots dalam pinModal sahaja (jangan kacau setPinModal)
+            document.querySelectorAll('#pinDisplay .pin-dot').forEach((dot, idx) => {
                 dot.classList.toggle('filled', idx < window.currentPinVal.length);
             });
         };
@@ -1838,6 +1919,78 @@
             } else {
                 window.showNotification('PIN Salah! Cuba lagi.', true);
                 window.resetPin();
+            }
+        };
+
+        // ===== TUKAR (SET) PIN ADMIN — keypad =====
+        window.currentSetPin = '';
+        window.setPinStep = 1; // 1 = pin baru, 2 = sahkan pin
+        window.firstSetPin = '';
+
+        window.openSetPinKeypad = function() {
+            window.currentSetPin = '';
+            window.firstSetPin = '';
+            window.setPinStep = 1;
+            document.getElementById('setPinHint').innerText = 'Masukkan PIN baru (4 digit)';
+            window.updateSetPinDisp();
+            document.getElementById('setPinModal').classList.add('active');
+        };
+
+        window.addSetPin = function(num) {
+            if (window.currentSetPin.length < 4) {
+                window.currentSetPin += num;
+                window.updateSetPinDisp();
+            }
+            if (window.currentSetPin.length === 4) {
+                setTimeout(window.processSetPin, 100);
+            }
+        };
+
+        window.removeSetPin = function() {
+            if (window.currentSetPin.length > 0) {
+                window.currentSetPin = window.currentSetPin.slice(0, -1);
+                window.updateSetPinDisp();
+            }
+        };
+
+        window.resetSetPin = function() {
+            window.currentSetPin = '';
+            window.updateSetPinDisp();
+        };
+
+        window.updateSetPinDisp = function() {
+            document.querySelectorAll('#setPinDisplay .pin-dot').forEach((dot, idx) => {
+                dot.classList.toggle('filled', idx < window.currentSetPin.length);
+            });
+        };
+
+        window.processSetPin = function() {
+            if (window.setPinStep === 1) {
+                // Step 1 selesai - simpan PIN pertama, minta sahkan
+                window.firstSetPin = window.currentSetPin;
+                window.currentSetPin = '';
+                window.setPinStep = 2;
+                document.getElementById('setPinHint').innerText = 'Sahkan PIN baru sekali lagi';
+                window.updateSetPinDisp();
+            } else {
+                // Step 2 - bandingkan
+                if (window.currentSetPin === window.firstSetPin) {
+                    document.getElementById('set_adminPin').value = window.firstSetPin;
+                    window.appSettings.adminPin = window.firstSetPin;
+                    localStorage.setItem('muridku_settings_v1', JSON.stringify(window.appSettings));
+                    window.closeModal('setPinModal');
+                    window.showNotification('PIN Admin berjaya dikemaskini!');
+                    window.currentSetPin = '';
+                    window.firstSetPin = '';
+                    window.setPinStep = 1;
+                } else {
+                    window.showNotification('PIN tidak sepadan! Cuba semula.', true);
+                    window.currentSetPin = '';
+                    window.firstSetPin = '';
+                    window.setPinStep = 1;
+                    document.getElementById('setPinHint').innerText = 'Masukkan PIN baru (4 digit)';
+                    window.updateSetPinDisp();
+                }
             }
         };
 
