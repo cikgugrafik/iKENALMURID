@@ -8,7 +8,7 @@
  *   - getAuthUsers   : senarai semua Auth users dengan metadata
  */
 
-const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { onRequest } = require("firebase-functions/v2/https");
 const { initializeApp } = require("firebase-admin/app");
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
