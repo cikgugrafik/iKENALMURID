@@ -245,8 +245,23 @@
         .file-input-btn { font-size: 0.8rem; padding: 0.4rem 0.8rem; background: var(--box-bg); border-radius: 50px; cursor: pointer; border: 1px solid var(--border-light); display: inline-block; margin-top: 0.2rem; color: var(--text-main);}
         .file-input-btn input[type="file"] { display: none; }
 
+        /* Settings Checkbox / Toggles CSS (DIPULIHKAN!) */
+        .settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem; width: 100%; }
+        .settings-card { background: var(--box-bg); padding: 1.5rem; border-radius: var(--border-radius-md); box-shadow: var(--shadow-soft); border: 1px solid var(--border-light); min-width: 0; }
+        .settings-category-title { font-size: 0.95rem; font-weight: 600; color: var(--text-main); margin: 1.5rem 0 1rem 0; padding-bottom: 0.5rem; border-bottom: 1px dashed var(--border-light); }
+        
+        .toggle-wrapper { display: flex; align-items: center; justify-content: space-between; gap: 1rem; font-weight: 500; font-size: 0.85rem; cursor: pointer; background: var(--bg-color); padding: 0.8rem 1rem; border-radius: var(--border-radius-md); transition: var(--transition); border: 1px solid var(--border-light); width: 100%; color: var(--text-main);}
+        .toggle-wrapper:hover { border-color: var(--secondary); }
+        .toggle-wrapper input { display: none; }
+        .toggle-text { flex: 1; white-space: normal; line-height: 1.3; }
+        .toggle-slider { position: relative; width: 40px; height: 22px; background: #cbd5e1; border-radius: 50px; transition: var(--transition); flex-shrink: 0; }
+        [data-theme="dark"] .toggle-slider { background: #475569; }
+        .toggle-slider::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: var(--transition); }
+        .toggle-wrapper input:checked + .toggle-slider { background: var(--success); }
+        .toggle-wrapper input:checked + .toggle-slider::after { transform: translateX(18px); }
+
         /* QR Scanner */
-        #reader, #reader-kehadiran { width: 100%; border-radius: var(--border-radius-lg); overflow: hidden; border: none; box-shadow: var(--shadow-soft); background: var(--box-bg); text-align: center; padding: 1rem 0;}
+        #reader, #reader-kehadiran { width: 100%; border-radius: var(--border-radius-lg); overflow: hidden; border: none; box-shadow: var(--shadow-soft); background: var(--box-bg); text-align: center; padding: 1rem 0; min-height: 250px;}
         #reader__dashboard_section_csr, #reader-kehadiran__dashboard_section_csr { padding: 1rem; width: 100%; }
         #reader__dashboard_section_csr span, #reader-kehadiran__dashboard_section_csr span { font-family: 'Poppins', sans-serif; font-size: 0.9rem; margin-bottom: 10px; display: block; color: var(--text-main);}
         #reader button, #reader-kehadiran button { background: var(--secondary) !important; color: white !important; padding: 0.6rem 1.5rem !important; border-radius: 50px !important; border: none !important; font-family: 'Poppins', sans-serif !important; cursor: pointer !important; font-weight: 500 !important; margin: 5px auto !important; display: inline-block !important; transition: var(--transition) !important;}
@@ -270,8 +285,10 @@
 
         @media (max-width: 768px) {
             .sidebar { display: none !important; }
-            .main-content { margin-left: 0; width: 100%; padding: 1.5rem 1rem; padding-bottom: 7rem; }
-            .global-footer { padding-bottom: 6rem; margin-bottom: 2rem; } 
+            /* Ditambah padding-bottom gergasi supaya butang save/footer tak terlindung di phone */
+            .main-content { margin-left: 0; width: 100%; padding: 1.5rem 1rem; padding-bottom: 8rem; }
+            .global-footer { padding-bottom: 5rem; margin-bottom: 1rem; } 
+            
             header { flex-direction: row; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
             .page-title { font-size: 1.4rem; }
             .welcome-banner { flex-direction: column; text-align: left; align-items: flex-start; padding: 1.5rem; }
@@ -477,10 +494,44 @@
             </div>
         </section>
 
+        <section id="section-kehadiran" class="section">
+            <div class="form-container glass" style="max-width: 850px; margin: 0 auto;">
+                <h2 style="margin-bottom: 0.5rem; font-size: 1.25rem; color: var(--text-main);"><i data-lucide="clock" style="color: var(--secondary); vertical-align: middle;"></i> Rekod Kehadiran Pintar</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Imbas QR Code murid untuk merekod kehadiran hari ini secara automatik.</p>
+
+                <div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+                    <div style="text-align: center; background: var(--bg-color); padding: 1rem; border-radius: var(--border-radius-md); border: 1px dashed var(--border-light);">
+                        <div id="reader-kehadiran"></div>
+                    </div>
+
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h3 style="font-size: 1rem; color: var(--primary);">Log Kehadiran (Hari Ini)</h3>
+                            <button class="btn-secondary" onclick="clearAttendance()"><i data-lucide="trash-2"></i> Kosongkan Log</button>
+                        </div>
+                        <div class="attendance-log">
+                            <table id="attendanceTable">
+                                <thead>
+                                    <tr>
+                                        <th>Masa</th>
+                                        <th>Nama Murid</th>
+                                        <th>Kelas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="section-scan" class="section">
             <div class="form-container glass" style="max-width:500px; margin:0 auto; text-align:center;">
                 <h2>Pengimbas QR Code</h2>
                 <div id="reader"></div>
+                <button class="btn-secondary" onclick="switchTab('dashboard')" style="margin: 1.5rem auto 0 auto; display: flex; justify-content: center; width: 100%;">Batal Scan</button>
             </div>
         </section>
 
@@ -488,69 +539,80 @@
             <div class="form-container glass">
                 <h2>Admin Panel (Tetapan)</h2>
                 <div class="settings-grid">
-                    <div class="settings-card">
-                        <div class="section-header-title">Sistem Utama</div>
-                        <div class="form-group" style="margin-bottom: 1rem;">
-                            <label>Nama Sistem Aplikasi</label>
-                            <input type="text" id="set_appName" placeholder="Contoh: MURIDKU">
+
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0;">
+                        <div class="settings-card">
+                            <div class="section-header-title">Sistem Utama</div>
+                            <div class="form-group" style="margin-bottom: 1rem;">
+                                <label>Nama Cikgu (Paparan Dashboard)</label>
+                                <input type="text" id="set_teacherName" placeholder="Edit nama anda">
+                            </div>
+
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-light);">
+                                <div><label style="font-weight: 500; display: block; color: var(--text-main);">Kunci PIN Tetapan</label><span style="font-size: 0.75rem; color: var(--text-muted);">Akses Admin Panel</span></div>
+                                <label class="toggle-wrapper" style="padding: 0; background:transparent; width: auto; border: none;">
+                                    <input type="checkbox" id="set_pinEnabled" onchange="togglePinSetting()"><span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-group" id="pinInputContainer" style="margin-bottom: 1rem;">
+                                <label>PIN Akses (4 Digit)</label>
+                                <input type="password" id="set_adminPin" maxlength="4" placeholder="1234">
+                            </div>
                         </div>
-                        <div class="form-group" style="margin-bottom: 1rem;">
-                            <label>Nama Cikgu (Paparan Dashboard)</label>
-                            <input type="text" id="set_teacherName" placeholder="Edit nama anda">
+                        
+                        <div class="settings-card">
+                            <div class="section-header-title">Urus Kelas</div>
+                            <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+                                <input type="text" id="set_newClass" placeholder="Contoh: 1 Mawar" style="flex:1; padding:0.6rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); outline:none;">
+                                <button class="btn-primary" onclick="addClassSetting()">Tambah</button>
+                            </div>
+                            <div id="settingsClassList" style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
                         </div>
 
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-light);">
-                            <div><label style="font-weight: 500; display: block; color: var(--text-main);">Kunci PIN Tetapan</label><span style="font-size: 0.75rem; color: var(--text-muted);">Akses Admin Panel</span></div>
-                            <label class="toggle-wrapper" style="padding: 0; background:transparent; width: auto; border: none;">
-                                <input type="checkbox" id="set_pinEnabled" onchange="togglePinSetting()"><span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        <div class="form-group" id="pinInputContainer" style="margin-bottom: 1rem;">
-                            <label>PIN Akses (4 Digit)</label>
-                            <input type="password" id="set_adminPin" maxlength="4" placeholder="1234">
+                        <div class="settings-card">
+                            <div class="section-header-title">Paparan Maklumat (UI)</div>
+                            <h4 class="settings-category-title" style="margin-top: 0;">Maklumat Peribadi Tambahan</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">No. Telefon Penjaga</span><input type="checkbox" id="set_view_tel" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Tempat Lahir</span><input type="checkbox" id="set_view_tempat" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Hobi Murid</span><input type="checkbox" id="set_view_hobi" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Alamat Rumah</span><input type="checkbox" id="set_view_alamat" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
+
+                            <h4 class="settings-category-title">Akaun / DELIMA</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">ID DELIMA</span><input type="checkbox" id="set_view_delima" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Kata Laluan Sistem</span><input type="checkbox" id="set_view_password" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
+
+                            <h4 class="settings-category-title">Kokurikulum</h4>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar Bahagian Kokurikulum</span><input type="checkbox" id="set_view_koku" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="settings-card">
-                        <div class="section-header-title">Urus Kelas</div>
-                        <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-                            <input type="text" id="set_newClass" placeholder="Contoh: 1 Mawar" style="flex:1; padding:0.6rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); outline:none;">
-                            <button class="btn-primary" onclick="addClassSetting()">Tambah</button>
-                        </div>
-                        <div id="settingsClassList" style="margin-top:1rem; display:flex; flex-wrap:wrap; gap:0.5rem;"></div>
-                    </div>
 
-                    <div class="settings-card">
-                        <div class="section-header-title">Paparan Maklumat (UI)</div>
-                        <h4 class="settings-category-title" style="margin-top: 0;">Maklumat Peribadi Tambahan</h4>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <label class="toggle-wrapper"><span class="toggle-text">No. Telefon Penjaga</span><input type="checkbox" id="set_view_tel" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Tempat Lahir</span><input type="checkbox" id="set_view_tempat" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Hobi Murid</span><input type="checkbox" id="set_view_hobi" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Alamat Rumah</span><input type="checkbox" id="set_view_alamat" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                    <div style="display: flex; flex-direction: column; gap: 1.5rem; min-width: 0;">
+                        <div class="settings-card">
+                            <div class="section-header-title">Format Cetakan ID Kad</div>
+                            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar No. IC / MyKid</span><input type="checkbox" id="set_print_ic" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar Jantina</span><input type="checkbox" id="set_print_gender" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar ID DELIMA</span><input type="checkbox" id="set_print_delima" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar No. Telefon Penjaga</span><input type="checkbox" id="set_print_tel" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Papar Kokurikulum</span><input type="checkbox" id="set_print_koku" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                                <label class="toggle-wrapper"><span class="toggle-text">Sertakan QR Code Peribadi</span><input type="checkbox" id="set_print_qr" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                            </div>
                         </div>
 
-                        <h4 class="settings-category-title">Akaun / DELIMA</h4>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <label class="toggle-wrapper"><span class="toggle-text">ID DELIMA</span><input type="checkbox" id="set_view_delima" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Kata Laluan Sistem</span><input type="checkbox" id="set_view_password" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                        </div>
-
-                        <h4 class="settings-category-title">Kokurikulum</h4>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <label class="toggle-wrapper"><span class="toggle-text">Papar Bahagian Kokurikulum</span><input type="checkbox" id="set_view_koku" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                        </div>
-                    </div>
-
-                    <div class="settings-card">
-                        <div class="section-header-title">Format Cetakan ID Kad</div>
-                        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                            <label class="toggle-wrapper"><span class="toggle-text">Papar No. IC / MyKid</span><input type="checkbox" id="set_print_ic" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Papar Jantina</span><input type="checkbox" id="set_print_gender" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Papar ID DELIMA</span><input type="checkbox" id="set_print_delima" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Papar No. Telefon Penjaga</span><input type="checkbox" id="set_print_tel" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Papar Kokurikulum</span><input type="checkbox" id="set_print_koku" onchange="saveSettings()"><span class="toggle-slider"></span></label>
-                            <label class="toggle-wrapper"><span class="toggle-text">Sertakan QR Code Peribadi</span><input type="checkbox" id="set_print_qr" onchange="saveSettings()"><span class="toggle-slider"></span></label>
+                        <div class="settings-card" style="background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.2);">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem; color: var(--secondary); border-bottom: 1px dashed rgba(59, 130, 246, 0.3);"><i data-lucide="trending-up" style="width:18px;"></i> Kenaikan Darjah (Auto-Promote)</div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Naikkan nama kelas sekumpulan murid sekaligus pada hujung tahun.</p>
+                            <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 1rem;">
+                                <input type="text" id="apFrom" placeholder="Kelas Asal (Cth: 1 Mawar)" style="width: 100%; padding: 0.7rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); color: var(--text-main); outline: none;">
+                                <input type="text" id="apTo" placeholder="Tukar Kepada (Cth: 2 Mawar)" style="width: 100%; padding: 0.7rem; border-radius: var(--border-radius-md); border: 1px solid var(--border-light); background: var(--bg-color); color: var(--text-main); outline: none;">
+                            </div>
+                            <button class="btn-primary" onclick="autoPromoteClass()" style="width: 100%; justify-content: center; background: var(--secondary);"><i data-lucide="arrow-up-circle"></i> Laksana Kenaikan</button>
                         </div>
                     </div>
 
@@ -607,7 +669,7 @@
 
     <div class="modal-overlay" id="logoutModal">
         <div class="modal-content" style="text-align:center; max-width:350px;">
-            <div style="color:var(--danger); margin-bottom:1rem;"><i data-lucide="log-out" style="width:50px; height:50px;"></i></div>
+            <div style="color:var(--danger); margin-bottom:1rem;"><i data-lucide="log-out" style="width:50px; height:50px; margin: 0 auto;"></i></div>
             <h3>Log Keluar?</h3>
             <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.5rem;">Data anda selamat di cloud. Log masuk semula untuk akses.</p>
             <div style="display:flex; gap:0.5rem;">
@@ -804,12 +866,41 @@
     <script>
         function showLoading(show) { document.getElementById('loadingOverlay').style.display = show ? 'flex' : 'none'; }
         
+        // --- QR SCANNER LOGIC (DIPERBAIKI) ---
+        let html5QrcodeScannerProfile = null;
+        let html5QrcodeScannerAttendance = null;
+
+        function startProfileScanner() {
+            if (!html5QrcodeScannerProfile) {
+                html5QrcodeScannerProfile = new Html5QrcodeScanner('reader', { fps: 10, qrbox: {width: 250, height: 250} }, false);
+                html5QrcodeScannerProfile.render(handleScanProfile, (error) => {});
+            }
+        }
+
+        function startAttendanceScanner() {
+            if (!html5QrcodeScannerAttendance) {
+                html5QrcodeScannerAttendance = new Html5QrcodeScanner('reader-kehadiran', { fps: 10, qrbox: {width: 250, height: 250} }, false);
+                html5QrcodeScannerAttendance.render(handleScanAttendance, (error) => {});
+            }
+        }
+
+        function stopScanners() {
+            if (html5QrcodeScannerProfile) { html5QrcodeScannerProfile.clear().catch(()=>{}); html5QrcodeScannerProfile = null; }
+            if (html5QrcodeScannerAttendance) { html5QrcodeScannerAttendance.clear().catch(()=>{}); html5QrcodeScannerAttendance = null; }
+        }
+
         function switchTab(target) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(`section-${target}`).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.querySelectorAll(`[data-target="${target}"]`).forEach(n => n.classList.add('active'));
+            
             if(target === 'harijadi') updateHariJadi();
+            
+            stopScanners();
+            if(target === 'scan') { setTimeout(startProfileScanner, 300); }
+            else if(target === 'kehadiran') { renderAttendanceLog(); setTimeout(startAttendanceScanner, 300); }
+            
             window.scrollTo(0,0);
         }
 
@@ -851,7 +942,6 @@
                     </div>
                     <div class="card-actions-modern">
                         <button class="btn-action view" onclick="viewProfile('${s.id}')"><i data-lucide="eye"></i></button>
-                        <button class="btn-action print" onclick="printIDCard('${s.id}')"><i data-lucide="printer"></i></button>
                         <button class="btn-action edit" onclick="editStudent('${s.id}')"><i data-lucide="edit-2"></i></button>
                         <button class="btn-action delete" onclick="deleteStudent('${s.id}')"><i data-lucide="trash-2"></i></button>
                     </div>
@@ -910,8 +1000,7 @@
             switchTab('form');
         };
 
-        function updateHariJadi() {
-            // (Logik lama hari jadi, dikekalkan)
+        function updateHari Jadi() {
             const today = new Date();
             const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
             const dayAfter = new Date(today); dayAfter.setDate(today.getDate() + 2);
@@ -998,7 +1087,6 @@
         }
 
         window.saveSettings = function(showNotif = false) {
-            appSettings.appName = document.getElementById('set_appName').value.trim() || 'MURIDKU';
             appSettings.pinEnabled = document.getElementById('set_pinEnabled').checked;
             const newPin = document.getElementById('set_adminPin').value.trim();
             if (appSettings.pinEnabled && newPin.length !== 4) { if(showNotif) showNotification('PIN mestilah 4 digit.', true); return; }
@@ -1015,12 +1103,11 @@
         }
 
         function applySettingsDisplay() {
-            document.getElementById('set_appName').value = appSettings.appName || 'MURIDKU';
             document.getElementById('set_pinEnabled').checked = appSettings.pinEnabled !== false; 
             document.getElementById('set_adminPin').value = appSettings.adminPin || '1234'; 
             togglePinSetting();
 
-            document.querySelectorAll('.app-name-display').forEach(el => el.innerText = appSettings.appName || 'MURIDKU');
+            document.querySelectorAll('.app-name-display').forEach(el => el.innerText = 'MURIDKU');
 
             const fKelas = document.getElementById('f_kelas');
             const filterKelas = document.getElementById('filterClass');
@@ -1072,60 +1159,38 @@
             setTimeout(() => n.classList.remove('show'), 3000);
         }
 
-        window.printIDCard = (id) => {
-            const s = students.find(x => x.id === id); if(!s) return;
-            const printWin = window.open('', '_blank');
-            const appNameText = appSettings.appName || 'MURIDKU';
-            const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${s.id}`;
-            
-            let infoHTML = '';
-            if(appSettings.print_ic) infoHTML += `<div class="info-item"><p>No. IC / MyKid</p><h4>${s.ic}</h4></div>`;
-            if(appSettings.print_gender) infoHTML += `<div class="info-item"><p>Jantina</p><h4>${s.gender}</h4></div>`;
-            if(appSettings.print_delima && s.delima) infoHTML += `<div class="info-item"><p>ID DELIMA</p><h4>${s.delima}</h4></div>`;
-            if(appSettings.print_tel && s.tel) infoHTML += `<div class="info-item"><p>No. Telefon</p><h4>${s.tel}</h4></div>`;
-            
-            let kokuHTML = '';
-            if(appSettings.print_koku && (s.kelab || s.uniform || s.sukan)) {
-                const list = [s.kelab, s.uniform, s.sukan].filter(Boolean).join(', ');
-                kokuHTML = `<div class="info-item koku-item"><p>Kokurikulum</p><h4>${list}</h4></div>`;
-            }
-            const qrHTML = appSettings.print_qr ? `<div class="qr-section"><img src="${qrSrc}"><span>SCAN UNTUK PROFIL</span></div>` : '';
+        // Handle Scan QR Profile
+        function handleScanProfile(decodedText) {
+            const s = students.find(x => x.id === decodedText);
+            if(s) { stopScanners(); switchTab('list'); viewProfile(s.id); showNotification('Murid dijumpai!'); } 
+            else { showNotification('QR Code tidak sah atau murid tiada.', true); }
+        }
 
-            const html = `
-                <!DOCTYPE html><html><head><title>Cetak Kad Profil</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"><style>
-                body { font-family: 'Poppins', sans-serif; background: #ffffff; margin: 0; padding: 20px; color: #0f172a;}
-                .print-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 340px)); gap: 20px; justify-content: center; }
-                .id-card-wrapper { width: 340px; background: white; border-radius: 20px; overflow: hidden; position: relative; border: 2px solid #e2e8f0; page-break-inside: avoid; margin-bottom: 20px; }
-                .card-header { background: linear-gradient(135deg, #0f172a, #3b82f6); color: white; text-align: center; padding: 25px 15px 50px 15px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-                .card-header h2 { margin: 0; font-size: 18px; letter-spacing: 1px; } .card-header p { margin: 5px 0 0 0; font-size: 12px; opacity: 0.8; }
-                .card-photo-area { text-align: center; margin-top: -45px; position:relative; }
-                .card-photo-area img.dp { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: white; }
-                .card-body { padding: 10px 25px 20px 25px; text-align: center; }
-                .student-name { font-size: 18px; font-weight: 700; color: #0f172a; margin: 10px 0 5px 0; line-height: 1.2; }
-                .student-class { display: inline-block; background: #e0f2fe; color: #0284c7; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; margin-bottom: 15px; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
-                .info-grid { display: grid; grid-template-columns: 1fr; gap: 8px; text-align: left; background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 15px; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
-                .info-item p { font-size: 10px; color: #64748b; margin: 0 0 2px 0; text-transform: uppercase; letter-spacing: 0.5px; }
-                .info-item h4 { font-size: 12px; color: #0f172a; margin: 0; font-weight: 600; word-break: break-all; }
-                .koku-item { border-top: 1px dashed #cbd5e1; padding-top: 5px; margin-top: 5px; }
-                .qr-section { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px; border-top: 1px dashed #cbd5e1;}
-                .qr-section img { width: 70px; height: 70px; }
-                .qr-section span { font-size: 9px; color: #64748b; margin-top: 5px; font-weight: 600;}
-                .card-footer { background: #0f172a; padding: 10px; text-align: center; color: white; font-size: 10px; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
-                </style></head><body>
-                <div class="print-container">
-                    <div class="id-card-wrapper">
-                        <div class="card-header"><h2>KAD PROFIL MURID</h2><p>${appNameText}</p></div>
-                        <div class="card-photo-area"><img src="${s.photo}" class="dp"></div>
-                        <div class="card-body">
-                            <h3 class="student-name">${s.name}</h3><div class="student-class">${s.class}</div>
-                            <div class="info-grid">${infoHTML}${kokuHTML}</div>
-                            ${qrHTML}
-                        </div>
-                        <div class="card-footer">Sistem ${appNameText} &copy; 2026 | BY CIKGUGRAFIK</div>
-                    </div>
-                </div>
-                <script>setTimeout(() => { window.print(); }, 1000);<\/script></body></html>`;
-            printWin.document.open(); printWin.document.write(html); printWin.document.close();
+        // Handle Scan QR Kehadiran
+        function handleScanAttendance(decodedText) {
+            const s = students.find(x => x.id === decodedText);
+            if(s) {
+                const lastScan = attendanceLogs.find(log => log.id === s.id);
+                const now = new Date();
+                if(lastScan && (now - new Date(lastScan.timestamp)) < 60000) {
+                    showNotification('Kehadiran sudah direkodkan sebentar tadi.', true);
+                    return;
+                }
+                
+                const log = { id: s.id, name: s.name, class: s.class, time: now.toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', hour12: true }), timestamp: now.toISOString() };
+                attendanceLogs.unshift(log); 
+                renderAttendanceLog();
+                showNotification(`Kehadiran direkod: ${s.name}`);
+                
+                stopScanners();
+                setTimeout(() => { if(document.getElementById('section-kehadiran').classList.contains('active')) startAttendanceScanner(); }, 3000);
+            } else {
+                showNotification('QR Code tidak sah.', true);
+            }
+        }
+
+        function autoPromoteClass() {
+            showNotification('Ciri Kenaikan Darjah sedang diselenggara.');
         }
 
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
