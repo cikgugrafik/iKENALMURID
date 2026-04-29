@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MURIDKU - Sistem Profil Murid</title>
@@ -1453,7 +1455,7 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
             <div>
                 <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">PILIH TARIKH</label>
-                <input type="date" id="filterAttDate" onchange="window.renderAttendanceLog()" style="width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); outline: none; font-family: 'Poppins', sans-serif; background: var(--box-bg); color: var(--text-main);">
+                <input type="text" id="filterAttDate" style="width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); outline: none; font-family: 'Poppins', sans-serif; background: var(--box-bg); color: var(--text-main);">
             </div>
             <div>
                 <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">PILIH KELAS</label>
@@ -3822,7 +3824,7 @@
             window.showNotification('MURIDKU berjaya dipasang ke skrin utama!');
         });
 
-        // Init on DOMContentLoaded
+       // Init on DOMContentLoaded
         document.addEventListener("DOMContentLoaded", () => {
             lucide.createIcons();
             if (localStorage.getItem('muridku_darkmode') === 'true') {
@@ -3837,6 +3839,21 @@
             // Check install banner (untuk iOS terus, Android tunggu beforeinstallprompt event)
             if (window.isIOS()) {
                 window.maybeShowInstallBanner();
+            }
+
+            // --- FLATPICKR: Tukar format tarikh Malaysia (DD/MM/YYYY) ---
+            if (document.getElementById('filterAttDate')) {
+                flatpickr("#filterAttDate", {
+                    altInput: true,          // Buat kotak paparan alternatif
+                    altFormat: "d/m/Y",      // Format Malaysia (Hari/Bulan/Tahun)
+                    dateFormat: "Y-m-d",     // Format background untuk database Firebase
+                    defaultDate: "today",    // Automatik pilih hari ini
+                    disableMobile: true,     // Elak phone paksa guna datepicker bawaan phone
+                    onChange: function() {
+                        // Bila tarikh bertukar, panggil fungsi render table
+                        window.renderAttendanceLog();
+                    }
+                });
             }
         });
 
