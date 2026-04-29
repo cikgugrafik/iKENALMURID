@@ -128,6 +128,23 @@
             border: 1px solid var(--border-light);
             box-shadow: var(--shadow-soft);
         }
+        /* --- Khas untuk cantikkan kotak Flatpickr --- */
+        input.flatpickr-input {
+            width: 100% !important;
+            padding: 0.6rem !important;
+            border-radius: var(--radius-sm) !important;
+            border: 1px solid var(--border-light) !important;
+            outline: none !important;
+            font-family: 'Poppins', sans-serif !important;
+            background: var(--box-bg) !important;
+            color: var(--text-main) !important;
+            box-sizing: border-box !important;
+            transition: var(--transition) !important;
+        }
+        input.flatpickr-input:focus {
+            border-color: var(--secondary) !important;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1) !important;
+        }
 
         /* ── LOADING OVERLAY ───────────────────────────────────────── */
         #loadingOverlay {
