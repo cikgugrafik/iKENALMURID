@@ -1418,7 +1418,7 @@
                 <div class="settings-grid">
                     <!-- Card 1: Sistem Utama -->
                     <div class="settings-card glass">
-                        <div class="section-header-title" style="margin-top:0;"><i data-lucide="cogs"></i> Sistem Utama</div>
+                        <div class="section-header-title" style="margin-top:0;"><i data-lucide="settings-2"></i> Sistem Utama</div>
                             <div class="form-group" style="margin-bottom: 1rem;">
                                 <label>Nama Cikgu (Paparan Dashboard)</label>
                                 <input type="text" id="set_teacherName" placeholder="Edit nama anda">
@@ -1840,7 +1840,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, getDoc, setDoc, query, where, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -1858,6 +1858,13 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
         const provider = new GoogleAuthProvider();
+
+        // Handle redirect result lepas Google auth redirect balik ke app
+        getRedirectResult(auth).catch(e => {
+            if (e.code && e.code !== 'auth/no-current-user' && e.code !== 'auth/null-user') {
+                console.warn('Redirect auth:', e.code, e.message);
+            }
+        });
 
         // GLOBAL VARS
         window.students = [];
@@ -2010,7 +2017,7 @@
             if (!document.getElementById('termsCheck').checked) {
                 window.showNotification("Sila tanda setuju pada terma.", true); return;
             }
-            signInWithPopup(auth, provider).catch(e => window.showNotification("Gagal Log Masuk: " + e.message, true));
+            signInWithRedirect(auth, provider).catch(e => window.showNotification("Gagal Log Masuk: " + e.message, true));
         };
         window.logoutGoogle = () => document.getElementById('logoutModal').classList.add('active');
         document.getElementById('confirmLogoutBtn').onclick = () => {
