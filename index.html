@@ -1099,74 +1099,18 @@
             <div class="icon-circle"><i data-lucide="graduation-cap" style="width: 40px; height: 40px;"></i></div>
             <h1 class="brand-title-landing">MURIDKU</h1>
             <h2 style="font-size: 0.95rem; font-weight: 500; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.3px;">Sistem Pengurusan Profil Murid Bersepadu</h2>
-
-            <!-- STEP 1: Terma + Google Login -->
-            <div id="landingStep1" style="width:100%; display:flex; flex-direction:column; gap:0.6rem;">
-                <div class="feature-list">
-                    <div class="feature-item"><i data-lucide="shield-check"></i><div><strong>Privasi Terjamin</strong><p>Pangkalan data dilindungi sistem awan Google. Hanya anda yang boleh akses data anda.</p></div></div>
-                    <div class="feature-item"><i data-lucide="zap"></i><div><strong>Pantas & Efisien</strong><p>Urus rekod, kehadiran, dan cetak kad ID murid dalam beberapa saat sahaja.</p></div></div>
-                    <div class="feature-item"><i data-lucide="smartphone"></i><div><strong>Akses Dimana Sahaja</strong><p>Direka khas untuk kelancaran pada telefon pintar mahupun komputer.</p></div></div>
-                </div>
-                <div class="terms-box" onclick="window.toggleTerms()">
-                    <input type="checkbox" id="termsCheck" onclick="event.stopPropagation(); window.updateLoginButton();">
-                    <label for="termsCheck">Saya bersetuju dengan Terma & Syarat serta memahami Dasar Privasi bahawa data yang disimpan adalah tanggungjawab saya sepenuhnya.</label>
-                </div>
-                <button class="google-btn disabled" id="loginBtnGoogle" onclick="window.loginGoogle()" title="Sila tanda setuju pada terma di atas terlebih dahulu.">
-                    <img src="https://www.svgrepo.com/show/475656/google-color.svg"> Log Masuk dengan Google
-                </button>
+            <div class="feature-list">
+                <div class="feature-item"><i data-lucide="shield-check"></i><div><strong>Privasi Terjamin</strong><p>Pangkalan data dilindungi sistem awan Google. Hanya anda yang boleh akses data anda.</p></div></div>
+                <div class="feature-item"><i data-lucide="zap"></i><div><strong>Pantas & Efisien</strong><p>Urus rekod, kehadiran, dan cetak kad ID murid dalam beberapa saat sahaja.</p></div></div>
+                <div class="feature-item"><i data-lucide="smartphone"></i><div><strong>Akses Dimana Sahaja</strong><p>Direka khas untuk kelancaran pada telefon pintar mahupun komputer.</p></div></div>
             </div>
-
-            <!-- STEP 2: Access Code (muncul selepas Google login berjaya) -->
-            <div id="landingStep2" style="width:100%; display:none; flex-direction:column; gap:0.8rem;">
-                <!-- User info -->
-                <div style="display:flex; align-items:center; gap:0.8rem; background:var(--bg-color); padding:0.8rem 1rem; border-radius:var(--radius-md); border:1px solid var(--border-light);">
-                    <img id="landingUserPhoto" src="" style="width:38px; height:38px; border-radius:50%; border:2px solid var(--border-light);">
-                    <div>
-                        <p id="landingUserName" style="font-size:0.85rem; font-weight:600; color:var(--text-main); margin:0;"></p>
-                        <p id="landingUserEmail" style="font-size:0.72rem; color:var(--text-muted); margin:0;"></p>
-                    </div>
-                    <button onclick="window.logoutAndReset()" style="margin-left:auto; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.72rem; padding:0.3rem 0.6rem; border-radius:6px; transition:var(--transition);" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--text-muted)'">
-                        <i data-lucide="x" style="width:14px; height:14px; vertical-align:-2px;"></i> Tukar
-                    </button>
-                </div>
-
-                <!-- Access code input -->
-                <div style="text-align:center; padding: 0.5rem 0;">
-                    <div style="width:48px; height:48px; background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(6,182,212,0.1)); border-radius:14px; display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
-                        <i data-lucide="key-round" style="width:22px; height:22px; color:var(--secondary);"></i>
-                    </div>
-                    <p style="font-size:0.95rem; font-weight:700; color:var(--text-main); margin:0 0 0.3rem;">Masukkan Kod Akses</p>
-                    <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Sistem ini memerlukan kod akses khas. Hubungi pentadbir untuk mendapatkan kod.</p>
-                </div>
-
-                <div style="position:relative;">
-                    <input type="text" id="accessCodeInput"
-                        placeholder="Contoh: AKSESTOKEN1234"
-                        style="width:100%; padding:0.85rem 3rem 0.85rem 1rem; border-radius:var(--radius-md); border:1.5px solid var(--border-light); background:var(--bg-color); font-family:'Poppins',sans-serif; font-size:0.9rem; outline:none; color:var(--text-main); text-transform:uppercase; letter-spacing:1px; transition:var(--transition);"
-                        oninput="this.value=this.value.toUpperCase(); window.clearCodeError();"
-                        onkeydown="if(event.key==='Enter') window.verifyAccessCode();"
-                        onfocus="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';"
-                        onblur="this.style.borderColor='var(--border-light)'; this.style.boxShadow='none';">
-                    <i data-lucide="lock" id="codeInputIcon" style="position:absolute; right:1rem; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--text-muted); pointer-events:none;"></i>
-                </div>
-
-                <!-- Error message -->
-                <div id="codeError" style="display:none; background:rgba(244,63,94,0.08); border:1px solid rgba(244,63,94,0.25); border-radius:var(--radius-sm); padding:0.65rem 0.9rem; font-size:0.78rem; color:var(--danger); display:flex; align-items:center; gap:0.5rem;">
-                    <i data-lucide="alert-circle" style="width:15px; height:15px; flex-shrink:0;"></i>
-                    <span id="codeErrorMsg">Kod akses tidak sah.</span>
-                </div>
-
-                <button onclick="window.verifyAccessCode()" id="verifyCodeBtn"
-                    style="background:linear-gradient(135deg,var(--secondary),var(--accent)); color:white; padding:0.85rem; border-radius:50px; border:none; font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:600; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:0.6rem; box-shadow:0 4px 14px rgba(99,102,241,0.3); transition:var(--transition);">
-                    <i data-lucide="unlock" style="width:17px; height:17px;"></i>
-                    Sahkan Kod & Masuk
-                </button>
-
-                <p style="font-size:0.68rem; color:var(--text-muted); text-align:center; margin-top:0.3rem;">
-                    Hubungi <a href="https://cikgugrafik.my" target="_blank" style="color:var(--secondary); font-weight:600; text-decoration:none;">CIKGUGRAFIK</a> jika anda tidak mempunyai kod akses.
-                </p>
+            <div class="terms-box" onclick="window.toggleTerms()">
+                <input type="checkbox" id="termsCheck" onclick="event.stopPropagation(); window.updateLoginButton();">
+                <label for="termsCheck">Saya bersetuju dengan Terma & Syarat serta memahami Dasar Privasi bahawa data yang disimpan adalah tanggungjawab saya sepenuhnya.</label>
             </div>
-
+            <button class="google-btn disabled" id="loginBtnGoogle" onclick="window.loginGoogle()" title="Sila tanda setuju pada terma di atas terlebih dahulu.">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg"> Log Masuk dengan Google
+            </button>
             <div style="margin-top: 1rem; font-size: 0.72rem; color: var(--text-muted);">created by <a href="https://cikgugrafik.my" target="_blank" style="color:var(--secondary); font-weight:600; text-decoration:none;">CIKGUGRAFIK</a></div>
         </div>
     </div>
@@ -1478,39 +1422,6 @@
                             <div class="form-group" style="margin-bottom: 1rem;">
                                 <label>Nama Cikgu (Paparan Dashboard)</label>
                                 <input type="text" id="set_teacherName" placeholder="Edit nama anda">
-                            </div>
-
-                            <!-- ACCESS CODE SECTION -->
-                            <div style="padding: 1rem; background: linear-gradient(135deg, rgba(99,102,241,0.06), rgba(6,182,212,0.04)); border-radius: var(--radius-md); border: 1px solid rgba(99,102,241,0.15); margin-bottom: 1rem;">
-                                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.8rem;">
-                                    <i data-lucide="key-round" style="width:16px; height:16px; color:var(--secondary);"></i>
-                                    <span style="font-size:0.82rem; font-weight:700; color:var(--text-main);">Kod Akses Sistem</span>
-                                    <span id="accessCodeStatusBadge" style="font-size:0.65rem; padding:0.15rem 0.5rem; border-radius:50px; background:rgba(16,185,129,0.1); color:var(--success); border:1px solid rgba(16,185,129,0.2); margin-left:auto;">Aktif</span>
-                                </div>
-                                <p style="font-size:0.72rem; color:var(--text-muted); margin-bottom:0.8rem; line-height:1.5;">Hanya pengguna yang mempunyai kod ini boleh mendaftar masuk ke MURIDKU.</p>
-                                <div style="position:relative;">
-                                    <input type="password" id="set_accessCode"
-                                        placeholder="Kod akses semasa"
-                                        style="width:100%; padding:0.7rem 2.8rem 0.7rem 1rem; border-radius:var(--radius-md); border:1.5px solid var(--border-light); background:var(--bg-color); font-family:'Poppins',sans-serif; font-size:0.85rem; outline:none; color:var(--text-main); letter-spacing:2px; transition:var(--transition);"
-                                        onfocus="this.style.borderColor='var(--secondary)'"
-                                        onblur="this.style.borderColor='var(--border-light)'">
-                                    <button onclick="window.toggleAccessCodeVisibility()" style="position:absolute; right:0.6rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; padding:0.3rem; color:var(--text-muted);" title="Tunjuk/Sembunyikan">
-                                        <i data-lucide="eye" id="accessCodeEyeIcon" style="width:15px; height:15px;"></i>
-                                    </button>
-                                </div>
-                                <div style="display:flex; gap:0.5rem; margin-top:0.6rem;">
-                                    <button onclick="window.saveAccessCode()" class="btn-primary" style="flex:1; justify-content:center; font-size:0.78rem; padding:0.5rem 0.8rem;">
-                                        <i data-lucide="save" style="width:13px; height:13px;"></i> Simpan Kod
-                                    </button>
-                                    <button onclick="window.generateRandomCode()" class="btn-secondary" style="font-size:0.78rem; padding:0.5rem 0.8rem;" title="Jana kod rawak">
-                                        <i data-lucide="refresh-cw" style="width:13px; height:13px;"></i> Jana Baru
-                                    </button>
-                                </div>
-                                <p style="font-size:0.68rem; color:var(--text-muted); margin-top:0.5rem; text-align:center;">
-                                    <i data-lucide="info" style="width:11px; height:11px; vertical-align:-1px;"></i>
-                                    Kod semasa: <b id="accessCodePreview" style="color:var(--secondary); letter-spacing:1px;">••••••••</b>
-                                    <button onclick="window.revealCodePreview()" style="background:none; border:none; cursor:pointer; color:var(--secondary); font-size:0.68rem; padding:0; margin-left:0.3rem; font-family:'Poppins',sans-serif;">Tunjuk</button>
-                                </p>
                             </div>
                             <h4 class="settings-category-title">Modul Tambahan</h4>
                             <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
@@ -2080,62 +1991,10 @@
         window.scrollToTop = function() { window.scrollTo({ top: 0, behavior: 'smooth' }); };
 
         // --- AUTH ---
-        // ── ACCESS CODE CONFIG (Firestore) ────────────────────────────
-        // Kod disimpan dalam: Firestore → collection "config" → doc "accessCode"
-        // { code: "AKSESTOKEN1234", updatedAt: timestamp }
-        //
-        // FIRESTORE RULES — tambah ini dalam Firebase Console → Firestore → Rules:
-        //
-        // match /config/{docId} {
-        //   allow read: if request.auth != null;  // semua yang login boleh baca
-        //   allow write: if request.auth.uid == "UID_AWAK_DI_SINI"; // hanya owner
-        // }
-        //
-
-        const VERIFIED_USERS_KEY = 'muridku_verified_users';
-
-        // Cache kod dalam memory supaya tak fetch Firestore setiap kali
-        window._cachedAccessCode = null;
-
-        async function fetchAccessCodeFromFirestore() {
-            try {
-                const snap = await getDoc(doc(db, 'config', 'accessCode'));
-                if (snap.exists()) {
-                    window._cachedAccessCode = snap.data().code || 'AKSESTOKEN1234';
-                } else {
-                    // Belum wujud dalam Firestore — guna default
-                    window._cachedAccessCode = 'AKSESTOKEN1234';
-                }
-            } catch(e) {
-                // Kalau gagal fetch (offline/rules), guna localStorage sebagai fallback
-                window._cachedAccessCode = window.appSettings.accessCode || 'AKSESTOKEN1234';
-            }
-            return window._cachedAccessCode;
-        }
-
-        async function getAccessCode() {
-            if (window._cachedAccessCode) return window._cachedAccessCode;
-            return await fetchAccessCodeFromFirestore();
-        }
-
-        function isUserVerified(uid) {
-            const verified = JSON.parse(localStorage.getItem(VERIFIED_USERS_KEY) || '[]');
-            return verified.includes(uid);
-        }
-        function markUserVerified(uid) {
-            const verified = JSON.parse(localStorage.getItem(VERIFIED_USERS_KEY) || '[]');
-            if (!verified.includes(uid)) {
-                verified.push(uid);
-                localStorage.setItem(VERIFIED_USERS_KEY, JSON.stringify(verified));
-            }
-        }
-
-        // ── LANDING STEP CONTROL ──────────────────────────────────────
-        window.showLandingStep = function(step) {
-            document.getElementById('landingStep1').style.display = step === 1 ? 'flex' : 'none';
-            document.getElementById('landingStep2').style.display = step === 2 ? 'flex' : 'none';
-            lucide.createIcons();
-        };
+        // ── AUTH & ACCESS CONTROL ─────────────────────────────────────
+        // Verified users disimpan dalam Firestore: collection "verifiedUsers" → doc UID
+        // Cikgu yang dah verify SEKALI → terus masuk dari mana-mana device
+        // Kawalan sepenuhnya dari master.html
 
         window.toggleTerms = function() {
             const cb = document.getElementById('termsCheck');
@@ -2153,9 +2012,6 @@
             }
             signInWithPopup(auth, provider).catch(e => window.showNotification("Gagal Log Masuk: " + e.message, true));
         };
-        window.logoutAndReset = function() {
-            signOut(auth).then(() => { window.showLandingStep(1); });
-        };
         window.logoutGoogle = () => document.getElementById('logoutModal').classList.add('active');
         document.getElementById('confirmLogoutBtn').onclick = () => {
             signOut(auth).then(() => {
@@ -2163,61 +2019,35 @@
                 document.getElementById('sidebar').style.display = 'none';
                 document.getElementById('bottomNav').style.display = 'none';
                 document.getElementById('landingPage').style.display = 'flex';
-                window.showLandingStep(1);
                 window.closeModal('logoutModal');
             });
         };
 
-        // ── ACCESS CODE VERIFY ────────────────────────────────────────
-        window.clearCodeError = function() {
-            const err = document.getElementById('codeError');
-            if (err) err.style.display = 'none';
-        };
-        window.verifyAccessCode = async function() {
-            const input = document.getElementById('accessCodeInput');
-            const btn = document.getElementById('verifyCodeBtn');
-            const err = document.getElementById('codeError');
-            const errMsg = document.getElementById('codeErrorMsg');
-            const code = input.value.trim().toUpperCase();
-
-            if (!code) {
-                err.style.display = 'flex'; errMsg.textContent = 'Sila masukkan kod akses.'; return;
+        // Check sama ada UID dah verified dalam Firestore
+        async function checkVerifiedInFirestore(uid) {
+            try {
+                const snap = await getDoc(doc(db, 'verifiedUsers', uid));
+                return snap.exists();
+            } catch(e) {
+                // Kalau rules tak benarkan read — anggap belum verified
+                return false;
             }
+        }
 
-            // Disable button, tunjuk loading
-            btn.innerHTML = '<i data-lucide="loader" style="width:17px;height:17px;"></i> Mengesahkan...';
-            btn.disabled = true;
-            lucide.createIcons();
-
-            // Fetch kod dari Firestore (fresh check setiap kali verify)
-            window._cachedAccessCode = null; // force re-fetch
-            const validCode = await getAccessCode();
-
-            btn.disabled = false;
-            btn.innerHTML = '<i data-lucide="unlock" style="width:17px;height:17px;"></i> Sahkan Kod & Masuk';
-            lucide.createIcons();
-
-            if (code !== validCode.toUpperCase()) {
-                err.style.display = 'flex';
-                errMsg.textContent = 'Kod akses tidak sah. Sila semak semula.';
-                input.style.borderColor = 'var(--danger)';
-                input.style.boxShadow = '0 0 0 3px rgba(244,63,94,0.1)';
-                setTimeout(() => { input.style.borderColor = 'var(--border-light)'; input.style.boxShadow = 'none'; }, 2000);
-                return;
+        // Mark user sebagai verified dalam Firestore
+        async function markVerifiedInFirestore(uid, displayName, email) {
+            try {
+                await setDoc(doc(db, 'verifiedUsers', uid), {
+                    uid, displayName: displayName || '', email: email || '',
+                    verifiedAt: serverTimestamp(),
+                    lastLogin: serverTimestamp()
+                });
+            } catch(e) {
+                console.warn('Gagal mark verified:', e.message);
             }
+        }
 
-            // Betul — mark verified
-            const user = auth.currentUser;
-            if (user) markUserVerified(user.uid);
-
-            btn.innerHTML = '<i data-lucide="check-circle" style="width:17px;height:17px;"></i> Kod Sah! Memuatkan...';
-            btn.style.background = 'linear-gradient(135deg,var(--success),#34d399)';
-            lucide.createIcons();
-            await new Promise(r => setTimeout(r, 700));
-            window.enterApp(user);
-        };
-
-        // ── ENTER APP ─────────────────────────────────────────────────
+        // Masukkan app terus
         window.enterApp = function(user) {
             document.getElementById('landingPage').style.display = 'none';
             document.getElementById('mainContent').style.display = 'flex';
@@ -2229,7 +2059,9 @@
                 document.getElementById('bottomNav').style.display = 'none';
             }
             const photoURL = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`;
-            ['sidebarAvatar','dashAvatarImg'].forEach(id => { const el = document.getElementById(id); if(el) el.src = photoURL; });
+            ['sidebarAvatar','dashAvatarImg'].forEach(id => {
+                const el = document.getElementById(id); if(el) el.src = photoURL;
+            });
             const sidebarName = document.getElementById('sidebarTeacherName');
             if (sidebarName) sidebarName.textContent = window.appSettings.teacherName || user.displayName || 'Cikgu';
             window.applySettingsDisplay();
@@ -2241,33 +2073,126 @@
             lucide.createIcons();
         };
 
-        // FIX: onAuthStateChanged — check access code dulu sebelum masuk
-        onAuthStateChanged(auth, (user) => {
+        // onAuthStateChanged — check Firestore verified status
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Kalau user dah pernah verify code, terus masuk
-                if (isUserVerified(user.uid)) {
-                    window.enterApp(user);
-                    return;
-                }
-                // Kalau belum verify, tunjuk step 2 (masukkan code)
+                // Tunjuk loading sikit
                 document.getElementById('landingPage').style.display = 'flex';
-                document.getElementById('mainContent').style.display = 'none';
-                document.getElementById('sidebar').style.display = 'none';
-                document.getElementById('bottomNav').style.display = 'none';
-                // Populate user info dalam step 2
-                const photo = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`;
-                document.getElementById('landingUserPhoto').src = photo;
-                document.getElementById('landingUserName').textContent = user.displayName || 'Pengguna';
-                document.getElementById('landingUserEmail').textContent = user.email || '';
-                window.showLandingStep(2);
+
+                // Check Firestore sama ada dah verified
+                const isVerified = await checkVerifiedInFirestore(user.uid);
+
+                if (isVerified) {
+                    // Dah verified — update lastLogin dan terus masuk
+                    markVerifiedInFirestore(user.uid, user.displayName, user.email);
+                    window.enterApp(user);
+                } else {
+                    // Belum verified — check access code dari Firestore
+                    // Tunjuk modal masukkan kod
+                    showAccessCodeModal(user);
+                }
             } else {
                 document.getElementById('landingPage').style.display = 'flex';
                 document.getElementById('mainContent').style.display = 'none';
                 document.getElementById('sidebar').style.display = 'none';
                 document.getElementById('bottomNav').style.display = 'none';
-                window.showLandingStep(1);
             }
         });
+
+        // ── MODAL KOD AKSES (popup, bukan step dalam landing) ────────
+        function showAccessCodeModal(user) {
+            // Buat modal dynamically kalau belum ada
+            let modal = document.getElementById('accessCodeModal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'accessCodeModal';
+                modal.style.cssText = `position:fixed; inset:0; background:rgba(0,0,0,0.6); backdrop-filter:blur(8px); z-index:9998; display:flex; align-items:center; justify-content:center; padding:1rem;`;
+                modal.innerHTML = `
+                    <div style="background:var(--box-bg); border-radius:var(--radius-xl); padding:2rem; width:100%; max-width:420px; box-shadow:0 25px 50px rgba(0,0,0,0.2);">
+                        <div style="text-align:center; margin-bottom:1.5rem;">
+                            <div style="width:56px; height:56px; background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(6,182,212,0.08)); border-radius:16px; display:flex; align-items:center; justify-content:center; margin:0 auto 1rem;">
+                                <i data-lucide="key-round" style="width:24px; height:24px; color:var(--secondary);"></i>
+                            </div>
+                            <h3 style="font-size:1.1rem; font-weight:700; color:var(--text-main); margin:0 0 0.3rem;">Kod Akses Diperlukan</h3>
+                            <p style="font-size:0.78rem; color:var(--text-muted); margin:0;">Hubungi pentadbir untuk mendapatkan kod akses MURIDKU.</p>
+                        </div>
+                        <!-- User info -->
+                        <div style="display:flex; align-items:center; gap:0.8rem; background:var(--bg-color); padding:0.75rem 1rem; border-radius:var(--radius-md); border:1px solid var(--border-light); margin-bottom:1rem;">
+                            <img src="${user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`}"
+                                style="width:36px; height:36px; border-radius:50%; border:2px solid var(--border-light); flex-shrink:0;">
+                            <div style="min-width:0; flex:1;">
+                                <p style="font-size:0.82rem; font-weight:600; color:var(--text-main); margin:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${user.displayName || 'Pengguna'}</p>
+                                <p style="font-size:0.7rem; color:var(--text-muted); margin:0;">${user.email || ''}</p>
+                            </div>
+                            <button onclick="signOut(window._auth).then(()=>{ document.getElementById('accessCodeModal').remove(); })" style="background:none; border:none; cursor:pointer; color:var(--text-muted); font-size:0.7rem; padding:0.25rem 0.5rem; border-radius:6px; white-space:nowrap; font-family:'Poppins',sans-serif;" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--text-muted)'">
+                                <i data-lucide="x" style="width:13px; height:13px; vertical-align:-2px;"></i> Tukar
+                            </button>
+                        </div>
+                        <!-- Input -->
+                        <input type="text" id="modalCodeInput" placeholder="MASUKKAN KOD AKSES"
+                            style="width:100%; padding:0.85rem 1rem; border-radius:var(--radius-md); border:1.5px solid var(--border-light); background:var(--bg-color); font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:700; outline:none; color:var(--text-main); text-transform:uppercase; letter-spacing:2px; margin-bottom:0.5rem; text-align:center; transition:all 0.2s;"
+                            oninput="this.value=this.value.toUpperCase(); document.getElementById('modalCodeErr').style.display='none';"
+                            onkeydown="if(event.key==='Enter') window.submitAccessCode('${user.uid}','${user.displayName||''}','${user.email||''}')"
+                            onfocus="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)'"
+                            onblur="this.style.borderColor='var(--border-light)'; this.style.boxShadow='none'">
+                        <!-- Error -->
+                        <div id="modalCodeErr" style="display:none; font-size:0.75rem; color:var(--danger); text-align:center; padding:0.4rem; margin-bottom:0.5rem;">
+                            ❌ Kod tidak sah. Cuba semula.
+                        </div>
+                        <!-- Button -->
+                        <button id="modalCodeBtn" onclick="window.submitAccessCode('${user.uid}','${user.displayName||''}','${user.email||''}')"
+                            style="width:100%; padding:0.85rem; border-radius:50px; border:none; background:linear-gradient(135deg,var(--secondary),var(--accent)); color:white; font-family:'Poppins',sans-serif; font-weight:700; font-size:0.9rem; cursor:pointer; box-shadow:0 4px 14px rgba(99,102,241,0.3); transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:0.5rem; margin-top:0.3rem;">
+                            <i data-lucide="unlock" style="width:17px; height:17px;"></i> Sahkan & Masuk
+                        </button>
+                    </div>`;
+                document.body.appendChild(modal);
+                window._auth = auth; // expose untuk inline onclick
+            }
+            modal.style.display = 'flex';
+            lucide.createIcons();
+            setTimeout(() => { const inp = document.getElementById('modalCodeInput'); if(inp) inp.focus(); }, 300);
+        }
+
+        window.submitAccessCode = async function(uid, displayName, email) {
+            const input = document.getElementById('modalCodeInput');
+            const btn = document.getElementById('modalCodeBtn');
+            const err = document.getElementById('modalCodeErr');
+            const code = (input?.value || '').trim().toUpperCase();
+
+            if (!code) { err.style.display = 'block'; err.textContent = '⚠️ Sila masukkan kod akses.'; return; }
+
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader" style="width:17px;height:17px;"></i> Mengesahkan...';
+            lucide.createIcons();
+
+            // Fetch kod dari Firestore
+            let validCode = 'AKSESTOKEN1234';
+            try {
+                const snap = await getDoc(doc(db, 'config', 'accessCode'));
+                if (snap.exists()) validCode = snap.data().code || validCode;
+            } catch(e) { console.warn('Gagal fetch code:', e); }
+
+            if (code !== validCode.toUpperCase()) {
+                err.style.display = 'block'; err.textContent = '❌ Kod tidak sah. Sila semak semula.';
+                input.style.borderColor = 'var(--danger)';
+                setTimeout(() => { input.style.borderColor = 'var(--border-light)'; }, 2000);
+                btn.disabled = false;
+                btn.innerHTML = '<i data-lucide="unlock" style="width:17px;height:17px;"></i> Sahkan & Masuk';
+                lucide.createIcons();
+                return;
+            }
+
+            // Kod betul — simpan dalam Firestore
+            await markVerifiedInFirestore(uid, displayName, email);
+
+            btn.innerHTML = '<i data-lucide="check-circle" style="width:17px;height:17px;"></i> Berjaya! Memuatkan...';
+            btn.style.background = 'linear-gradient(135deg,var(--success),#34d399)';
+            lucide.createIcons();
+            await new Promise(r => setTimeout(r, 700));
+
+            document.getElementById('accessCodeModal')?.remove();
+            window.enterApp(auth.currentUser);
+        };
 
         // Auto-adjust bila resize window (pertukaran desktop <-> mobile)
         window.addEventListener('resize', () => {
@@ -3276,21 +3201,6 @@
             const setName = document.getElementById('set_teacherName');
             if (setName) setName.value = window.appSettings.teacherName || 'Admin';
 
-            // Access code — fetch dari Firestore (tunjuk loading dulu)
-            const codeInput = document.getElementById('set_accessCode');
-            if (codeInput) {
-                codeInput.value = 'Memuatkan...';
-                codeInput.disabled = true;
-                getAccessCode().then(code => {
-                    codeInput.value = code;
-                    codeInput.disabled = false;
-                    const badge = document.getElementById('accessCodeStatusBadge');
-                    if (badge) badge.textContent = 'Aktif ✓';
-                });
-            }
-            const preview = document.getElementById('accessCodePreview');
-            if (preview) preview.textContent = '••••••••';
-
             // Update dashboard teacher name
             const dashName = document.getElementById('dashTeacherName');
             if (dashName) dashName.innerText = window.appSettings.teacherName || 'Admin';
@@ -3375,76 +3285,6 @@
             // Apply display changes without re-reading from UI (avoid loop)
             window.applySettingsDisplay();
             if (showNotif) window.showNotification('Tetapan Disimpan!');
-        };
-
-        // ── ACCESS CODE SETTINGS FUNCTIONS ───────────────────────────
-        window.saveAccessCode = async function() {
-            const input = document.getElementById('set_accessCode');
-            const code = input ? input.value.trim().toUpperCase() : '';
-            if (!code || code.length < 6) {
-                window.showNotification('Kod akses mestilah sekurang-kurangnya 6 aksara.', true); return;
-            }
-            const btn = document.querySelector('[onclick="window.saveAccessCode()"]');
-            if (btn) { btn.disabled = true; btn.innerHTML = '<i data-lucide="loader" style="width:13px;height:13px;"></i> Menyimpan...'; lucide.createIcons(); }
-
-            try {
-                // Simpan ke Firestore — semua device akan dapat kod baru
-                await setDoc(doc(db, 'config', 'accessCode'), {
-                    code: code,
-                    updatedBy: auth.currentUser?.uid || 'admin',
-                    updatedAt: serverTimestamp()
-                });
-
-                // Update cache & localStorage fallback
-                window._cachedAccessCode = code;
-                window.appSettings.accessCode = code;
-                localStorage.setItem('muridku_settings_v1', JSON.stringify(window.appSettings));
-
-                window.showNotification('Kod akses berjaya dikemaskini untuk semua pengguna!');
-                const preview = document.getElementById('accessCodePreview');
-                if (preview) preview.textContent = '••••••••';
-
-            } catch(e) {
-                window.showNotification('Gagal simpan ke cloud: ' + e.message, true);
-            }
-
-            if (btn) { btn.disabled = false; btn.innerHTML = '<i data-lucide="save" style="width:13px;height:13px;"></i> Simpan Kod'; lucide.createIcons(); }
-        };
-
-        window.generateRandomCode = function() {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // exclude confusing chars
-            let code = 'MURID';
-            for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-            const input = document.getElementById('set_accessCode');
-            if (input) { input.value = code; input.type = 'text'; }
-            const eyeIcon = document.getElementById('accessCodeEyeIcon');
-            if (eyeIcon) eyeIcon.setAttribute('data-lucide', 'eye-off');
-            lucide.createIcons();
-            window.showNotification(`Kod baru dijana: ${code}`);
-        };
-
-        window.toggleAccessCodeVisibility = function() {
-            const input = document.getElementById('set_accessCode');
-            const icon = document.getElementById('accessCodeEyeIcon');
-            if (!input || !icon) return;
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.setAttribute('data-lucide', 'eye-off');
-            } else {
-                input.type = 'password';
-                icon.setAttribute('data-lucide', 'eye');
-            }
-            lucide.createIcons();
-        };
-
-        window.revealCodePreview = async function() {
-            const preview = document.getElementById('accessCodePreview');
-            if (!preview) return;
-            if (preview.textContent !== '••••••••') { preview.textContent = '••••••••'; return; }
-            preview.textContent = '...';
-            const code = await getAccessCode();
-            preview.textContent = code;
-            setTimeout(() => { if(preview) preview.textContent = '••••••••'; }, 5000);
         };
 
         window.saveAppSettings = function() {
