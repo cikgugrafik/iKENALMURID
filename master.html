@@ -272,6 +272,7 @@
         <button class="tab-btn active" data-tab="overview" onclick="switchTab('overview')"><i data-lucide="layout-dashboard"></i> Overview</button>
         <button class="tab-btn" data-tab="users" onclick="switchTab('users')"><i data-lucide="users"></i> Pengguna</button>
         <button class="tab-btn" data-tab="usage" onclick="switchTab('usage')"><i data-lucide="database"></i> Data Usage</button>
+        <button class="tab-btn" data-tab="security" onclick="switchTab('security')"><i data-lucide="shield-check"></i> Keselamatan</button>
     </div>
 
     <!-- TAB: OVERVIEW -->
@@ -395,7 +396,124 @@
     </div>
 </div>
 
-<!-- CONFIRM MODAL -->
+<!-- TAB: KESELAMATAN -->
+<div class="tab-panel" id="tab-security" style="padding:0 2rem 2rem;">
+    <div class="sec-head">
+        <h2><i data-lucide="shield-check"></i> Keselamatan & Akses</h2>
+        <button class="refresh-btn" onclick="loadSecurityData()"><i data-lucide="refresh-cw"></i> Refresh</button>
+    </div>
+
+    <!-- Access Code Card -->
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem;">
+
+        <div class="usage-card">
+            <div class="usage-title"><i data-lucide="key-round"></i> Kod Akses Sistem (Firestore)</div>
+            <p style="font-size:.78rem; color:var(--muted); margin-bottom:1.2rem; line-height:1.5;">
+                Kod ini diperlukan oleh cikgu baru untuk mendaftar masuk ke MURIDKU buat pertama kali. Simpan di tempat selamat dan kongsikan hanya kepada cikgu yang dibenarkan.
+            </p>
+
+            <!-- Current code display -->
+            <div style="background:var(--bg); border-radius:12px; padding:1rem 1.2rem; border:1px solid var(--border); margin-bottom:1rem;">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:.5rem;">
+                    <span style="font-size:.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px;">Kod Semasa</span>
+                    <span id="secCodeStatus" style="font-size:.65rem; padding:.15rem .5rem; border-radius:50px; background:rgba(16,185,129,.1); color:#059669; border:1px solid rgba(16,185,129,.2); font-weight:600;">Memuatkan...</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:.8rem;">
+                    <code id="secCodeDisplay" style="font-size:1.1rem; font-weight:800; color:var(--text); letter-spacing:3px; flex:1;">••••••••••••</code>
+                    <button onclick="toggleSecCodeVisibility()" id="secCodeEyeBtn" style="background:none; border:none; cursor:pointer; color:var(--muted); padding:.3rem; transition:var(--transition);" title="Tunjuk/Sembunyikan kod">
+                        <i data-lucide="eye" id="secCodeEyeIcon" style="width:18px; height:18px;"></i>
+                    </button>
+                    <button onclick="copyAccessCode()" style="background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.2); border-radius:8px; color:#2563eb; padding:.4rem .7rem; cursor:pointer; font-size:.72rem; font-weight:600; display:flex; align-items:center; gap:.3rem; transition:var(--transition);" title="Salin kod">
+                        <i data-lucide="copy" style="width:13px; height:13px;"></i> Salin
+                    </button>
+                </div>
+            </div>
+
+            <!-- Change code -->
+            <div style="margin-bottom:.8rem;">
+                <label style="font-size:.75rem; font-weight:600; color:var(--text); display:block; margin-bottom:.4rem;">Tukar Kod Baru</label>
+                <div style="display:flex; gap:.6rem;">
+                    <input type="text" id="secNewCode" placeholder="Taip kod baru (min 6 aksara)"
+                        style="flex:1; padding:.65rem 1rem; border-radius:10px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:'Poppins',sans-serif; font-size:.83rem; outline:none; text-transform:uppercase; letter-spacing:1px;"
+                        oninput="this.value=this.value.toUpperCase()"
+                        onkeydown="if(event.key==='Enter') saveSecurityCode()"
+                        onfocus="this.style.borderColor='var(--secondary)'"
+                        onblur="this.style.borderColor='var(--border)'">
+                    <button onclick="generateSecCode()" title="Jana kod rawak" style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:.65rem .8rem; cursor:pointer; transition:var(--transition); color:var(--muted);">
+                        <i data-lucide="shuffle" style="width:16px; height:16px;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button onclick="saveSecurityCode()" id="secSaveBtn"
+                style="width:100%; padding:.75rem; border-radius:50px; border:none; background:linear-gradient(135deg,#3b82f6,#06b6d4); color:white; font-family:'Poppins',sans-serif; font-weight:600; font-size:.85rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:.5rem; box-shadow:0 4px 14px rgba(59,130,246,.3); transition:var(--transition);">
+                <i data-lucide="save" style="width:16px; height:16px;"></i> Simpan & Kemaskini Firestore
+            </button>
+            <p style="font-size:.68rem; color:var(--muted); text-align:center; margin-top:.6rem;">
+                Kod baru akan berkuat kuasa serta-merta untuk semua pengguna baru.
+            </p>
+        </div>
+
+        <!-- Verified users stats -->
+        <div class="usage-card">
+            <div class="usage-title"><i data-lucide="users-round"></i> Statistik Akses</div>
+
+            <div class="quota-grid" style="margin-bottom:1.2rem;">
+                <div class="quota-item"><div class="quota-val" id="secTotalUsers">—</div><div class="quota-lbl">Jumlah Pengguna</div><div class="quota-status qs-safe">Firestore</div></div>
+                <div class="quota-item"><div class="quota-val" id="secTotalAuth">—</div><div class="quota-lbl">Auth Berdaftar</div><div class="quota-status qs-safe">Firebase Auth</div></div>
+            </div>
+
+            <!-- Last code update info -->
+            <div style="background:var(--bg); border-radius:10px; padding:1rem; border:1px solid var(--border); margin-bottom:1rem;">
+                <div style="font-size:.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:1px; margin-bottom:.6rem;">Maklumat Kod</div>
+                <div style="display:flex; flex-direction:column; gap:.4rem;">
+                    <div style="display:flex; justify-content:space-between; font-size:.78rem;">
+                        <span style="color:var(--muted);">Dikemaskini oleh</span>
+                        <span style="font-weight:600; color:var(--text);" id="secUpdatedBy">—</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:.78rem;">
+                        <span style="color:var(--muted);">Tarikh kemaskini</span>
+                        <span style="font-weight:600; color:var(--text);" id="secUpdatedAt">—</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; font-size:.78rem;">
+                        <span style="color:var(--muted);">Panjang kod</span>
+                        <span style="font-weight:600; color:var(--text);" id="secCodeLen">—</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reset all verified sessions -->
+            <div style="background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.15); border-radius:10px; padding:1rem;">
+                <p style="font-size:.75rem; font-weight:700; color:#dc2626; margin-bottom:.4rem;">⚠️ Reset Semua Sesi</p>
+                <p style="font-size:.72rem; color:var(--muted); margin-bottom:.8rem; line-height:1.4;">Semua cikgu akan dipaksa masukkan kod semula pada login seterusnya.</p>
+                <button onclick="promptResetSessions()" style="width:100%; padding:.6rem; border-radius:50px; border:none; background:rgba(239,68,68,.1); color:#dc2626; font-family:'Poppins',sans-serif; font-weight:600; font-size:.78rem; cursor:pointer; border:1px solid rgba(239,68,68,.2); transition:var(--transition);">
+                    <i data-lucide="log-out" style="width:14px; height:14px; vertical-align:-2px;"></i> Reset Semua Sesi Aktif
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Access log (recent verifications) -->
+    <div class="usage-card">
+        <div class="usage-title"><i data-lucide="activity"></i> Log Akses Terkini (Auth Users)</div>
+        <div style="overflow-x:auto;">
+            <table style="width:100%; border-collapse:collapse; min-width:500px;">
+                <thead>
+                    <tr style="background:var(--bg);">
+                        <th style="padding:.75rem 1rem; text-align:left; font-size:.72rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border);">Pengguna</th>
+                        <th style="padding:.75rem 1rem; text-align:left; font-size:.72rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border);">Email</th>
+                        <th style="padding:.75rem 1rem; text-align:left; font-size:.72rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border);">Login Terakhir</th>
+                        <th style="padding:.75rem 1rem; text-align:left; font-size:.72rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border);">Status</th>
+                        <th style="padding:.75rem 1rem; text-align:left; font-size:.72rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border);">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="secAccessLog">
+                    <tr><td colspan="5" style="padding:2rem; text-align:center; color:var(--muted); font-size:.82rem;">Klik tab ini untuk muat data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <div class="modal-overlay" id="confirmModal">
     <div class="modal-box">
         <div class="modal-icon" id="modalIcon"><i data-lucide="alert-triangle" id="modalIconInner"></i></div>
@@ -416,7 +534,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
 
 const firebaseConfig = {
@@ -811,6 +929,161 @@ function fmtBytes(bytes) {
 }
 
 window.fmtBytes = fmtBytes;
+
+// ── SECURITY TAB FUNCTIONS ─────────────────────────────────────────────────
+let _cachedCode = null;
+let _codeVisible = false;
+
+window.loadSecurityData = async function() {
+    // Load access code from Firestore
+    try {
+        const snap = await getDoc(doc(db, 'config', 'accessCode'));
+        if (snap.exists()) {
+            const data = snap.data();
+            _cachedCode = data.code || '—';
+
+            // Update status
+            document.getElementById('secCodeStatus').textContent = 'Aktif ✓';
+            document.getElementById('secCodeDisplay').textContent = _codeVisible ? _cachedCode : '•'.repeat(_cachedCode.length);
+            document.getElementById('secCodeLen').textContent = _cachedCode.length + ' aksara';
+
+            // Updated info
+            const updatedAt = data.updatedAt?.toDate?.();
+            document.getElementById('secUpdatedAt').textContent = updatedAt
+                ? updatedAt.toLocaleDateString('ms-MY', {day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'})
+                : '—';
+            const updatedBy = data.updatedBy || '—';
+            document.getElementById('secUpdatedBy').textContent = updatedBy.length > 16 ? updatedBy.substring(0,16)+'...' : updatedBy;
+        } else {
+            document.getElementById('secCodeStatus').textContent = 'Belum ditetapkan';
+            document.getElementById('secCodeDisplay').textContent = 'AKSESTOKEN1234 (default)';
+            _cachedCode = 'AKSESTOKEN1234';
+        }
+    } catch(e) {
+        document.getElementById('secCodeStatus').textContent = 'Gagal fetch';
+        console.error(e);
+    }
+
+    // Load auth + firestore stats
+    try {
+        const result = await getAuthUsers();
+        const users = result.data?.users || [];
+        document.getElementById('secTotalAuth').textContent = users.length;
+
+        // Populate access log table
+        const tbody = document.getElementById('secAccessLog');
+        if (!users.length) {
+            tbody.innerHTML = '<tr><td colspan="5" style="padding:2rem; text-align:center; color:var(--muted);">Tiada data</td></tr>';
+        } else {
+            const sorted = [...users].sort((a,b) => new Date(b.lastSignInTime||0) - new Date(a.lastSignInTime||0));
+            tbody.innerHTML = sorted.map(u => {
+                const lastLogin = u.lastSignInTime
+                    ? new Date(u.lastSignInTime).toLocaleDateString('ms-MY', {day:'numeric', month:'short', year:'numeric'})
+                    : '—';
+                const statusBadge = u.disabled
+                    ? `<span class="badge b-red">Diblok</span>`
+                    : `<span class="badge b-green">Aktif</span>`;
+                const avatar = u.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(u.displayName||'U')}&background=0f172a&color=fff&size=60`;
+                return `<tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:.75rem 1rem;">
+                        <div style="display:flex; align-items:center; gap:.6rem;">
+                            <img src="${avatar}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid var(--border);" onerror="this.src='https://ui-avatars.com/api/?name=U&background=0f172a&color=fff'">
+                            <span style="font-size:.82rem; font-weight:600; color:var(--text);">${u.displayName || '—'}</span>
+                        </div>
+                    </td>
+                    <td style="padding:.75rem 1rem; font-size:.78rem; color:var(--muted);">${u.email || '—'}</td>
+                    <td style="padding:.75rem 1rem; font-size:.78rem; color:var(--muted);">${lastLogin}</td>
+                    <td style="padding:.75rem 1rem;">${statusBadge}</td>
+                    <td style="padding:.75rem 1rem;">
+                        <div style="display:flex; gap:.4rem;">
+                            ${u.disabled
+                                ? `<div class="act-btn unblock-btn" title="Buka Blok" onclick="window.promptAction('unblock','${u.uid}','${(u.displayName||'').replace(/'/g,'')}')" style="background:rgba(16,185,129,.1);border-color:rgba(16,185,129,.3);"><i data-lucide="unlock" style="color:#059669;"></i></div>`
+                                : `<div class="act-btn block-btn" title="Blok" onclick="window.promptAction('block','${u.uid}','${(u.displayName||'').replace(/'/g,'')}')" style=""><i data-lucide="ban"></i></div>`
+                            }
+                            <div class="act-btn delete-btn" title="Padam" onclick="window.promptAction('delete','${u.uid}','${(u.displayName||'').replace(/'/g,'')}')" style=""><i data-lucide="trash-2"></i></div>
+                        </div>
+                    </td>
+                </tr>`;
+            }).join('');
+        }
+    } catch(e) {
+        document.getElementById('secAccessLog').innerHTML = `<tr><td colspan="5" style="padding:1.5rem; text-align:center; color:var(--muted); font-size:.8rem;">⚠ Cloud Function belum di-deploy. Deploy functions/index.js dulu.</td></tr>`;
+    }
+
+    // Total Firestore users
+    try {
+        document.getElementById('secTotalUsers').textContent = window.allUsersData?.length || '—';
+    } catch(e) {}
+
+    lucide.createIcons();
+};
+
+window.toggleSecCodeVisibility = function() {
+    if (!_cachedCode) return;
+    _codeVisible = !_codeVisible;
+    const display = document.getElementById('secCodeDisplay');
+    const icon = document.getElementById('secCodeEyeIcon');
+    display.textContent = _codeVisible ? _cachedCode : '•'.repeat(_cachedCode.length);
+    icon.setAttribute('data-lucide', _codeVisible ? 'eye-off' : 'eye');
+    lucide.createIcons();
+};
+
+window.copyAccessCode = async function() {
+    const code = _cachedCode || await getDoc(doc(db,'config','accessCode')).then(s => s.data()?.code || '');
+    if (!code) { showToast('Tiada kod untuk disalin.', true); return; }
+    try {
+        await navigator.clipboard.writeText(code);
+        showToast('Kod berjaya disalin! ✓', false, true);
+    } catch(e) {
+        showToast('Gagal salin: ' + e.message, true);
+    }
+};
+
+window.generateSecCode = function() {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let code = 'MURID';
+    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    const input = document.getElementById('secNewCode');
+    if (input) input.value = code;
+    showToast('Kod rawak dijana: ' + code);
+};
+
+window.saveSecurityCode = async function() {
+    const input = document.getElementById('secNewCode');
+    const code = (input?.value || '').trim().toUpperCase();
+    if (!code || code.length < 6) { showToast('Kod mestilah sekurang-kurangnya 6 aksara.', true); return; }
+
+    const btn = document.getElementById('secSaveBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i data-lucide="loader" style="width:16px;height:16px;"></i> Menyimpan...';
+    lucide.createIcons();
+
+    try {
+        await setDoc(doc(db, 'config', 'accessCode'), {
+            code,
+            updatedBy: auth.currentUser?.uid || 'master-admin',
+            updatedAt: serverTimestamp()
+        });
+        _cachedCode = code;
+        document.getElementById('secCodeDisplay').textContent = _codeVisible ? code : '•'.repeat(code.length);
+        document.getElementById('secCodeLen').textContent = code.length + ' aksara';
+        if (input) input.value = '';
+        showToast('Kod akses berjaya dikemaskini untuk SEMUA pengguna! ✓', false, true);
+        window.loadSecurityData(); // refresh
+    } catch(e) {
+        showToast('Gagal simpan: ' + e.message, true);
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="save" style="width:16px;height:16px;"></i> Simpan & Kemaskini Firestore';
+    lucide.createIcons();
+};
+
+window.promptResetSessions = function() {
+    if (!confirm('Semua cikgu akan dipaksa masukkan kod semula.\n\nTeruskan?')) return;
+    // Reset sessions dengan tukar kod ke kod sama (trigger re-verify)
+    showToast('Untuk reset sesi, tukar kod akses kepada kod baru. Semua cikgu perlu verify semula.', false);
+};
 </script>
 
 <script>
@@ -818,6 +1091,7 @@ function switchTab(tab) {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
     document.querySelectorAll(".tab-panel").forEach(p => p.classList.toggle("active", p.id === "tab-" + tab));
     if (tab === "usage") window.loadUsageData?.();
+    if (tab === "security") window.loadSecurityData?.();
     lucide.createIcons();
 }
 
