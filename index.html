@@ -1443,12 +1443,32 @@
                     <div style="text-align: center; background: var(--bg-color); padding: 1rem; border-radius: var(--border-radius-md); border: 1px dashed var(--border-light);">
                         <div id="reader-kehadiran"></div>
                     </div>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <h3 style="font-size: 1rem; color: var(--primary);">Log Kehadiran Terkini</h3>
-                            <button class="btn-secondary" onclick="window.promptClearAttendance()"><i data-lucide="trash-2"></i> Kosongkan Log</button>
-                        </div>
-                        <div class="attendance-log glass">
+                   <div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+        <h3 style="font-size: 1rem; color: var(--primary); margin: 0;">Log Kehadiran</h3>
+        <button class="btn-secondary" onclick="window.promptClearAttendance()" style="font-size: 0.75rem; padding: 0.4rem 0.8rem;"><i data-lucide="trash-2" style="width:14px;height:14px;"></i> Kosongkan Log</button>
+    </div>
+
+    <div style="background: var(--bg-color); padding: 1rem; border-radius: var(--radius-md); border: 1px dashed var(--border-light); margin-bottom: 1rem;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+            <div>
+                <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">PILIH TARIKH</label>
+                <input type="date" id="filterAttDate" onchange="window.renderAttendanceLog()" style="width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); outline: none; font-family: 'Poppins', sans-serif; background: var(--box-bg); color: var(--text-main);">
+            </div>
+            <div>
+                <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 0.3rem;">PILIH KELAS</label>
+                <select id="filterAttClass" onchange="window.renderAttendanceLog()" style="width: 100%; padding: 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); outline: none; font-family: 'Poppins', sans-serif; background: var(--box-bg); color: var(--text-main);">
+                    <option value="">Semua Kelas</option>
+                </select>
+            </div>
+        </div>
+        <div id="attCounterBox" style="display: none; background: linear-gradient(135deg, var(--secondary), var(--accent)); color: white; padding: 0.8rem; border-radius: var(--radius-sm); text-align: center; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(99,102,241,0.2);">
+            Kehadiran Kelas <span id="attCounterClass" style="color: #fef08a;"></span> : 
+            <span id="attCounterVal" style="font-size: 1.3rem; font-weight: 800; background: rgba(0,0,0,0.15); padding: 3px 12px; border-radius: 50px; margin-left: 5px;">0 / 0</span>
+        </div>
+    </div>
+
+    <div class="attendance-log glass">
                             <table id="attendanceTable">
                                 <thead><tr><th>Tarikh & Masa</th><th>Nama Murid</th><th>Kelas</th></tr></thead>
                                 <tbody></tbody>
@@ -3230,43 +3250,80 @@
             }
         };
 
-        window.renderAttendanceLog = async function() {
+ window.renderAttendanceLog = async function() {
             const tbody = document.querySelector('#attendanceTable tbody');
             if (!tbody) return;
 
             const user = auth.currentUser;
             if (!user) return;
 
+            // Setup filter tarikh & kelas
+            const dateInput = document.getElementById('filterAttDate');
+            const classSelect = document.getElementById('filterAttClass');
+            
+            // Kalau input tarikh kosong, set automatik ke hari ini
+            if (!dateInput.value) {
+                const localToday = new Date();
+                const offset = localToday.getTimezoneOffset() * 60000;
+                const localISOTime = (new Date(localToday - offset)).toISOString().split('T')[0];
+                dateInput.value = localISOTime;
+            }
+
+            // Masukkan senarai kelas ke dalam dropdown filter (kalau belum ada)
+            if (classSelect.options.length <= 1) {
+                classSelect.innerHTML = '<option value="">Semua Kelas</option>' + 
+                    (window.appSettings.classes || []).map(c => `<option value="${c}">${c}</option>`).join('');
+            }
+
+            const selectedDateStr = new Date(dateInput.value).toDateString();
+            const selectedClass = classSelect.value;
+
             tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;"><i data-lucide="loader" style="animation: spin 1s linear infinite;"></i> Memuatkan data...</td></tr>`;
             lucide.createIcons();
 
             try {
-                // Tarik semua rekod kehadiran untuk cikgu ini (buang filter 'hari ini')
+                // Tarik data dari Firestore berdasarkan Tarikh yang dipilih
                 const q = query(
                     collection(db, "kehadiran"), 
-                    where("userId", "==", user.uid)
+                    where("userId", "==", user.uid),
+                    where("dateString", "==", selectedDateStr)
                 );
                 const snapshot = await getDocs(q);
 
-                tbody.innerHTML = ''; 
-                
-                if (snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;">Tiada rekod kehadiran.</td></tr>`;
-                    return;
+                let logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+                // Filter secara lokal kalau cikgu pilih spesifik kelas
+                if (selectedClass !== "") {
+                    logs = logs.filter(log => log.class === selectedClass);
                 }
 
-                let logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                // --- SISTEM KIRAAN COUNTER (Contoh: 1/30) ---
+                const counterBox = document.getElementById('attCounterBox');
+                if (selectedClass !== "") {
+                    // Semak jumlah asal murid dalam database cikgu
+                    const totalMurid = window.students.filter(s => s.class === selectedClass).length;
+                    const hadir = logs.length;
+                    
+                    document.getElementById('attCounterClass').innerText = selectedClass;
+                    document.getElementById('attCounterVal').innerText = `${hadir} / ${totalMurid}`;
+                    counterBox.style.display = 'block'; // Tunjuk banner biru
+                } else {
+                    counterBox.style.display = 'none'; // Sembunyi kalau "Semua Kelas"
+                }
+                // ---------------------------------------------
+
+                tbody.innerHTML = ''; 
+                
+                if (logs.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;">Tiada rekod kehadiran untuk tarikh/kelas ini.</td></tr>`;
+                    return;
+                }
                 
                 // Susun log dari yang paling baru ke paling lama
                 logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
-                // Hadkan paparan kepada 50 rekod terbaru sahaja supaya sistem tak berat
-                logs = logs.slice(0, 50);
-
                 logs.forEach(log => {
                     const tr = document.createElement('tr');
-                    
-                    // Format tarikh bagi cantik (contoh: 29 Apr 2026)
                     const dateObj = new Date(log.timestamp);
                     const tarikhStr = dateObj.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric' });
                     
@@ -3286,22 +3343,21 @@
             }
         };
 
-        window.promptClearAttendance = function() { 
-            document.getElementById('attendanceModal').classList.add('active'); 
-        };
-
         window.confirmClearAttendance = async function() {
             const user = auth.currentUser;
             if (!user) return;
 
             window.showLoading(true, "Mengosongkan log dari Cloud...");
-            const today = new Date().toDateString();
+            
+            // Padam log berdasarkan tarikh yang cikgu sedang pilih pada filter
+            const dateInput = document.getElementById('filterAttDate');
+            const selectedDateStr = dateInput && dateInput.value ? new Date(dateInput.value).toDateString() : new Date().toDateString();
 
             try {
                 const q = query(
                     collection(db, "kehadiran"), 
                     where("userId", "==", user.uid),
-                    where("dateString", "==", today)
+                    where("dateString", "==", selectedDateStr)
                 );
                 const snapshot = await getDocs(q);
 
@@ -3311,7 +3367,7 @@
 
                 window.renderAttendanceLog();
                 window.closeModal('attendanceModal');
-                window.showNotification('Log kehadiran hari ini berjaya dikosongkan.');
+                window.showNotification(`Log kehadiran untuk tarikh tersebut berjaya dikosongkan.`);
             } catch (e) {
                 console.error("Gagal clear log: ", e);
                 window.showNotification("Gagal memadam log dari Cloud.", true);
