@@ -481,7 +481,8 @@
         .btn-icon-top:hover { transform: scale(1.1); border-color: rgba(99,102,241,0.3); color: var(--secondary); }
         .btn-coffee {
             background: linear-gradient(135deg, #fff7ed, #fde68a);
-            border-color: #fcd34d; color: #92400e; position: relative; overflow: visible;
+            border-color: #fcd34d; color: #92400e;
+            position: relative; overflow: visible;
         }
         .btn-coffee:hover { background: linear-gradient(135deg, #fde68a, #fbbf24); transform: scale(1.1); box-shadow: 0 4px 15px rgba(245,158,11,0.3); }
         .btn-coffee::after {
@@ -489,9 +490,17 @@
             width: 8px; height: 8px; background: var(--danger);
             border-radius: 50%; border: 2px solid var(--box-bg);
             animation: pulse-dot 2s ease-in-out infinite;
+            pointer-events: none;
         }
         @keyframes pulse-dot { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: 0.7; } }
         [data-theme="dark"] .btn-coffee { background: linear-gradient(135deg, #78350f, #d97706); border-color: #d97706; color: #fef3c7; }
+
+        /* Mobile: clip header area supaya dot tak overflow */
+        @media (max-width: 768px) {
+            .header-right { overflow: visible; position: relative; }
+            .btn-coffee::after { top: 0; right: 0; width: 7px; height: 7px; }
+            header { overflow: clip; overflow-clip-margin: 4px; }
+        }
 
         /* ── STUDENT CARDS ─────────────────────────────────────────── */
         .student-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.2rem; }
@@ -790,16 +799,25 @@
             gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
         }
         .dash-welcome-left { display: flex; align-items: center; gap: 1.2rem; }
-        .dash-avatar-wrap { position: relative; flex-shrink: 0; }
+        .dash-avatar-wrap {
+            position: relative; flex-shrink: 0;
+            width: 64px; height: 64px;
+        }
         .dash-avatar {
             width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
             border: 3px solid var(--box-bg);
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.25), var(--shadow-md);
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.2), var(--shadow-md);
+            position: relative; z-index: 1;
         }
         .dash-avatar-ring {
-            position: absolute; inset: -5px; border-radius: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 80px; height: 80px;
+            margin-top: -40px; margin-left: -40px;
+            border-radius: 50%;
             border: 2px dashed rgba(99,102,241,0.35);
             animation: spin-slow 12s linear infinite;
+            pointer-events: none;
         }
         @keyframes spin-slow { to { transform: rotate(360deg); } }
         .dash-greeting { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.1rem; }
