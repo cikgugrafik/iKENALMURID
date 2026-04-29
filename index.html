@@ -3206,8 +3206,31 @@
             link.click();
             document.body.removeChild(link);
         }
+// --- KEHADIRAN ---
+        window.logAttendanceManual = async function(s) {
+            const user = auth.currentUser;
+            if (!user) return; 
 
-window.renderAttendanceLog = async function() {
+            const logData = {
+                studentId: s.id,
+                name: s.name,
+                class: s.class,
+                time: new Date().toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', hour12: true }),
+                timestamp: new Date().toISOString(),
+                dateString: new Date().toDateString(), 
+                userId: user.uid
+            };
+
+            try {
+                await addDoc(collection(db, "kehadiran"), logData);
+                window.renderAttendanceLog();
+            } catch (e) {
+                console.error("Gagal simpan kehadiran: ", e);
+                window.showNotification("Gagal merekod ke Cloud.", true);
+            }
+        };
+
+        window.renderAttendanceLog = async function() {
             const tbody = document.querySelector('#attendanceTable tbody');
             if (!tbody) return;
 
@@ -3263,6 +3286,38 @@ window.renderAttendanceLog = async function() {
             }
         };
 
+        window.promptClearAttendance = function() { 
+            document.getElementById('attendanceModal').classList.add('active'); 
+        };
+
+        window.confirmClearAttendance = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            window.showLoading(true, "Mengosongkan log dari Cloud...");
+            const today = new Date().toDateString();
+
+            try {
+                const q = query(
+                    collection(db, "kehadiran"), 
+                    where("userId", "==", user.uid),
+                    where("dateString", "==", today)
+                );
+                const snapshot = await getDocs(q);
+
+                const batch = writeBatch(db);
+                snapshot.docs.forEach(d => batch.delete(d.ref));
+                await batch.commit();
+
+                window.renderAttendanceLog();
+                window.closeModal('attendanceModal');
+                window.showNotification('Log kehadiran hari ini berjaya dikosongkan.');
+            } catch (e) {
+                console.error("Gagal clear log: ", e);
+                window.showNotification("Gagal memadam log dari Cloud.", true);
+            }
+            window.showLoading(false);
+        };
         // --- SETTINGS ---
         window.addClassSetting = () => {
             const val = document.getElementById('set_newClass').value.trim();
