@@ -1840,7 +1840,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithRedirect, getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, getDoc, setDoc, query, where, writeBatch, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
 
@@ -1858,13 +1858,6 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
         const provider = new GoogleAuthProvider();
-
-        // Handle redirect result lepas Google auth redirect balik ke app
-        getRedirectResult(auth).catch(e => {
-            if (e.code && e.code !== 'auth/no-current-user' && e.code !== 'auth/null-user') {
-                console.warn('Redirect auth:', e.code, e.message);
-            }
-        });
 
         // GLOBAL VARS
         window.students = [];
@@ -2017,7 +2010,7 @@
             if (!document.getElementById('termsCheck').checked) {
                 window.showNotification("Sila tanda setuju pada terma.", true); return;
             }
-            signInWithRedirect(auth, provider).catch(e => window.showNotification("Gagal Log Masuk: " + e.message, true));
+            signInWithPopup(auth, provider).catch(e => window.showNotification("Gagal Log Masuk: " + e.message, true));
         };
         window.logoutGoogle = () => document.getElementById('logoutModal').classList.add('active');
         document.getElementById('confirmLogoutBtn').onclick = () => {
@@ -2036,7 +2029,7 @@
                 const snap = await getDoc(doc(db, 'verifiedUsers', uid));
                 return snap.exists();
             } catch(e) {
-                // Kalau rules tak benarkan read — anggap belum verified
+                console.warn('checkVerified error:', e.code, e.message);
                 return false;
             }
         }
@@ -2083,19 +2076,24 @@
         // onAuthStateChanged — check Firestore verified status
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Tunjuk loading sikit
                 document.getElementById('landingPage').style.display = 'flex';
+                document.getElementById('mainContent').style.display = 'none';
 
-                // Check Firestore sama ada dah verified
-                const isVerified = await checkVerifiedInFirestore(user.uid);
+                let isVerified = false;
+                try {
+                    isVerified = await checkVerifiedInFirestore(user.uid);
+                } catch(e) {
+                    console.warn('Verified check error:', e.message);
+                    // Kalau error (rules issue etc), tunjuk modal kod akses
+                    isVerified = false;
+                }
 
                 if (isVerified) {
                     // Dah verified — update lastLogin dan terus masuk
-                    markVerifiedInFirestore(user.uid, user.displayName, user.email);
+                    try { markVerifiedInFirestore(user.uid, user.displayName, user.email); } catch(e) {}
                     window.enterApp(user);
                 } else {
-                    // Belum verified — check access code dari Firestore
-                    // Tunjuk modal masukkan kod
+                    // Belum verified — tunjuk modal masukkan kod
                     showAccessCodeModal(user);
                 }
             } else {
