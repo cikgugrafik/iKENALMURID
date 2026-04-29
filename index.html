@@ -281,7 +281,13 @@
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transform: skewX(-20deg);
         }
-        .logo-icon i { color: white; width: 20px; height: 20px; position: relative; z-index: 2; }
+        .logo-icon i, .logo-icon svg { 
+    color: white !important; 
+    stroke: white !important; 
+    width: 20px; height: 20px; 
+    position: relative; 
+    z-index: 2; 
+}
         .logo-text { display: flex; flex-direction: column; line-height: 1; }
         .logo-text .logo-name {
             font-size: 1.1rem; font-weight: 800; letter-spacing: 0.5px;
