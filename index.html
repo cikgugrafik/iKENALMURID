@@ -3207,43 +3207,102 @@
             document.body.removeChild(link);
         }
 
-        // --- KEHADIRAN ---
-        window.logAttendanceManual = function(s) {
-            let attLogs = JSON.parse(localStorage.getItem('ikenalmurid_attendance_v1')) || [];
-            const log = {
-                id: s.id,
+// --- KEHADIRAN ---
+        window.logAttendanceManual = async function(s) {
+            const user = auth.currentUser;
+            if (!user) return; 
+
+            const logData = {
+                studentId: s.id,
                 name: s.name,
                 class: s.class,
                 time: new Date().toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', hour12: true }),
-                timestamp: new Date().toISOString()
+                timestamp: new Date().toISOString(),
+                dateString: new Date().toDateString(), 
+                userId: user.uid
             };
-            attLogs.unshift(log);
-            localStorage.setItem('ikenalmurid_attendance_v1', JSON.stringify(attLogs));
-            window.renderAttendanceLog();
+
+            try {
+                await addDoc(collection(db, "kehadiran"), logData);
+                window.renderAttendanceLog();
+            } catch (e) {
+                console.error("Gagal simpan kehadiran: ", e);
+                window.showNotification("Gagal merekod ke Cloud.", true);
+            }
         };
-        window.renderAttendanceLog = function() {
+
+        window.renderAttendanceLog = async function() {
             const tbody = document.querySelector('#attendanceTable tbody');
             if (!tbody) return;
-            tbody.innerHTML = '';
-            let attLogs = JSON.parse(localStorage.getItem('ikenalmurid_attendance_v1')) || [];
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;"><i data-lucide="loader" style="animation: spin 1s linear infinite;"></i> Memuatkan data...</td></tr>`;
+            lucide.createIcons();
+
             const today = new Date().toDateString();
-            const todaysLogs = attLogs.filter(log => new Date(log.timestamp).toDateString() === today);
-            if (todaysLogs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;">Tiada rekod kehadiran hari ini.</td></tr>`;
-                return;
+
+            try {
+                const q = query(
+                    collection(db, "kehadiran"), 
+                    where("userId", "==", user.uid),
+                    where("dateString", "==", today)
+                );
+                const snapshot = await getDocs(q);
+
+                tbody.innerHTML = ''; 
+                
+                if (snapshot.empty) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;">Tiada rekod kehadiran hari ini.</td></tr>`;
+                    return;
+                }
+
+                let logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                logs.forEach(log => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `<td style="font-weight:600; color:var(--secondary);">${log.time}</td><td>${log.name}</td><td><span class="tag" style="background:var(--primary);color:var(--bg-color);border:none;">${log.class}</span></td>`;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) {
+                console.error("Gagal baca log: ", e);
+                tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--danger); padding:2rem;">Ralat memuatkan log rekod.</td></tr>`;
             }
-            todaysLogs.forEach(log => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td style="font-weight:600; color:var(--secondary);">${log.time}</td><td>${log.name}</td><td><span class="tag" style="background:var(--primary);color:var(--bg-color);border:none;">${log.class}</span></td>`;
-                tbody.appendChild(tr);
-            });
         };
-        window.promptClearAttendance = function() { document.getElementById('attendanceModal').classList.add('active'); };
-        window.confirmClearAttendance = function() {
-            localStorage.setItem('ikenalmurid_attendance_v1', JSON.stringify([]));
-            window.renderAttendanceLog();
-            window.closeModal('attendanceModal');
-            window.showNotification('Log kehadiran berjaya dikosongkan.');
+
+        window.promptClearAttendance = function() { 
+            document.getElementById('attendanceModal').classList.add('active'); 
+        };
+
+        window.confirmClearAttendance = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            window.showLoading(true, "Mengosongkan log dari Cloud...");
+            const today = new Date().toDateString();
+
+            try {
+                const q = query(
+                    collection(db, "kehadiran"), 
+                    where("userId", "==", user.uid),
+                    where("dateString", "==", today)
+                );
+                const snapshot = await getDocs(q);
+
+                const batch = writeBatch(db);
+                snapshot.docs.forEach(d => batch.delete(d.ref));
+                await batch.commit();
+
+                window.renderAttendanceLog();
+                window.closeModal('attendanceModal');
+                window.showNotification('Log kehadiran hari ini berjaya dikosongkan.');
+            } catch (e) {
+                console.error("Gagal clear log: ", e);
+                window.showNotification("Gagal memadam log dari Cloud.", true);
+            }
+            window.showLoading(false);
         };
 
         // --- SETTINGS ---
