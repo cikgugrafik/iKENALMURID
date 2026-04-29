@@ -764,7 +764,175 @@
         .pin-dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid var(--border-light); transition: 0.18s; background: transparent; }
         .pin-dot.filled { background: var(--secondary); border-color: var(--secondary); transform: scale(1.15); box-shadow: 0 0 10px rgba(99,102,241,0.4); }
 
-        /* ── QR SCANNER ────────────────────────────────────────────── */
+        /* Sidebar footer */
+        .sidebar-footer {
+            display: flex; align-items: center; gap: 0.7rem;
+            padding: 0.85rem 1rem; border-radius: var(--radius-md);
+            margin-top: auto; border: 1px solid var(--border-light);
+            background: var(--bg-color); flex-shrink: 0;
+        }
+        .sidebar-avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid rgba(99,102,241,0.2); }
+        .sidebar-user-info { flex: 1; min-width: 0; }
+        .sidebar-user-name { font-size: 0.78rem; font-weight: 700; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .sidebar-user-role { font-size: 0.62rem; color: var(--secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sidebar-logout-btn {
+            width: 30px; height: 30px; border-radius: 8px;
+            background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.15);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: var(--transition); flex-shrink: 0; padding: 0; color: var(--danger);
+        }
+        .sidebar-logout-btn:hover { background: rgba(244,63,94,0.15); transform: scale(1.08); }
+        .sidebar-logout-btn i { width: 14px; height: 14px; }
+
+        /* Welcome row */
+        .dash-welcome {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 1.5rem; margin-bottom: 2rem; flex-wrap: wrap;
+        }
+        .dash-welcome-left { display: flex; align-items: center; gap: 1.2rem; }
+        .dash-avatar-wrap { position: relative; flex-shrink: 0; }
+        .dash-avatar {
+            width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--box-bg);
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.25), var(--shadow-md);
+        }
+        .dash-avatar-ring {
+            position: absolute; inset: -5px; border-radius: 50%;
+            border: 2px dashed rgba(99,102,241,0.35);
+            animation: spin-slow 12s linear infinite;
+        }
+        @keyframes spin-slow { to { transform: rotate(360deg); } }
+        .dash-greeting { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; margin-bottom: 0.1rem; }
+        .dash-name { font-size: 1.7rem; font-weight: 800; color: var(--text-main); letter-spacing: -0.5px; line-height: 1.1; }
+        .dash-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.2rem; }
+        .dash-search-wrap { flex: 1; max-width: 480px; }
+
+        /* Stat cards — inner layout */
+        .stat-card-inner { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.8rem; }
+        .stat-card .stat-value { font-size: 2.2rem; }
+        .stat-sparkline {
+            height: 38px; display: flex; align-items: flex-end; gap: 3px;
+            padding: 0 2px; opacity: 0.5;
+        }
+        .spark-bar {
+            flex: 1; border-radius: 3px 3px 0 0;
+            background: var(--secondary); min-width: 4px;
+            transition: height 0.6s cubic-bezier(0.4,0,0.2,1);
+        }
+        .stat-card.green .spark-bar { background: var(--success); }
+        .stat-card.purple .spark-bar { background: var(--purple); }
+        .stat-card.orange .spark-bar { background: var(--warning); }
+
+        /* 2 column layout */
+        .dash-two-col {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 900px) { .dash-two-col { grid-template-columns: 1fr; } }
+
+        /* Donut + birthday row */
+        .dash-donut-row {
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 900px) { .dash-donut-row { grid-template-columns: 1fr; } }
+
+        /* Generic dash card */
+        .dash-card {
+            border-radius: var(--radius-xl); padding: 1.5rem;
+            display: flex; flex-direction: column; gap: 1.2rem;
+            transition: var(--transition-bounce);
+        }
+        .dash-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+        .dash-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.82rem; font-weight: 700; color: var(--text-main);
+        }
+        .dash-card-header span { display: flex; align-items: center; gap: 0.5rem; }
+        .dash-card-header i { width: 15px; height: 15px; color: var(--secondary); }
+        .dash-card-badge {
+            font-size: 0.68rem; font-weight: 600; padding: 0.2rem 0.6rem;
+            background: rgba(99,102,241,0.1); color: var(--secondary);
+            border-radius: 50px; border: 1px solid rgba(99,102,241,0.2);
+        }
+        .dash-card-link {
+            font-size: 0.72rem; color: var(--secondary); font-weight: 600;
+            cursor: pointer; text-decoration: none; transition: var(--transition);
+        }
+        .dash-card-link:hover { opacity: 0.7; }
+
+        /* Class bar chart */
+        .dash-bar-list { display: flex; flex-direction: column; gap: 0.65rem; flex: 1; }
+        .dash-bar-row { display: flex; align-items: center; gap: 0.8rem; }
+        .dash-bar-label {
+            font-size: 0.75rem; font-weight: 500; color: var(--text-muted);
+            min-width: 80px; max-width: 100px; overflow: hidden;
+            text-overflow: ellipsis; white-space: nowrap;
+        }
+        .dash-bar-track {
+            flex: 1; height: 10px; background: var(--border-light);
+            border-radius: 50px; overflow: hidden;
+        }
+        .dash-bar-fill {
+            height: 100%; border-radius: 50px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            transition: width 0.9s cubic-bezier(0.4,0,0.2,1);
+        }
+        .dash-bar-count {
+            font-size: 0.72rem; font-weight: 700; color: var(--text-main);
+            min-width: 26px; text-align: right;
+        }
+
+        /* Recent students list */
+        .dash-recent-list { display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+        .dash-recent-item {
+            display: flex; align-items: center; gap: 0.85rem;
+            padding: 0.65rem 0.8rem; border-radius: var(--radius-md);
+            background: var(--bg-color); border: 1px solid var(--border-light);
+            cursor: pointer; transition: var(--transition-fast);
+        }
+        .dash-recent-item:hover { border-color: rgba(99,102,241,0.3); background: rgba(99,102,241,0.04); }
+        .dash-recent-photo {
+            width: 38px; height: 38px; border-radius: 50%; object-fit: cover;
+            flex-shrink: 0; border: 2px solid var(--box-bg);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .dash-recent-info { flex: 1; min-width: 0; }
+        .dash-recent-name { font-size: 0.82rem; font-weight: 600; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dash-recent-meta { font-size: 0.68rem; color: var(--text-muted); }
+        .dash-recent-badge {
+            font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 50px;
+            background: rgba(99,102,241,0.08); color: var(--secondary);
+            border: 1px solid rgba(99,102,241,0.15); flex-shrink: 0;
+        }
+
+        /* Donut chart */
+        .dash-donut-content { display: flex; align-items: center; gap: 1.5rem; justify-content: center; flex: 1; }
+        .dash-donut-legend { display: flex; flex-direction: column; gap: 0.75rem; }
+        .dash-legend-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; }
+        .dash-legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .dash-legend-val { font-weight: 700; color: var(--text-main); }
+        .dash-legend-lbl { color: var(--text-muted); }
+
+        /* Birthday list */
+        .dash-birthday-list { display: flex; flex-direction: column; gap: 0.55rem; flex: 1; }
+        .dash-bday-item {
+            display: flex; align-items: center; gap: 0.85rem;
+            padding: 0.65rem 0.85rem; border-radius: var(--radius-md);
+            background: linear-gradient(135deg, rgba(244,63,94,0.06), rgba(168,85,247,0.06));
+            border: 1px solid rgba(244,63,94,0.12); cursor: pointer;
+            transition: var(--transition-fast);
+        }
+        .dash-bday-item:hover { border-color: rgba(244,63,94,0.25); }
+        .dash-bday-photo { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid rgba(244,63,94,0.2); }
+        .dash-bday-name { font-size: 0.82rem; font-weight: 600; color: var(--text-main); }
+        .dash-bday-meta { font-size: 0.68rem; color: var(--text-muted); }
+        .dash-bday-age { font-size: 1.2rem; }
+
+        /* Empty state for dash */
+        .dash-empty { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 2rem 1rem; color: var(--text-muted); opacity: 0.6; flex: 1; justify-content: center; }
+        .dash-empty i { width: 32px; height: 32px; }
+        .dash-empty p { font-size: 0.78rem; }
         #reader, #reader-kehadiran { width: 100%; border-radius: var(--radius-lg); overflow: hidden; border: none; box-shadow: var(--shadow-soft); background: var(--box-bg); text-align: center; padding: 1rem 0; min-height: 250px; }
         #reader button, #reader-kehadiran button { background: var(--secondary) !important; color: white !important; padding: 0.6rem 1.5rem !important; border-radius: 50px !important; border: none !important; font-family: 'Poppins', sans-serif !important; cursor: pointer !important; font-weight: 500 !important; margin: 5px auto !important; display: inline-block !important; }
         #reader select, #reader-kehadiran select { padding: 0.6rem 1rem !important; border-radius: 10px !important; font-family: 'Poppins', sans-serif !important; border: 1px solid var(--border-light) !important; outline: none !important; margin: 10px auto !important; max-width: 90% !important; background: var(--bg-color) !important; color: var(--text-main) !important; }
@@ -946,6 +1114,17 @@
             <a class="nav-item" data-target="scan"><i data-lucide="scan-line"></i> Scan QR</a>
             <a class="nav-item" onclick="window.openPinModal()"><i data-lucide="settings"></i> Tetapan</a>
         </nav>
+        <!-- Sidebar footer: teacher profile -->
+        <div class="sidebar-footer glass">
+            <img id="sidebarAvatar" src="https://ui-avatars.com/api/?name=CG&background=6366f1&color=fff&size=80" class="sidebar-avatar">
+            <div class="sidebar-user-info">
+                <p class="sidebar-user-name" id="sidebarTeacherName">Cikgu</p>
+                <p class="sidebar-user-role">Super Admin</p>
+            </div>
+            <button class="sidebar-logout-btn" onclick="window.logoutGoogle()" title="Log Keluar">
+                <i data-lucide="log-out"></i>
+            </button>
+        </div>
     </aside>
 
     <!-- FIX: bottom-nav hidden by default, shown after login -->
@@ -972,24 +1151,121 @@
         </header>
 
         <section id="section-dashboard" class="section active">
-            <div class="welcome-banner">
-                <div class="welcome-text">
-                    <h2>Selamat Datang, Cikgu <span id="dashTeacherName">...</span></h2>
-                    <p>Sistem Pengurusan Profil Murid MURIDKU</p>
+
+            <!-- Welcome row -->
+            <div class="dash-welcome">
+                <div class="dash-welcome-left">
+                    <div class="dash-avatar-wrap">
+                        <img id="dashAvatarImg" src="https://ui-avatars.com/api/?name=CG&background=6366f1&color=fff&size=80" class="dash-avatar">
+                        <div class="dash-avatar-ring"></div>
+                    </div>
+                    <div>
+                        <p class="dash-greeting" id="dashGreeting">Selamat Pagi ☀️</p>
+                        <h2 class="dash-name">Cikgu <span id="dashTeacherName">...</span></h2>
+                        <p class="dash-sub">Sistem Pengurusan Profil Murid MURIDKU</p>
+                    </div>
                 </div>
-                <i data-lucide="book-open" style="width: 64px; height: 64px; opacity: 0.2;"></i>
+                <div class="dash-search-wrap">
+                    <div class="quick-search-dashboard">
+                        <i data-lucide="search" style="color: var(--text-muted); flex-shrink:0;"></i>
+                        <input type="text" id="dashSearchInput" placeholder="Cari nama atau No. IC..." onkeydown="if(event.key==='Enter') window.executeDashSearch()">
+                        <button onclick="window.executeDashSearch()"><i data-lucide="arrow-right" style="width:16px;height:16px;"></i></button>
+                    </div>
+                </div>
             </div>
-            <div class="quick-search-dashboard glass">
-                <i data-lucide="search" style="color: var(--text-muted); margin-left: 1rem;"></i>
-                <input type="text" id="dashSearchInput" placeholder="Cari nama atau No. IC..." onkeydown="if(event.key==='Enter') window.executeDashSearch()">
-                <button onclick="window.executeDashSearch()"><i data-lucide="arrow-right" style="width:18px; height:18px;"></i></button>
-            </div>
+
+            <!-- Stats row -->
             <div class="stats-grid">
-                <div class="stat-card glass"><div class="stat-icon"><i data-lucide="users"></i></div><div class="stat-value" id="statTotal">0</div><div class="stat-label">Jumlah Murid</div></div>
-                <div class="stat-card glass green"><div class="stat-icon"><i data-lucide="user"></i></div><div class="stat-value" id="statLelaki">0</div><div class="stat-label">Lelaki</div></div>
-                <div class="stat-card glass purple"><div class="stat-icon"><i data-lucide="user"></i></div><div class="stat-value" id="statPerempuan">0</div><div class="stat-label">Perempuan</div></div>
-                <div class="stat-card glass orange"><div class="stat-icon"><i data-lucide="book-open"></i></div><div class="stat-value" id="statKelas">0</div><div class="stat-label">Kelas</div></div>
+                <div class="stat-card glass">
+                    <div class="stat-card-inner">
+                        <div class="stat-icon"><i data-lucide="users"></i></div>
+                        <div>
+                            <div class="stat-value" id="statTotal">0</div>
+                            <div class="stat-label">Jumlah Murid</div>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline" id="sparkTotal"></div>
+                </div>
+                <div class="stat-card glass green">
+                    <div class="stat-card-inner">
+                        <div class="stat-icon"><i data-lucide="user"></i></div>
+                        <div>
+                            <div class="stat-value" id="statLelaki">0</div>
+                            <div class="stat-label">Lelaki</div>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline" id="sparkLelaki"></div>
+                </div>
+                <div class="stat-card glass purple">
+                    <div class="stat-card-inner">
+                        <div class="stat-icon"><i data-lucide="user"></i></div>
+                        <div>
+                            <div class="stat-value" id="statPerempuan">0</div>
+                            <div class="stat-label">Perempuan</div>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline" id="sparkPerempuan"></div>
+                </div>
+                <div class="stat-card glass orange">
+                    <div class="stat-card-inner">
+                        <div class="stat-icon"><i data-lucide="book-open"></i></div>
+                        <div>
+                            <div class="stat-value" id="statKelas">0</div>
+                            <div class="stat-label">Kelas</div>
+                        </div>
+                    </div>
+                    <div class="stat-sparkline" id="sparkKelas"></div>
+                </div>
             </div>
+
+            <!-- 2-column main content -->
+            <div class="dash-two-col">
+
+                <!-- LEFT: class distribution chart -->
+                <div class="dash-card glass">
+                    <div class="dash-card-header">
+                        <span><i data-lucide="bar-chart-3"></i> Agihan Mengikut Kelas</span>
+                        <span class="dash-card-badge" id="dashClassCount">0 kelas</span>
+                    </div>
+                    <div class="dash-bar-list" id="dashClassChart">
+                        <div class="dash-empty"><i data-lucide="inbox"></i><p>Tiada data</p></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: recent students -->
+                <div class="dash-card glass">
+                    <div class="dash-card-header">
+                        <span><i data-lucide="clock"></i> Murid Terbaru Ditambah</span>
+                        <a onclick="window.switchTab('list')" class="dash-card-link">Lihat Semua →</a>
+                    </div>
+                    <div class="dash-recent-list" id="dashRecentList">
+                        <div class="dash-empty"><i data-lucide="users"></i><p>Tiada data</p></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Gender donut row -->
+            <div class="dash-donut-row">
+                <div class="dash-card glass dash-donut-card">
+                    <div class="dash-card-header">
+                        <span><i data-lucide="pie-chart"></i> Nisbah Jantina</span>
+                    </div>
+                    <div class="dash-donut-content" id="dashGenderDonut">
+                        <div class="dash-empty"><i data-lucide="pie-chart"></i><p>Tiada data</p></div>
+                    </div>
+                </div>
+                <div class="dash-card glass dash-birthday-card">
+                    <div class="dash-card-header">
+                        <span><i data-lucide="gift"></i> Hari Jadi Hari Ini</span>
+                        <a onclick="window.switchTab('harijadi')" class="dash-card-link">Semua →</a>
+                    </div>
+                    <div id="dashBirthdayList" class="dash-birthday-list">
+                        <div class="dash-empty"><i data-lucide="cake"></i><p>Tiada hari jadi hari ini</p></div>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
         <section id="section-list" class="section">
@@ -1737,6 +2013,13 @@
                     document.getElementById('bottomNav').style.display = 'none';
                 }
 
+                // Set avatar & nama — sidebar + dashboard
+                const photoURL = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`;
+                const avatarEls = ['sidebarAvatar','dashAvatarImg'];
+                avatarEls.forEach(id => { const el = document.getElementById(id); if(el) el.src = photoURL; });
+                const sidebarName = document.getElementById('sidebarTeacherName');
+                if (sidebarName) sidebarName.textContent = window.appSettings.teacherName || user.displayName || 'Cikgu';
+
                 window.applySettingsDisplay();
                 window.loadData();
                 if (localStorage.getItem('muridku_darkmode') === 'true') {
@@ -1972,10 +2255,138 @@
 
         // --- DASHBOARD ---
         window.updateDashboard = function() {
-            document.getElementById('statTotal').innerText = window.students.length;
-            document.getElementById('statLelaki').innerText = window.students.filter(s => s.gender === 'Lelaki').length;
-            document.getElementById('statPerempuan').innerText = window.students.filter(s => s.gender === 'Perempuan').length;
-            document.getElementById('statKelas').innerText = new Set(window.students.map(s => s.class)).size;
+            const s = window.students;
+            const total = s.length;
+            const lelaki = s.filter(x => x.gender === 'Lelaki').length;
+            const perempuan = s.filter(x => x.gender === 'Perempuan').length;
+            const kelas = new Set(s.map(x => x.class)).size;
+
+            document.getElementById('statTotal').innerText = total;
+            document.getElementById('statLelaki').innerText = lelaki;
+            document.getElementById('statPerempuan').innerText = perempuan;
+            document.getElementById('statKelas').innerText = kelas;
+
+            // Greeting ikut masa
+            const hr = new Date().getHours();
+            const greet = hr < 12 ? 'Selamat Pagi ☀️' : hr < 17 ? 'Selamat Tengahari 🌤️' : 'Selamat Petang 🌇';
+            const greetEl = document.getElementById('dashGreeting');
+            if (greetEl) greetEl.textContent = greet;
+
+            // Sparkline bars (simulate mini trend)
+            const makeSparkline = (containerId, color, val, max) => {
+                const el = document.getElementById(containerId);
+                if (!el) return;
+                const heights = [0.3, 0.5, 0.4, 0.7, 0.55, 0.8, 1.0];
+                el.innerHTML = heights.map(h => {
+                    const pct = Math.round(h * 100);
+                    return `<div class="spark-bar" style="height:${pct}%;"></div>`;
+                }).join('');
+            };
+            makeSparkline('sparkTotal', 'secondary', total, total);
+            makeSparkline('sparkLelaki', 'green', lelaki, total);
+            makeSparkline('sparkPerempuan', 'purple', perempuan, total);
+            makeSparkline('sparkKelas', 'orange', kelas, kelas);
+
+            // Class bar chart
+            const classMap = {};
+            s.forEach(x => { if(x.class) classMap[x.class] = (classMap[x.class]||0)+1; });
+            const sortedClasses = Object.entries(classMap).sort((a,b) => b[1]-a[1]);
+            const maxClass = sortedClasses[0]?.[1] || 1;
+            const chartEl = document.getElementById('dashClassChart');
+            document.getElementById('dashClassCount').textContent = `${kelas} kelas`;
+            if (sortedClasses.length === 0) {
+                chartEl.innerHTML = '<div class="dash-empty"><i data-lucide="inbox"></i><p>Tiada data</p></div>';
+            } else {
+                chartEl.innerHTML = sortedClasses.slice(0,8).map(([cls, cnt]) => `
+                    <div class="dash-bar-row">
+                        <div class="dash-bar-label" title="${cls}">${cls}</div>
+                        <div class="dash-bar-track">
+                            <div class="dash-bar-fill" style="width:${Math.round(cnt/maxClass*100)}%"></div>
+                        </div>
+                        <div class="dash-bar-count">${cnt}</div>
+                    </div>`).join('');
+            }
+
+            // Recent students (last 6 added — sort by index as proxy)
+            const recentEl = document.getElementById('dashRecentList');
+            const recent = [...s].slice(-6).reverse();
+            if (recent.length === 0) {
+                recentEl.innerHTML = '<div class="dash-empty"><i data-lucide="users"></i><p>Tiada murid</p></div>';
+            } else {
+                recentEl.innerHTML = recent.map(m => `
+                    <div class="dash-recent-item" onclick="window.viewProfile('${m.id}')">
+                        <img src="${m.photo||`https://ui-avatars.com/api/?name=${encodeURIComponent(m.name||'M')}&background=6366f1&color=fff&size=80`}"
+                             class="dash-recent-photo" onerror="this.src='https://ui-avatars.com/api/?name=M&background=6366f1&color=fff'">
+                        <div class="dash-recent-info">
+                            <div class="dash-recent-name">${m.name||'—'}</div>
+                            <div class="dash-recent-meta">${m.ic||'—'}</div>
+                        </div>
+                        <span class="dash-recent-badge">${m.class||'—'}</span>
+                    </div>`).join('');
+            }
+
+            // Gender donut (SVG)
+            const donutEl = document.getElementById('dashGenderDonut');
+            if (total === 0) {
+                donutEl.innerHTML = '<div class="dash-empty"><i data-lucide="pie-chart"></i><p>Tiada data</p></div>';
+            } else {
+                const pL = Math.round(lelaki/total*100);
+                const pP = 100 - pL;
+                const r = 36, circ = 2 * Math.PI * r;
+                donutEl.innerHTML = `
+                    <svg viewBox="0 0 100 100" width="110" height="110" style="flex-shrink:0;">
+                        <circle cx="50" cy="50" r="${r}" fill="none" stroke="var(--border-light)" stroke-width="13"/>
+                        <circle cx="50" cy="50" r="${r}" fill="none" stroke="#6366f1" stroke-width="13"
+                            stroke-dasharray="${(pL/100)*circ} ${circ}" stroke-dashoffset="${circ*0.25}"
+                            stroke-linecap="round" transform="rotate(-90 50 50)"/>
+                        <circle cx="50" cy="50" r="${r}" fill="none" stroke="#a855f7" stroke-width="13"
+                            stroke-dasharray="${(pP/100)*circ} ${circ}" stroke-dashoffset="${circ*0.25 - (pL/100)*circ}"
+                            stroke-linecap="round" transform="rotate(-90 50 50)"/>
+                        <text x="50" y="46" text-anchor="middle" font-size="14" font-weight="800" fill="var(--text-main)" font-family="Poppins">${pL}%</text>
+                        <text x="50" y="58" text-anchor="middle" font-size="8" fill="var(--text-muted)" font-family="Poppins">Lelaki</text>
+                    </svg>
+                    <div class="dash-donut-legend">
+                        <div class="dash-legend-item">
+                            <div class="dash-legend-dot" style="background:#6366f1"></div>
+                            <div><div class="dash-legend-val">${lelaki}</div><div class="dash-legend-lbl">Lelaki (${pL}%)</div></div>
+                        </div>
+                        <div class="dash-legend-item">
+                            <div class="dash-legend-dot" style="background:#a855f7"></div>
+                            <div><div class="dash-legend-val">${perempuan}</div><div class="dash-legend-lbl">Perempuan (${pP}%)</div></div>
+                        </div>
+                        <div class="dash-legend-item" style="opacity:0.6; font-size:0.72rem; color:var(--text-muted);">
+                            Jumlah: ${total} murid
+                        </div>
+                    </div>`;
+            }
+
+            // Birthday today
+            const today = new Date();
+            const todayMD = `${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+            const bdayToday = s.filter(x => {
+                if (!x.dob) return false;
+                const p = x.dob.split('-');
+                return p.length === 3 && `${p[1]}-${p[2]}` === todayMD;
+            });
+            const bdayEl = document.getElementById('dashBirthdayList');
+            if (bdayToday.length === 0) {
+                bdayEl.innerHTML = '<div class="dash-empty"><i data-lucide="cake"></i><p>Tiada hari jadi hari ini</p></div>';
+            } else {
+                bdayEl.innerHTML = bdayToday.map(m => {
+                    const age = today.getFullYear() - parseInt(m.dob.split('-')[0], 10);
+                    return `<div class="dash-bday-item" onclick="window.viewProfile('${m.id}')">
+                        <img src="${m.photo||`https://ui-avatars.com/api/?name=${encodeURIComponent(m.name||'M')}&background=f43f5e&color=fff&size=80`}"
+                             class="dash-bday-photo" onerror="this.src='https://ui-avatars.com/api/?name=M&background=f43f5e&color=fff'">
+                        <div class="dash-bday-info">
+                            <div class="dash-bday-name">${m.name}</div>
+                            <div class="dash-bday-meta">${m.class} · Ke-${age}</div>
+                        </div>
+                        <span class="dash-bday-age">🎂</span>
+                    </div>`;
+                }).join('');
+            }
+
+            lucide.createIcons();
         };
 
         // FIX: executeDashSearch - wait for tab switch then apply filter
