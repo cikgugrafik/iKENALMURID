@@ -1445,12 +1445,12 @@
                     </div>
                     <div>
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                            <h3 style="font-size: 1rem; color: var(--primary);">Log Kehadiran (Hari Ini)</h3>
+                            <h3 style="font-size: 1rem; color: var(--primary);">Log Kehadiran Terkini</h3>
                             <button class="btn-secondary" onclick="window.promptClearAttendance()"><i data-lucide="trash-2"></i> Kosongkan Log</button>
                         </div>
                         <div class="attendance-log glass">
                             <table id="attendanceTable">
-                                <thead><tr><th>Masa</th><th>Nama Murid</th><th>Kelas</th></tr></thead>
+                                <thead><tr><th>Tarikh & Masa</th><th>Nama Murid</th><th>Kelas</th></tr></thead>
                                 <tbody></tbody>
                             </table>
                         </div>
@@ -3207,31 +3207,7 @@
             document.body.removeChild(link);
         }
 
-// --- KEHADIRAN ---
-        window.logAttendanceManual = async function(s) {
-            const user = auth.currentUser;
-            if (!user) return; 
-
-            const logData = {
-                studentId: s.id,
-                name: s.name,
-                class: s.class,
-                time: new Date().toLocaleTimeString('ms-MY', { hour: '2-digit', minute: '2-digit', hour12: true }),
-                timestamp: new Date().toISOString(),
-                dateString: new Date().toDateString(), 
-                userId: user.uid
-            };
-
-            try {
-                await addDoc(collection(db, "kehadiran"), logData);
-                window.renderAttendanceLog();
-            } catch (e) {
-                console.error("Gagal simpan kehadiran: ", e);
-                window.showNotification("Gagal merekod ke Cloud.", true);
-            }
-        };
-
-        window.renderAttendanceLog = async function() {
+window.renderAttendanceLog = async function() {
             const tbody = document.querySelector('#attendanceTable tbody');
             if (!tbody) return;
 
@@ -3241,68 +3217,50 @@
             tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;"><i data-lucide="loader" style="animation: spin 1s linear infinite;"></i> Memuatkan data...</td></tr>`;
             lucide.createIcons();
 
-            const today = new Date().toDateString();
-
             try {
+                // Tarik semua rekod kehadiran untuk cikgu ini (buang filter 'hari ini')
                 const q = query(
                     collection(db, "kehadiran"), 
-                    where("userId", "==", user.uid),
-                    where("dateString", "==", today)
+                    where("userId", "==", user.uid)
                 );
                 const snapshot = await getDocs(q);
 
                 tbody.innerHTML = ''; 
                 
                 if (snapshot.empty) {
-                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;">Tiada rekod kehadiran hari ini.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--text-muted); padding:2rem;">Tiada rekod kehadiran.</td></tr>`;
                     return;
                 }
 
                 let logs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                // Susun log dari yang paling baru ke paling lama
                 logs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+                // Hadkan paparan kepada 50 rekod terbaru sahaja supaya sistem tak berat
+                logs = logs.slice(0, 50);
 
                 logs.forEach(log => {
                     const tr = document.createElement('tr');
-                    tr.innerHTML = `<td style="font-weight:600; color:var(--secondary);">${log.time}</td><td>${log.name}</td><td><span class="tag" style="background:var(--primary);color:var(--bg-color);border:none;">${log.class}</span></td>`;
+                    
+                    // Format tarikh bagi cantik (contoh: 29 Apr 2026)
+                    const dateObj = new Date(log.timestamp);
+                    const tarikhStr = dateObj.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric' });
+                    
+                    tr.innerHTML = `
+                        <td>
+                            <div style="font-weight:600; color:var(--secondary);">${tarikhStr}</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">${log.time}</div>
+                        </td>
+                        <td>${log.name}</td>
+                        <td><span class="tag" style="background:var(--primary);color:var(--bg-color);border:none;">${log.class}</span></td>
+                    `;
                     tbody.appendChild(tr);
                 });
             } catch (e) {
                 console.error("Gagal baca log: ", e);
                 tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:var(--danger); padding:2rem;">Ralat memuatkan log rekod.</td></tr>`;
             }
-        };
-
-        window.promptClearAttendance = function() { 
-            document.getElementById('attendanceModal').classList.add('active'); 
-        };
-
-        window.confirmClearAttendance = async function() {
-            const user = auth.currentUser;
-            if (!user) return;
-
-            window.showLoading(true, "Mengosongkan log dari Cloud...");
-            const today = new Date().toDateString();
-
-            try {
-                const q = query(
-                    collection(db, "kehadiran"), 
-                    where("userId", "==", user.uid),
-                    where("dateString", "==", today)
-                );
-                const snapshot = await getDocs(q);
-
-                const batch = writeBatch(db);
-                snapshot.docs.forEach(d => batch.delete(d.ref));
-                await batch.commit();
-
-                window.renderAttendanceLog();
-                window.closeModal('attendanceModal');
-                window.showNotification('Log kehadiran hari ini berjaya dikosongkan.');
-            } catch (e) {
-                console.error("Gagal clear log: ", e);
-                window.showNotification("Gagal memadam log dari Cloud.", true);
-            }
-            window.showLoading(false);
         };
 
         // --- SETTINGS ---
