@@ -183,52 +183,80 @@
         /* ── LANDING PAGE ──────────────────────────────────────────── */
         .landing-container {
             position: fixed; inset: 0;
-            background: #0a0e27;
+            background: var(--bg-color);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99,102,241,0.15) 0px, transparent 55%),
+                radial-gradient(at 100% 0%, rgba(6,182,212,0.12) 0px, transparent 55%),
+                radial-gradient(at 50% 100%, rgba(168,85,247,0.1) 0px, transparent 55%);
             display: flex; justify-content: center; align-items: center;
             z-index: 9999; overflow-y: auto; padding: 2rem 1rem;
+        }
+        [data-theme="dark"] .landing-container {
+            background: var(--bg-color);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(99,102,241,0.2) 0px, transparent 55%),
+                radial-gradient(at 100% 0%, rgba(6,182,212,0.15) 0px, transparent 55%),
+                radial-gradient(at 50% 100%, rgba(168,85,247,0.12) 0px, transparent 55%);
         }
         .landing-bg-effects {
             position: absolute; inset: 0; overflow: hidden; pointer-events: none;
         }
         .landing-orb {
-            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.5;
+            position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.4;
             animation: orbFloat 8s ease-in-out infinite alternate;
         }
-        .landing-orb.orb-1 { width: 400px; height: 400px; background: rgba(99,102,241,0.35); top: -10%; left: -5%; animation-delay: 0s; }
-        .landing-orb.orb-2 { width: 350px; height: 350px; background: rgba(6,182,212,0.3); bottom: -15%; right: -8%; animation-delay: 2s; }
-        .landing-orb.orb-3 { width: 250px; height: 250px; background: rgba(168,85,247,0.25); top: 40%; left: 60%; animation-delay: 4s; }
+        .landing-orb.orb-1 { width: 400px; height: 400px; background: rgba(99,102,241,0.2); top: -10%; left: -5%; animation-delay: 0s; }
+        .landing-orb.orb-2 { width: 350px; height: 350px; background: rgba(6,182,212,0.18); bottom: -15%; right: -8%; animation-delay: 2s; }
+        .landing-orb.orb-3 { width: 250px; height: 250px; background: rgba(168,85,247,0.15); top: 40%; left: 60%; animation-delay: 4s; }
+        [data-theme="dark"] .landing-orb.orb-1 { background: rgba(99,102,241,0.3); opacity: 0.5; }
+        [data-theme="dark"] .landing-orb.orb-2 { background: rgba(6,182,212,0.25); opacity: 0.5; }
+        [data-theme="dark"] .landing-orb.orb-3 { background: rgba(168,85,247,0.2); opacity: 0.5; }
         @keyframes orbFloat {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(30px, -20px) scale(1.1); }
         }
         .landing-grid-pattern {
-            position: absolute; inset: 0;
-            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            position: absolute; inset: -60px;
+            background-image: linear-gradient(rgba(99,102,241,0.06) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(99,102,241,0.06) 1px, transparent 1px);
             background-size: 60px 60px;
+            animation: gridDrift 20s linear infinite;
+        }
+        [data-theme="dark"] .landing-grid-pattern {
+            background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+        }
+        @keyframes gridDrift {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(60px, 60px); }
         }
         .landing-box {
             padding: 2.5rem 2rem; border-radius: var(--radius-xl);
             max-width: 460px; width: 100%; text-align: center;
             display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
             margin: auto; position: relative; z-index: 2;
-            background: rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.7);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+        }
+        [data-theme="dark"] .landing-box {
+            background: rgba(30,41,59,0.7);
+            border: 1px solid rgba(255,255,255,0.08);
             box-shadow: 0 25px 60px rgba(0,0,0,0.4);
         }
         .icon-circle {
-            background: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #312e81 50%, #6366f1 100%);
             color: white; width: 80px; height: 80px; border-radius: 24px;
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto 0.5rem auto;
-            box-shadow: 0 20px 50px rgba(99,102,241,0.5), 0 0 0 1px rgba(255,255,255,0.1);
+            box-shadow: 0 20px 50px rgba(99,102,241,0.35);
             position: relative; overflow: hidden;
             animation: iconPulse 3s ease-in-out infinite;
         }
         @keyframes iconPulse {
-            0%, 100% { box-shadow: 0 20px 50px rgba(99,102,241,0.5), 0 0 0 1px rgba(255,255,255,0.1); }
-            50% { box-shadow: 0 20px 60px rgba(99,102,241,0.7), 0 0 0 1px rgba(255,255,255,0.2); }
+            0%, 100% { box-shadow: 0 20px 50px rgba(99,102,241,0.35); }
+            50% { box-shadow: 0 20px 60px rgba(99,102,241,0.5); }
         }
         .icon-circle::after {
             content: ''; position: absolute; top: -50%; left: -50%;
@@ -240,11 +268,15 @@
         .icon-circle i { position: relative; z-index: 2; }
         .brand-title-landing {
             font-size: 2.4rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 0;
-            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #22d3ee 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #06b6d4 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
+        [data-theme="dark"] .brand-title-landing {
+            background: linear-gradient(135deg, #f8fafc 0%, #a5b4fc 50%, #22d3ee 100%);
+            -webkit-background-clip: text; background-clip: text;
+        }
         .landing-subtitle {
-            font-size: 0.9rem; font-weight: 400; color: rgba(255,255,255,0.55);
+            font-size: 0.9rem; font-weight: 500; color: var(--text-muted);
             margin-bottom: 0.5rem; letter-spacing: 0.3px;
         }
         .feature-list {
@@ -254,38 +286,47 @@
         .feature-item {
             display: flex; align-items: flex-start; gap: 0.75rem;
             padding: 0.85rem; border-radius: var(--radius-md);
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.07);
+            background: rgba(255,255,255,0.5);
+            border: 1px solid rgba(99,102,241,0.08);
             transition: var(--transition);
         }
-        .feature-item:hover { background: rgba(255,255,255,0.08); border-color: rgba(99,102,241,0.25); transform: translateX(4px); }
+        [data-theme="dark"] .feature-item {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.07);
+        }
+        .feature-item:hover { background: rgba(255,255,255,0.8); border-color: rgba(99,102,241,0.2); transform: translateX(4px); }
+        [data-theme="dark"] .feature-item:hover { background: rgba(255,255,255,0.08); border-color: rgba(99,102,241,0.25); }
         .feature-icon-box {
             width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
             display: flex; align-items: center; justify-content: center;
         }
         .feature-icon-box i { width: 17px; height: 17px; }
-        .feature-icon-box.fi-shield { background: rgba(16,185,129,0.15); color: #34d399; }
-        .feature-icon-box.fi-zap { background: rgba(245,158,11,0.15); color: #fbbf24; }
-        .feature-icon-box.fi-phone { background: rgba(99,102,241,0.15); color: #a5b4fc; }
-        .feature-item p { font-size: 0.72rem; color: rgba(255,255,255,0.45); line-height: 1.4; margin: 0; }
-        .feature-item strong { color: rgba(255,255,255,0.9); font-weight: 600; display: block; margin-bottom: 2px; font-size: 0.82rem; }
+        .feature-icon-box.fi-shield { background: rgba(16,185,129,0.12); color: #10b981; }
+        .feature-icon-box.fi-zap { background: rgba(245,158,11,0.12); color: #f59e0b; }
+        .feature-icon-box.fi-phone { background: rgba(99,102,241,0.12); color: #6366f1; }
+        [data-theme="dark"] .feature-icon-box.fi-shield { background: rgba(16,185,129,0.15); color: #34d399; }
+        [data-theme="dark"] .feature-icon-box.fi-zap { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        [data-theme="dark"] .feature-icon-box.fi-phone { background: rgba(99,102,241,0.15); color: #a5b4fc; }
+        .feature-item p { font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; margin: 0; }
+        .feature-item strong { color: var(--text-main); font-weight: 600; display: block; margin-bottom: 2px; font-size: 0.82rem; }
         .terms-box {
             display: flex; align-items: flex-start; gap: 0.8rem; text-align: left;
-            background: rgba(244,63,94,0.08); padding: 0.85rem;
-            border-radius: var(--radius-sm); border: 1px solid rgba(244,63,94,0.2);
+            background: rgba(244,63,94,0.05); padding: 0.85rem;
+            border-radius: var(--radius-sm); border: 1px dashed rgba(244,63,94,0.25);
             margin-top: 0.3rem; cursor: pointer; transition: var(--transition);
         }
-        .terms-box:hover { background: rgba(244,63,94,0.14); }
-        .terms-box input[type="checkbox"] { width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; cursor: pointer; accent-color: #6366f1; }
-        .terms-box label { font-size: 0.72rem; color: rgba(255,255,255,0.7); line-height: 1.4; cursor: pointer; }
+        .terms-box:hover { background: rgba(244,63,94,0.09); }
+        .terms-box input[type="checkbox"] { width: 17px; height: 17px; flex-shrink: 0; margin-top: 2px; cursor: pointer; accent-color: var(--secondary); }
+        .terms-box label { font-size: 0.72rem; color: var(--text-main); line-height: 1.4; cursor: pointer; }
         .google-btn {
-            background: white; color: #1e293b; border: none;
+            background: white; color: #1e293b; border: 1px solid #e2e8f0;
             padding: 0.9rem 1.5rem; border-radius: 50px; font-weight: 600;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             gap: 10px; width: 100%; transition: var(--transition); font-size: 0.9rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); margin-top: 0.6rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); margin-top: 0.6rem;
             position: relative; overflow: hidden;
         }
+        [data-theme="dark"] .google-btn { background: #1e293b; color: white; border-color: #334155; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         .google-btn::before {
             content: ''; position: absolute; inset: 0;
             background: linear-gradient(135deg, rgba(99,102,241,0.05), rgba(6,182,212,0.05));
@@ -294,15 +335,16 @@
         .google-btn:hover::before { opacity: 1; }
         .google-btn img { width: 22px; height: 22px; position: relative; z-index: 1; }
         .google-btn span { position: relative; z-index: 1; }
-        .google-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-        .google-btn.disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; box-shadow: 0 4px 15px rgba(0,0,0,0.1); filter: grayscale(80%); }
-        .landing-footer-text { font-size: 0.68rem; color: rgba(255,255,255,0.3); margin-top: 0.8rem; }
-        .landing-footer-text a { color: rgba(99,102,241,0.8); font-weight: 600; text-decoration: none; transition: var(--transition); }
-        .landing-footer-text a:hover { color: #a5b4fc; }
+        .google-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,0,0,0.1); }
+        [data-theme="dark"] .google-btn:hover { background: #334155; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .google-btn.disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none; filter: grayscale(80%); }
+        .landing-footer-text { font-size: 0.68rem; color: var(--text-muted); margin-top: 0.8rem; }
+        .landing-footer-text a { color: var(--secondary); font-weight: 600; text-decoration: none; transition: var(--transition); }
+        .landing-footer-text a:hover { color: var(--accent); }
         .landing-version-badge {
             display: inline-block; padding: 0.2rem 0.7rem; border-radius: 50px;
-            background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.2);
-            font-size: 0.6rem; font-weight: 600; color: #a5b4fc; letter-spacing: 1px;
+            background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.2);
+            font-size: 0.6rem; font-weight: 600; color: var(--secondary); letter-spacing: 1px;
             margin-bottom: 0.3rem;
         }
 
@@ -1236,51 +1278,51 @@
             <!-- STEP 2: Access Code (muncul selepas Google login berjaya) -->
             <div id="landingStep2" style="width:100%; display:none; flex-direction:column; gap:0.8rem;">
                 <!-- User info -->
-                <div style="display:flex; align-items:center; gap:0.8rem; background:rgba(255,255,255,0.05); padding:0.8rem 1rem; border-radius:var(--radius-md); border:1px solid rgba(255,255,255,0.1);">
-                    <img id="landingUserPhoto" src="" style="width:38px; height:38px; border-radius:50%; border:2px solid rgba(255,255,255,0.15);">
+                <div style="display:flex; align-items:center; gap:0.8rem; background:var(--bg-color); padding:0.8rem 1rem; border-radius:var(--radius-md); border:1px solid var(--border-light);">
+                    <img id="landingUserPhoto" src="" style="width:38px; height:38px; border-radius:50%; border:2px solid var(--border-light);">
                     <div>
-                        <p id="landingUserName" style="font-size:0.85rem; font-weight:600; color:rgba(255,255,255,0.9); margin:0;"></p>
-                        <p id="landingUserEmail" style="font-size:0.72rem; color:rgba(255,255,255,0.45); margin:0;"></p>
+                        <p id="landingUserName" style="font-size:0.85rem; font-weight:600; color:var(--text-main); margin:0;"></p>
+                        <p id="landingUserEmail" style="font-size:0.72rem; color:var(--text-muted); margin:0;"></p>
                     </div>
-                    <button onclick="window.logoutAndReset()" style="margin-left:auto; background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; font-size:0.72rem; padding:0.3rem 0.6rem; border-radius:6px; transition:var(--transition);" onmouseover="this.style.color='#f87171'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+                    <button onclick="window.logoutAndReset()" style="margin-left:auto; background:none; border:none; color:var(--text-muted); cursor:pointer; font-size:0.72rem; padding:0.3rem 0.6rem; border-radius:6px; transition:var(--transition);" onmouseover="this.style.color='var(--danger)'" onmouseout="this.style.color='var(--text-muted)'">
                         <i data-lucide="x" style="width:14px; height:14px; vertical-align:-2px;"></i> Tukar
                     </button>
                 </div>
 
                 <!-- Access code input -->
                 <div style="text-align:center; padding: 0.5rem 0;">
-                    <div style="width:48px; height:48px; background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(6,182,212,0.15)); border-radius:14px; display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
-                        <i data-lucide="key-round" style="width:22px; height:22px; color:#a5b4fc;"></i>
+                    <div style="width:48px; height:48px; background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(6,182,212,0.1)); border-radius:14px; display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
+                        <i data-lucide="key-round" style="width:22px; height:22px; color:var(--secondary);"></i>
                     </div>
-                    <p style="font-size:0.95rem; font-weight:700; color:rgba(255,255,255,0.9); margin:0 0 0.3rem;">Masukkan Kod Akses</p>
-                    <p style="font-size:0.75rem; color:rgba(255,255,255,0.45); margin:0;">Sistem ini memerlukan kod akses khas. Hubungi pentadbir untuk mendapatkan kod.</p>
+                    <p style="font-size:0.95rem; font-weight:700; color:var(--text-main); margin:0 0 0.3rem;">Masukkan Kod Akses</p>
+                    <p style="font-size:0.75rem; color:var(--text-muted); margin:0;">Sistem ini memerlukan kod akses khas. Hubungi pentadbir untuk mendapatkan kod.</p>
                 </div>
 
                 <div style="position:relative;">
                     <input type="text" id="accessCodeInput"
                         placeholder="Contoh: AKSESTOKEN1234"
-                        style="width:100%; padding:0.85rem 3rem 0.85rem 1rem; border-radius:var(--radius-md); border:1.5px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.06); font-family:'Poppins',sans-serif; font-size:0.9rem; outline:none; color:rgba(255,255,255,0.9); text-transform:uppercase; letter-spacing:1px; transition:var(--transition);"
+                        style="width:100%; padding:0.85rem 3rem 0.85rem 1rem; border-radius:var(--radius-md); border:1.5px solid var(--border-light); background:var(--bg-color); font-family:'Poppins',sans-serif; font-size:0.9rem; outline:none; color:var(--text-main); text-transform:uppercase; letter-spacing:1px; transition:var(--transition);"
                         oninput="this.value=this.value.toUpperCase(); window.clearCodeError();"
                         onkeydown="if(event.key==='Enter') window.verifyAccessCode();"
-                        onfocus="this.style.borderColor='#6366f1'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.15)';"
-                        onblur="this.style.borderColor='rgba(255,255,255,0.12)'; this.style.boxShadow='none';">
-                    <i data-lucide="lock" id="codeInputIcon" style="position:absolute; right:1rem; top:50%; transform:translateY(-50%); width:16px; height:16px; color:rgba(255,255,255,0.3); pointer-events:none;"></i>
+                        onfocus="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';"
+                        onblur="this.style.borderColor='var(--border-light)'; this.style.boxShadow='none';">
+                    <i data-lucide="lock" id="codeInputIcon" style="position:absolute; right:1rem; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--text-muted); pointer-events:none;"></i>
                 </div>
 
                 <!-- Error message -->
-                <div id="codeError" style="display:none; background:rgba(244,63,94,0.12); border:1px solid rgba(244,63,94,0.25); border-radius:var(--radius-sm); padding:0.65rem 0.9rem; font-size:0.78rem; color:#fb7185; display:flex; align-items:center; gap:0.5rem;">
+                <div id="codeError" style="display:none; background:rgba(244,63,94,0.08); border:1px solid rgba(244,63,94,0.25); border-radius:var(--radius-sm); padding:0.65rem 0.9rem; font-size:0.78rem; color:var(--danger); display:flex; align-items:center; gap:0.5rem;">
                     <i data-lucide="alert-circle" style="width:15px; height:15px; flex-shrink:0;"></i>
                     <span id="codeErrorMsg">Kod akses tidak sah.</span>
                 </div>
 
                 <button onclick="window.verifyAccessCode()" id="verifyCodeBtn"
-                    style="background:linear-gradient(135deg,#6366f1,#06b6d4); color:white; padding:0.85rem; border-radius:50px; border:none; font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:600; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:0.6rem; box-shadow:0 4px 20px rgba(99,102,241,0.4); transition:var(--transition);">
+                    style="background:linear-gradient(135deg,var(--secondary),var(--accent)); color:white; padding:0.85rem; border-radius:50px; border:none; font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:600; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:0.6rem; box-shadow:0 4px 14px rgba(99,102,241,0.3); transition:var(--transition);">
                     <i data-lucide="unlock" style="width:17px; height:17px;"></i>
                     Sahkan Kod & Masuk
                 </button>
 
-                <p style="font-size:0.68rem; color:rgba(255,255,255,0.35); text-align:center; margin-top:0.3rem;">
-                    Hubungi <a href="https://cikgugrafik.my" target="_blank" style="color:rgba(99,102,241,0.8); font-weight:600; text-decoration:none;">CIKGUGRAFIK</a> jika anda tidak mempunyai kod akses.
+                <p style="font-size:0.68rem; color:var(--text-muted); text-align:center; margin-top:0.3rem;">
+                    Hubungi <a href="https://cikgugrafik.my" target="_blank" style="color:var(--secondary); font-weight:600; text-decoration:none;">CIKGUGRAFIK</a> jika anda tidak mempunyai kod akses.
                 </p>
             </div>
 
