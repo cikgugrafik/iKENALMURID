@@ -74,6 +74,12 @@ body{background-color:var(--bg-color);background-image:radial-gradient(at 0% 0%,
 .google-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(99,102,241,0.5)}
 .google-btn.disabled{opacity:0.4;cursor:not-allowed;transform:none!important;box-shadow:none}
 .sidebar{width:256px;height:100vh;position:fixed;left:0;top:0;padding:1.5rem 1rem;display:none;flex-direction:column;gap:0.5rem;z-index:50;background:var(--sidebar-bg);border-right:1px solid var(--border-light);box-shadow:4px 0 24px rgba(0,0,0,0.04);transition:var(--transition);overflow-y:auto}
+body.app-ready .landing-container{display:none!important}
+body.app-ready #mainContent{display:flex!important;flex-direction:column}
+body.app-ready.desktop-view .sidebar{display:flex!important}
+body.app-ready.mobile-view #bottomNav{display:flex!important}
+body.app-ready.desktop-view #mainContent{margin-left:256px;width:calc(100% - 256px)}
+body.app-ready.mobile-view #mainContent{margin-left:0!important;width:100%!important;padding:1.5rem 1rem 8rem!important}
 .logo{display:flex;align-items:center;gap:0.75rem;padding:0.5rem 0.75rem 1.2rem 0.75rem;border-bottom:1px solid var(--border-light);margin-bottom:0.5rem}
 .logo-icon{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,#0f172a 0%,#312e81 50%,#6366f1 100%);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(99,102,241,0.35);position:relative;overflow:hidden}
 .logo-icon::after{content:'';position:absolute;top:0;left:-60%;width:50%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transform:skewX(-20deg)}
@@ -1055,9 +1061,9 @@ window.showLandingStep=function(s){document.getElementById('landingStep1').style
 window.toggleTerms=function(){const c=document.getElementById('termsCheck');c.checked=!c.checked;window.updateLoginButton();};
 window.updateLoginButton=function(){const b=document.getElementById('loginBtnGoogle');if(document.getElementById('termsCheck').checked)b.classList.remove('disabled');else b.classList.add('disabled');};
 window.loginGoogle=function(){if(!document.getElementById('termsCheck').checked){window.showNotification('Sila tanda setuju pada terma.',true);return;}signInWithPopup(auth,provider).catch(e=>window.showNotification('Gagal Log Masuk: '+e.message,true));};
-window.logoutAndReset=function(){signOut(auth).then(()=>window.showLandingStep(1));};
+window.logoutAndReset=function(){signOut(auth).then(()=>{document.body.classList.remove('app-ready','desktop-view','mobile-view');window.showLandingStep(1);});};
 window.logoutGoogle=()=>document.getElementById('logoutModal').classList.add('active');
-document.getElementById('confirmLogoutBtn').onclick=()=>{signOut(auth).then(()=>{document.getElementById('mainContent').style.display='none';document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='none';document.getElementById('landingPage').style.display='flex';window.showLandingStep(1);window.closeModal('logoutModal');});};
+document.getElementById('confirmLogoutBtn').onclick=()=>{signOut(auth).then(()=>{document.body.classList.remove('app-ready','desktop-view','mobile-view');document.getElementById('landingPage').style.display='';window.showLandingStep(1);window.closeModal('logoutModal');});};
 window.clearCodeError=function(){const e=document.getElementById('codeError');if(e)e.style.display='none';};
 window.verifyAccessCode=async function(){
   const inp=document.getElementById('accessCodeInput'),btn=document.getElementById('verifyCodeBtn'),err=document.getElementById('codeError'),em=document.getElementById('codeErrorMsg');
@@ -1072,16 +1078,12 @@ window.verifyAccessCode=async function(){
   await new Promise(r=>setTimeout(r,700));window.enterApp(user);
 };
 window.enterApp=function(user){
-  // Hide landing, show app
-  const lp=document.getElementById('landingPage');
-  const mc=document.getElementById('mainContent');
-  const sb=document.getElementById('sidebar');
-  const bn=document.getElementById('bottomNav');
-  if(lp)lp.style.cssText='display:none!important';
-  if(mc){mc.style.cssText='display:flex!important;flex-direction:column;';if(window.innerWidth<=768){mc.style.cssText='display:flex!important;flex-direction:column;margin-left:0;width:100%;padding:1.5rem 1rem 8rem';}}
-  if(window.innerWidth<=768){if(sb)sb.style.cssText='display:none!important';if(bn)bn.style.cssText='display:flex!important';}
-  else{if(sb)sb.style.cssText='display:flex!important;flex-direction:column;';if(bn)bn.style.cssText='display:none!important';}
   window.showLoading(false);
+  // Use classes - avoids all inline style conflicts
+  const isMob=window.innerWidth<=768;
+  document.body.classList.add('app-ready');
+  document.body.classList.toggle('mobile-view',isMob);
+  document.body.classList.toggle('desktop-view',!isMob);
   const photo=user.photoURL||`https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`;
   ['sidebarAvatar','dashAvatarImg'].forEach(id=>{const el=document.getElementById(id);if(el)el.src=photo;});
   const sn=document.getElementById('sidebarTeacherName');if(sn)sn.textContent=window.appSettings.teacherName||user.displayName||'Cikgu';
@@ -1091,13 +1093,13 @@ window.enterApp=function(user){
 };
 onAuthStateChanged(auth,user=>{
   if(user){if(isVerified(user.uid)){window.showLoading(false);window.enterApp(user);return;}
-    window.showLoading(false);document.getElementById('landingPage').style.display='flex';document.getElementById('mainContent').style.display='none';document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='none';
+    window.showLoading(false);document.body.classList.remove('app-ready','desktop-view','mobile-view');
     const photo=user.photoURL||`https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`;
     document.getElementById('landingUserPhoto').src=photo;document.getElementById('landingUserName').textContent=user.displayName||'Pengguna';document.getElementById('landingUserEmail').textContent=user.email||'';
     window.showLandingStep(2);
-  }else{window.showLoading(false);document.getElementById('landingPage').style.display='flex';document.getElementById('mainContent').style.display='none';document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='none';window.showLandingStep(1);}
+  }else{window.showLoading(false);document.body.classList.remove('app-ready','desktop-view','mobile-view');window.showLandingStep(1);}
 });
-window.addEventListener('resize',()=>{if(!auth.currentUser)return;if(window.innerWidth<=768){document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='flex';}else{document.getElementById('sidebar').style.display='flex';document.getElementById('bottomNav').style.display='none';}});
+window.addEventListener('resize',()=>{if(!auth.currentUser)return;const isMob=window.innerWidth<=768;document.body.classList.toggle('mobile-view',isMob);document.body.classList.toggle('desktop-view',!isMob);});
 
 // DATA
 window.loadData=async()=>{const user=auth.currentUser;if(!user)return;window.showLoading(true,'Muat turun data cloud...');try{const q=query(collection(db,'murid'),where('userId','==',user.uid));const snap=await getDocs(q);window.students=snap.docs.map(d=>({id:d.id,...d.data()}));window.updateDashboard();window.currentPage=1;window.applyListFilters();}catch(e){window.showNotification('Gagal muat data: '+e.message,true);}finally{window.showLoading(false);}};
