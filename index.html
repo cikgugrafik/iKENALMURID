@@ -348,6 +348,44 @@
             margin-bottom: 0.3rem;
         }
 
+        /* ── PORTAL CARIAN ─────────────────────────────────────────── */
+        .portal-container {
+            position: fixed; inset: 0;
+            background: var(--bg-color);
+            background-image:
+                radial-gradient(at 0% 100%, rgba(99,102,241,0.12) 0px, transparent 55%),
+                radial-gradient(at 100% 0%, rgba(6,182,212,0.1) 0px, transparent 55%);
+            display: none; justify-content: center; align-items: center;
+            z-index: 10000; overflow-y: auto; padding: 2rem 1rem;
+        }
+        .portal-box {
+            padding: 2rem 1.5rem; border-radius: var(--radius-xl);
+            max-width: 440px; width: 100%; text-align: center;
+            background: rgba(255,255,255,0.7);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+            position: relative; z-index: 2;
+        }
+        [data-theme="dark"] .portal-box {
+            background: rgba(30,41,59,0.7);
+            border-color: rgba(255,255,255,0.08);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+        .portal-result-card {
+            text-align: left; padding: 1.2rem; border-radius: var(--radius-md);
+            background: rgba(255,255,255,0.6); border: 1px solid rgba(99,102,241,0.1);
+            margin-top: 1rem;
+        }
+        [data-theme="dark"] .portal-result-card {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.08);
+        }
+        .portal-result-card .result-photo {
+            width: 70px; height: 70px; border-radius: 16px; object-fit: cover;
+            border: 2px solid rgba(99,102,241,0.2);
+        }
+
         /* ── SIDEBAR ───────────────────────────────────────────────── */
         .sidebar {
             width: 256px; height: 100vh; position: fixed; left: 0; top: 0;
@@ -1326,7 +1364,57 @@
                 </p>
             </div>
 
+            <button onclick="window.showPortalCarian()" style="background:none; border:1px dashed var(--border-light); color:var(--text-muted); padding:0.5rem 1rem; border-radius:50px; cursor:pointer; font-size:0.72rem; font-family:'Poppins',sans-serif; transition:var(--transition); display:flex; align-items:center; gap:0.4rem; margin:0 auto;" onmouseover="this.style.borderColor='var(--secondary)'; this.style.color='var(--secondary)'" onmouseout="this.style.borderColor='var(--border-light)'; this.style.color='var(--text-muted)'">
+                <i data-lucide="search" style="width:13px; height:13px;"></i> Portal Carian Murid
+            </button>
             <div class="landing-footer-text">created by <a href="https://cikgugrafik.my" target="_blank">CIKGUGRAFIK</a></div>
+        </div>
+    </div>
+
+    <!-- PORTAL CARIAN MURID -->
+    <div class="portal-container" id="portalCarian">
+        <div class="portal-box">
+            <button onclick="window.hidePortalCarian()" style="position:absolute; top:1rem; right:1rem; background:none; border:none; color:var(--text-muted); cursor:pointer; padding:0.3rem;" title="Tutup">
+                <i data-lucide="x" style="width:18px; height:18px;"></i>
+            </button>
+
+            <div style="width:52px; height:52px; background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(6,182,212,0.1)); border-radius:14px; display:flex; align-items:center; justify-content:center; margin:0 auto 0.8rem;">
+                <i data-lucide="search" style="width:24px; height:24px; color:var(--secondary);"></i>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; color:var(--text-main); margin:0 0 0.3rem;">Portal Carian Murid</h3>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin:0 0 1.2rem;">Masukkan No. Kad Pengenalan dan Nama Penuh murid dengan tepat untuk membuat carian.</p>
+
+            <div style="display:flex; flex-direction:column; gap:0.6rem; text-align:left;">
+                <div>
+                    <label style="font-size:0.7rem; font-weight:600; color:var(--text-main); margin-bottom:0.2rem; display:block;">No. Kad Pengenalan</label>
+                    <input type="text" id="portalIc" placeholder="Cth: 120101011234" maxlength="14"
+                        style="width:100%; padding:0.75rem 1rem; border-radius:var(--radius-md); border:1.5px solid var(--border-light); background:var(--bg-color); font-family:'Poppins',sans-serif; font-size:0.85rem; outline:none; color:var(--text-main); letter-spacing:1px; transition:var(--transition);"
+                        oninput="this.value=this.value.replace(/[^0-9\-]/g,'');"
+                        onfocus="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';"
+                        onblur="this.style.borderColor='var(--border-light)'; this.style.boxShadow='none';">
+                </div>
+                <div>
+                    <label style="font-size:0.7rem; font-weight:600; color:var(--text-main); margin-bottom:0.2rem; display:block;">Nama Penuh Murid</label>
+                    <input type="text" id="portalNama" placeholder="Cth: Ali bin Abu"
+                        style="width:100%; padding:0.75rem 1rem; border-radius:var(--radius-md); border:1.5px solid var(--border-light); background:var(--bg-color); font-family:'Poppins',sans-serif; font-size:0.85rem; outline:none; color:var(--text-main); transition:var(--transition);"
+                        onkeydown="if(event.key==='Enter') window.searchPortal();"
+                        onfocus="this.style.borderColor='var(--secondary)'; this.style.boxShadow='0 0 0 3px rgba(99,102,241,0.1)';"
+                        onblur="this.style.borderColor='var(--border-light)'; this.style.boxShadow='none';">
+                </div>
+                <button onclick="window.searchPortal()" style="background:linear-gradient(135deg,var(--secondary),var(--accent)); color:white; padding:0.75rem; border-radius:50px; border:none; font-family:'Poppins',sans-serif; font-size:0.85rem; font-weight:600; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:0.5rem; box-shadow:0 4px 14px rgba(99,102,241,0.3); transition:var(--transition); margin-top:0.3rem;">
+                    <i data-lucide="search" style="width:16px; height:16px;"></i> Cari Murid
+                </button>
+            </div>
+
+            <div id="portalError" style="display:none; margin-top:0.8rem; padding:0.6rem 0.8rem; border-radius:var(--radius-sm); font-size:0.75rem; background:rgba(244,63,94,0.06); border:1px solid rgba(244,63,94,0.2); color:var(--danger); text-align:left;">
+            </div>
+
+            <div id="portalResult" style="display:none;"></div>
+
+            <p style="font-size:0.65rem; color:var(--text-muted); margin-top:1rem; opacity:0.7;">
+                <i data-lucide="shield-check" style="width:11px; height:11px; vertical-align:-2px;"></i>
+                Carian ini dilindungi — hanya maklumat terhad dipaparkan.
+            </p>
         </div>
     </div>
 
@@ -1787,6 +1875,16 @@
                             </div>
                         </div>
 
+                        <div class="settings-card glass" style="background: rgba(34,197,94,0.05); border-color: rgba(34,197,94,0.2);">
+                            <div class="section-header-title" style="margin-top: 0; font-size: 1rem; color: var(--success); border-bottom: 1px dashed rgba(34,197,94,0.3);"><i data-lucide="hard-drive-download" style="width:18px;"></i> Backup & Restore (Google Drive)</div>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Simpan salinan data murid ke Google Drive anda, atau pulihkan dari backup.</p>
+                            <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+                                <button class="btn-primary" onclick="window.backupToGDrive()" style="width:100%; justify-content:center; background:linear-gradient(135deg,#22c55e,#16a34a);"><i data-lucide="upload-cloud"></i> Backup ke Google Drive</button>
+                                <button class="btn-secondary" onclick="window.restoreFromGDrive()" style="width:100%; justify-content:center;"><i data-lucide="download-cloud"></i> Restore dari Google Drive</button>
+                            </div>
+                            <div id="backupStatus" style="display:none; margin-top:0.8rem; padding:0.6rem 0.8rem; border-radius:var(--radius-sm); font-size:0.75rem;"></div>
+                        </div>
+
                         <div class="settings-card glass" style="background: rgba(59, 130, 246, 0.05); border-color: rgba(59, 130, 246, 0.2);">
                             <div class="section-header-title" style="margin-top: 0; font-size: 1rem; color: var(--secondary); border-bottom: 1px dashed rgba(59, 130, 246, 0.3);"><i data-lucide="trending-up" style="width:18px;"></i> Kenaikan Darjah (Auto-Promote)</div>
                             <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;">Naikkan nama kelas sekumpulan murid sekaligus pada hujung tahun.</p>
@@ -2114,6 +2212,17 @@
                 e.preventDefault();
             }
         });
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('SW registered:', reg.scope))
+                    .catch(err => console.warn('SW registration failed:', err));
+            });
+        }
     </script>
 
     <script type="module">
@@ -3400,6 +3509,268 @@
             link.click();
             document.body.removeChild(link);
         }
+// --- PORTAL CARIAN MURID ---
+        window.showPortalCarian = function() {
+            document.getElementById('portalCarian').style.display = 'flex';
+            document.getElementById('portalIc').value = '';
+            document.getElementById('portalNama').value = '';
+            document.getElementById('portalResult').style.display = 'none';
+            document.getElementById('portalError').style.display = 'none';
+            if (window.lucide) lucide.createIcons();
+        };
+        window.hidePortalCarian = function() {
+            document.getElementById('portalCarian').style.display = 'none';
+        };
+        window.searchPortal = async function() {
+            const icInput = document.getElementById('portalIc').value.trim().replace(/[\-\s]/g, '');
+            const namaInput = document.getElementById('portalNama').value.trim();
+            const errorEl = document.getElementById('portalError');
+            const resultEl = document.getElementById('portalResult');
+            resultEl.style.display = 'none';
+            errorEl.style.display = 'none';
+
+            if (!icInput || icInput.length < 6) {
+                errorEl.innerHTML = '<i data-lucide="alert-circle" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Sila masukkan No. Kad Pengenalan yang lengkap.';
+                errorEl.style.display = 'block';
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+            if (!namaInput || namaInput.length < 3) {
+                errorEl.innerHTML = '<i data-lucide="alert-circle" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Sila masukkan Nama Penuh murid (sekurang-kurangnya 3 huruf).';
+                errorEl.style.display = 'block';
+                if (window.lucide) lucide.createIcons();
+                return;
+            }
+
+            try {
+                const q = query(collection(db, "murid"), where("ic", "==", icInput));
+                const snapshot = await getDocs(q);
+
+                if (snapshot.empty) {
+                    errorEl.innerHTML = '<i data-lucide="user-x" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Tiada rekod dijumpai. Pastikan No. IC dan Nama tepat.';
+                    errorEl.style.display = 'block';
+                    if (window.lucide) lucide.createIcons();
+                    return;
+                }
+
+                // Verify name matches (case-insensitive)
+                let found = null;
+                snapshot.forEach(d => {
+                    const data = d.data();
+                    if (data.nama && data.nama.toLowerCase() === namaInput.toLowerCase()) {
+                        found = data;
+                    }
+                });
+
+                if (!found) {
+                    errorEl.innerHTML = '<i data-lucide="user-x" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>No. IC dijumpai tetapi nama tidak sepadan. Sila semak semula.';
+                    errorEl.style.display = 'block';
+                    if (window.lucide) lucide.createIcons();
+                    return;
+                }
+
+                // Show limited result
+                const photo = found.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(found.nama) + '&background=6366f1&color=fff&size=140';
+                const gender = found.jantina || '-';
+                const kelas = found.kelas || '-';
+                const tarikh = found.tarikh_lahir || '-';
+                const tempat = found.tempat_lahir || '-';
+
+                resultEl.innerHTML = `
+                    <div class="portal-result-card">
+                        <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.8rem;">
+                            <img src="${photo}" class="result-photo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(found.nama)}&background=6366f1&color=fff&size=140'">
+                            <div>
+                                <p style="font-size:1rem; font-weight:700; color:var(--text-main); margin:0;">${found.nama}</p>
+                                <p style="font-size:0.75rem; color:var(--secondary); margin:0; font-weight:500;">${kelas}</p>
+                            </div>
+                        </div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.75rem;">
+                            <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
+                                <span style="color:var(--text-muted); display:block; font-size:0.65rem;">Jantina</span>
+                                <span style="color:var(--text-main); font-weight:600;">${gender}</span>
+                            </div>
+                            <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
+                                <span style="color:var(--text-muted); display:block; font-size:0.65rem;">Tarikh Lahir</span>
+                                <span style="color:var(--text-main); font-weight:600;">${tarikh}</span>
+                            </div>
+                            <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
+                                <span style="color:var(--text-muted); display:block; font-size:0.65rem;">Tempat Lahir</span>
+                                <span style="color:var(--text-main); font-weight:600;">${tempat}</span>
+                            </div>
+                            <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
+                                <span style="color:var(--text-muted); display:block; font-size:0.65rem;">No. IC</span>
+                                <span style="color:var(--text-main); font-weight:600;">${found.ic}</span>
+                            </div>
+                        </div>
+                        <p style="font-size:0.6rem; color:var(--text-muted); margin:0.6rem 0 0; opacity:0.6; text-align:center;">
+                            <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i> Maklumat terhad sahaja dipaparkan untuk tujuan pengesahan.
+                        </p>
+                    </div>`;
+                resultEl.style.display = 'block';
+                if (window.lucide) lucide.createIcons();
+            } catch (e) {
+                console.error('Portal search error:', e);
+                errorEl.innerHTML = '<i data-lucide="alert-circle" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Ralat carian: ' + (e.code === 'permission-denied' ? 'Akses ditolak. Sila hubungi pentadbir untuk aktifkan Portal Carian.' : e.message);
+                errorEl.style.display = 'block';
+                if (window.lucide) lucide.createIcons();
+            }
+        };
+
+// --- GOOGLE DRIVE BACKUP & RESTORE ---
+        function showBackupStatus(msg, isError) {
+            const el = document.getElementById('backupStatus');
+            if (!el) return;
+            el.style.display = 'block';
+            el.style.background = isError ? 'rgba(244,63,94,0.08)' : 'rgba(34,197,94,0.08)';
+            el.style.color = isError ? 'var(--danger)' : 'var(--success)';
+            el.style.border = `1px solid ${isError ? 'rgba(244,63,94,0.2)' : 'rgba(34,197,94,0.2)'}`;
+            el.innerHTML = `<i data-lucide="${isError ? 'alert-circle' : 'check-circle'}" style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;"></i>${msg}`;
+            if (window.lucide) lucide.createIcons();
+            setTimeout(() => { el.style.display = 'none'; }, 6000);
+        }
+
+        async function getGDriveToken() {
+            const gProvider = new GoogleAuthProvider();
+            gProvider.addScope('https://www.googleapis.com/auth/drive.file');
+            try {
+                const result = await signInWithPopup(auth, gProvider);
+                return result._tokenResponse?.oauthAccessToken || null;
+            } catch (e) {
+                console.error('GDrive auth error:', e);
+                return null;
+            }
+        }
+
+        window.backupToGDrive = async function() {
+            const user = auth.currentUser;
+            if (!user) { window.showNotification("Sila log masuk dahulu.", true); return; }
+            if (!window.students.length) { window.showNotification("Tiada data murid untuk backup.", true); return; }
+
+            window.showLoading(true, "Menyambung ke Google Drive...");
+            const token = await getGDriveToken();
+            if (!token) { window.showLoading(false); showBackupStatus("Gagal mendapat kebenaran Google Drive.", true); return; }
+
+            const backupData = {
+                version: '2.0',
+                exportDate: new Date().toISOString(),
+                userId: user.uid,
+                userEmail: user.email,
+                settings: window.appSettings,
+                students: window.students.map(s => {
+                    const copy = { ...s };
+                    delete copy.id;
+                    return copy;
+                })
+            };
+            const jsonStr = JSON.stringify(backupData, null, 2);
+            const fileName = `MURIDKU_Backup_${new Date().toISOString().slice(0,10)}.json`;
+
+            try {
+                // Check for existing backup files
+                window.showLoading(true, "Menyimpan ke Google Drive...");
+                const searchRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=name contains 'MURIDKU_Backup' and trashed=false&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const searchData = await searchRes.json();
+
+                const metadata = { name: fileName, mimeType: 'application/json' };
+                const form = new FormData();
+                form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                form.append('file', new Blob([jsonStr], { type: 'application/json' }));
+
+                const uploadRes = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: form
+                });
+
+                if (uploadRes.ok) {
+                    const count = window.students.length;
+                    showBackupStatus(`Backup berjaya! ${count} murid disimpan ke Google Drive sebagai "${fileName}".`, false);
+                    window.showNotification(`Backup ${count} murid ke Google Drive berjaya!`);
+                } else {
+                    throw new Error('Upload gagal: ' + uploadRes.status);
+                }
+            } catch (e) {
+                showBackupStatus("Gagal backup: " + e.message, true);
+            }
+            window.showLoading(false);
+        };
+
+        window.restoreFromGDrive = async function() {
+            const user = auth.currentUser;
+            if (!user) { window.showNotification("Sila log masuk dahulu.", true); return; }
+
+            window.showLoading(true, "Menyambung ke Google Drive...");
+            const token = await getGDriveToken();
+            if (!token) { window.showLoading(false); showBackupStatus("Gagal mendapat kebenaran Google Drive.", true); return; }
+
+            try {
+                window.showLoading(true, "Mencari fail backup...");
+                const searchRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=name contains 'MURIDKU_Backup' and trashed=false&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=10`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const searchData = await searchRes.json();
+
+                if (!searchData.files || !searchData.files.length) {
+                    window.showLoading(false);
+                    showBackupStatus("Tiada fail backup dijumpai di Google Drive.", true);
+                    return;
+                }
+
+                // Use most recent backup
+                const latestFile = searchData.files[0];
+                const confirmMsg = `Jumpa backup: "${latestFile.name}" (${new Date(latestFile.modifiedTime).toLocaleString('ms-MY')}).\n\nRestore akan GANTI semua data sedia ada. Teruskan?`;
+                if (!confirm(confirmMsg)) { window.showLoading(false); return; }
+
+                window.showLoading(true, "Memuat turun backup...");
+                const fileRes = await fetch(`https://www.googleapis.com/drive/v3/files/${latestFile.id}?alt=media`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const backupData = await fileRes.json();
+
+                if (!backupData.students || !Array.isArray(backupData.students)) {
+                    throw new Error('Fail backup tidak sah.');
+                }
+
+                window.showLoading(true, `Memulihkan ${backupData.students.length} murid...`);
+
+                // Delete existing records
+                const existQ = query(collection(db, "murid"), where("userId", "==", user.uid));
+                const existSnap = await getDocs(existQ);
+                const batch1 = writeBatch(db);
+                existSnap.docs.forEach(d => batch1.delete(d.ref));
+                await batch1.commit();
+
+                // Restore in batches of 400
+                const studs = backupData.students;
+                for (let i = 0; i < studs.length; i += 400) {
+                    const batch = writeBatch(db);
+                    const chunk = studs.slice(i, i + 400);
+                    chunk.forEach(s => {
+                        const docRef = doc(collection(db, "murid"));
+                        batch.set(docRef, { ...s, userId: user.uid, updatedAt: serverTimestamp() });
+                    });
+                    await batch.commit();
+                }
+
+                // Restore settings if available
+                if (backupData.settings) {
+                    Object.assign(window.appSettings, backupData.settings);
+                    window.saveAppSettings();
+                    window.applySettingsDisplay();
+                }
+
+                await window.loadData();
+                showBackupStatus(`Restore berjaya! ${studs.length} murid dipulihkan dari "${latestFile.name}".`, false);
+                window.showNotification(`${studs.length} murid dipulihkan dari backup!`);
+            } catch (e) {
+                showBackupStatus("Gagal restore: " + e.message, true);
+            }
+            window.showLoading(false);
+        };
+
 // --- KEHADIRAN ---
         window.logAttendanceManual = async function(s) {
             const user = auth.currentUser;
