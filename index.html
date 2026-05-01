@@ -3555,13 +3555,14 @@
             document.getElementById('portalCarian').style.display = 'none';
         };
         window.searchPortal = async function() {
-            const icRaw = document.getElementById('portalIc').value.trim().replace(/[\-\s]/g, '');
+            const icVal = document.getElementById('portalIc').value.trim();
+            const icClean = icVal.replace(/[\-\s]/g, '');
             const errorEl = document.getElementById('portalError');
             const resultEl = document.getElementById('portalResult');
             resultEl.style.display = 'none';
             errorEl.style.display = 'none';
 
-            if (!icRaw || icRaw.length < 6) {
+            if (!icClean || icClean.length < 6) {
                 errorEl.innerHTML = '<i data-lucide="alert-circle" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Sila masukkan No. Kad Pengenalan yang lengkap (minimum 6 digit).';
                 errorEl.style.display = 'block';
                 if (window.lucide) lucide.createIcons();
@@ -3573,22 +3574,44 @@
             // Search from loaded data first (admin is logged in)
             if (window.students && window.students.length) {
                 found = window.students.find(s => {
-                    const sIc = (s.ic || s.no_ic || '').replace(/[\-\s]/g, '');
-                    return sIc === icRaw;
+                    const sIc = (s.ic || '').replace(/[\-\s]/g, '');
+                    return sIc === icClean;
                 }) || null;
             }
 
-            // If not found in loaded data, try Firestore query
+            // If not found in memory, try Firestore queries
             if (!found) {
+                const user = auth.currentUser;
                 try {
-                    const q = query(collection(db, "murid"), where("ic", "==", icRaw));
-                    const snapshot = await getDocs(q);
-                    if (!snapshot.empty) {
-                        snapshot.forEach(d => { if (!found) found = d.data(); });
+                    if (user) {
+                        // Logged in: load all user's students and search
+                        const q = query(collection(db, "murid"), where("userId", "==", user.uid));
+                        const snapshot = await getDocs(q);
+                        snapshot.forEach(d => {
+                            if (found) return;
+                            const data = d.data();
+                            const sIc = (data.ic || '').replace(/[\-\s]/g, '');
+                            if (sIc === icClean) found = data;
+                        });
+                    } else {
+                        // Not logged in: try direct IC match (needs Firestore rules to allow)
+                        const q1 = query(collection(db, "murid"), where("ic", "==", icVal));
+                        const snap1 = await getDocs(q1);
+                        if (!snap1.empty) { snap1.forEach(d => { if (!found) found = d.data(); }); }
+                        if (!found) {
+                            const q2 = query(collection(db, "murid"), where("ic", "==", icClean));
+                            const snap2 = await getDocs(q2);
+                            if (!snap2.empty) { snap2.forEach(d => { if (!found) found = d.data(); }); }
+                        }
                     }
                 } catch (e) {
-                    // If Firestore denies access, only rely on loaded data
-                    console.warn('Portal Firestore query failed:', e.code || e.message);
+                    console.warn('Portal query:', e.code || e.message);
+                    if (!user) {
+                        errorEl.innerHTML = '<i data-lucide="alert-circle" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"></i>Sila log masuk ke MURIDKU dahulu sebelum menggunakan Portal Carian.';
+                        errorEl.style.display = 'block';
+                        if (window.lucide) lucide.createIcons();
+                        return;
+                    }
                 }
             }
 
