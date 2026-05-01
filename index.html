@@ -1072,9 +1072,16 @@ window.verifyAccessCode=async function(){
   await new Promise(r=>setTimeout(r,700));window.enterApp(user);
 };
 window.enterApp=function(user){
-  document.getElementById('landingPage').style.display='none';document.getElementById('mainContent').style.display='flex';
-  if(window.innerWidth<=768){document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='flex';}
-  else{document.getElementById('sidebar').style.display='flex';document.getElementById('bottomNav').style.display='none';}
+  // Hide landing, show app
+  const lp=document.getElementById('landingPage');
+  const mc=document.getElementById('mainContent');
+  const sb=document.getElementById('sidebar');
+  const bn=document.getElementById('bottomNav');
+  if(lp)lp.style.cssText='display:none!important';
+  if(mc){mc.style.cssText='display:flex!important;flex-direction:column;';if(window.innerWidth<=768){mc.style.cssText='display:flex!important;flex-direction:column;margin-left:0;width:100%;padding:1.5rem 1rem 8rem';}}
+  if(window.innerWidth<=768){if(sb)sb.style.cssText='display:none!important';if(bn)bn.style.cssText='display:flex!important';}
+  else{if(sb)sb.style.cssText='display:flex!important;flex-direction:column;';if(bn)bn.style.cssText='display:none!important';}
+  window.showLoading(false);
   const photo=user.photoURL||`https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`;
   ['sidebarAvatar','dashAvatarImg'].forEach(id=>{const el=document.getElementById(id);if(el)el.src=photo;});
   const sn=document.getElementById('sidebarTeacherName');if(sn)sn.textContent=window.appSettings.teacherName||user.displayName||'Cikgu';
@@ -1083,17 +1090,17 @@ window.enterApp=function(user){
   lucide.createIcons();
 };
 onAuthStateChanged(auth,user=>{
-  if(user){if(isVerified(user.uid)){window.enterApp(user);return;}
-    document.getElementById('landingPage').style.display='flex';document.getElementById('mainContent').style.display='none';document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='none';
+  if(user){if(isVerified(user.uid)){window.showLoading(false);window.enterApp(user);return;}
+    window.showLoading(false);document.getElementById('landingPage').style.display='flex';document.getElementById('mainContent').style.display='none';document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='none';
     const photo=user.photoURL||`https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName||'CG')}&background=6366f1&color=fff&size=80`;
     document.getElementById('landingUserPhoto').src=photo;document.getElementById('landingUserName').textContent=user.displayName||'Pengguna';document.getElementById('landingUserEmail').textContent=user.email||'';
     window.showLandingStep(2);
-  }else{document.getElementById('landingPage').style.display='flex';document.getElementById('mainContent').style.display='none';document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='none';window.showLandingStep(1);}
+  }else{window.showLoading(false);document.getElementById('landingPage').style.display='flex';document.getElementById('mainContent').style.display='none';document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='none';window.showLandingStep(1);}
 });
 window.addEventListener('resize',()=>{if(!auth.currentUser)return;if(window.innerWidth<=768){document.getElementById('sidebar').style.display='none';document.getElementById('bottomNav').style.display='flex';}else{document.getElementById('sidebar').style.display='flex';document.getElementById('bottomNav').style.display='none';}});
 
 // DATA
-window.loadData=async()=>{const user=auth.currentUser;if(!user)return;window.showLoading(true,'Muat turun data cloud...');try{const q=query(collection(db,'murid'),where('userId','==',user.uid));const snap=await getDocs(q);window.students=snap.docs.map(d=>({id:d.id,...d.data()}));window.updateDashboard();window.currentPage=1;window.applyListFilters();}catch(e){window.showNotification('Gagal muat data: '+e.message,true);}window.showLoading(false);};
+window.loadData=async()=>{const user=auth.currentUser;if(!user)return;window.showLoading(true,'Muat turun data cloud...');try{const q=query(collection(db,'murid'),where('userId','==',user.uid));const snap=await getDocs(q);window.students=snap.docs.map(d=>({id:d.id,...d.data()}));window.updateDashboard();window.currentPage=1;window.applyListFilters();}catch(e){window.showNotification('Gagal muat data: '+e.message,true);}finally{window.showLoading(false);}};
 
 window.saveStudent=async(e)=>{
   e.preventDefault();const user=auth.currentUser;if(!user)return;window.showLoading(true,'Simpan rekod ke Cloud...');
