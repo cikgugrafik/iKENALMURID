@@ -3599,42 +3599,36 @@
                 return;
             }
 
-            const photo = found.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(found.nama) + '&background=6366f1&color=fff&size=140';
-            const gender = found.jantina || '-';
-            const kelas = found.kelas || '-';
-            const tarikh = found.tarikh_lahir || '-';
-            const tempat = found.tempat_lahir || '-';
+            const sName = found.name || found.nama || '-';
+            const sClass = found.class || found.kelas || '-';
+            const sTel = found.tel || '-';
+            const sAlamat = found.alamat || '-';
+            const sPhoto = found.photo || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(sName) + '&background=6366f1&color=fff&size=140';
 
             resultEl.innerHTML = `
-                <div class="portal-result-card">
-                    <div style="display:flex; align-items:center; gap:1rem; margin-bottom:0.8rem;">
-                        <img src="${photo}" class="result-photo" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(found.nama)}&background=6366f1&color=fff&size=140'">
-                        <div>
-                            <p style="font-size:1rem; font-weight:700; color:var(--text-main); margin:0;">${found.nama}</p>
-                            <p style="font-size:0.75rem; color:var(--secondary); margin:0; font-weight:500;">${kelas}</p>
+                <div class="portal-result-card" style="padding:0; overflow:hidden;">
+                    <div style="background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(6,182,212,0.06)); padding:1.2rem; display:flex; flex-direction:column; align-items:center; gap:0.6rem;">
+                        <img src="${sPhoto}" style="width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid white; box-shadow:0 4px 12px rgba(0,0,0,0.1);" onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(sName)}&background=6366f1&color=fff&size=140'">
+                        <div style="text-align:center;">
+                            <p style="font-size:1.05rem; font-weight:700; color:var(--text-main); margin:0;">${sName}</p>
+                            <p style="font-size:0.78rem; color:var(--secondary); margin:0.15rem 0 0; font-weight:600;">${sClass}</p>
                         </div>
                     </div>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem; font-size:0.75rem;">
-                        <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
-                            <span style="color:var(--text-muted); display:block; font-size:0.65rem;">Jantina</span>
-                            <span style="color:var(--text-main); font-weight:600;">${gender}</span>
+                    <div style="padding:1rem 1.2rem;">
+                        <div style="display:flex; flex-direction:column; gap:0.5rem; font-size:0.78rem;">
+                            <div style="display:flex; align-items:center; gap:0.6rem; padding:0.6rem 0.7rem; background:var(--bg-color); border-radius:var(--radius-sm);">
+                                <i data-lucide="phone" style="width:14px;height:14px;color:var(--secondary); flex-shrink:0;"></i>
+                                <div><span style="color:var(--text-muted); font-size:0.65rem; display:block;">No. Tel Penjaga</span><span style="color:var(--text-main); font-weight:600;">${sTel}</span></div>
+                            </div>
+                            <div style="display:flex; align-items:flex-start; gap:0.6rem; padding:0.6rem 0.7rem; background:var(--bg-color); border-radius:var(--radius-sm);">
+                                <i data-lucide="map-pin" style="width:14px;height:14px;color:var(--secondary); flex-shrink:0; margin-top:2px;"></i>
+                                <div><span style="color:var(--text-muted); font-size:0.65rem; display:block;">Alamat</span><span style="color:var(--text-main); font-weight:600;">${sAlamat}</span></div>
+                            </div>
                         </div>
-                        <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
-                            <span style="color:var(--text-muted); display:block; font-size:0.65rem;">Tarikh Lahir</span>
-                            <span style="color:var(--text-main); font-weight:600;">${tarikh}</span>
-                        </div>
-                        <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
-                            <span style="color:var(--text-muted); display:block; font-size:0.65rem;">Tempat Lahir</span>
-                            <span style="color:var(--text-main); font-weight:600;">${tempat}</span>
-                        </div>
-                        <div style="padding:0.5rem; background:var(--bg-color); border-radius:var(--radius-sm);">
-                            <span style="color:var(--text-muted); display:block; font-size:0.65rem;">No. IC</span>
-                            <span style="color:var(--text-main); font-weight:600;">${found.ic || found.no_ic || '-'}</span>
-                        </div>
+                        <p style="font-size:0.6rem; color:var(--text-muted); margin:0.8rem 0 0; opacity:0.6; text-align:center;">
+                            <i data-lucide="shield-check" style="width:10px;height:10px;vertical-align:-1px;"></i> Maklumat terhad untuk tujuan pengesahan sahaja.
+                        </p>
                     </div>
-                    <p style="font-size:0.6rem; color:var(--text-muted); margin:0.6rem 0 0; opacity:0.6; text-align:center;">
-                        <i data-lucide="info" style="width:10px;height:10px;vertical-align:-1px;"></i> Maklumat terhad sahaja dipaparkan untuk tujuan pengesahan.
-                    </p>
                 </div>`;
             resultEl.style.display = 'block';
             if (window.lucide) lucide.createIcons();
